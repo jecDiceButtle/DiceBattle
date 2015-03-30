@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\lib">
+      <UniqueIdentifier>{46cb6a3b-5b55-4c2f-97f1-91b3ca4a8260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\ext">
+      <UniqueIdentifier>{ddb34ed1-62c7-43f5-acdf-54b453b11101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\title">
+      <UniqueIdentifier>{d3efb0eb-513e-4cdf-9267-b08fd5551a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\game">
+      <UniqueIdentifier>{3a99edfb-e204-4bb9-8a02-ca9b47811368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\tool">
+      <UniqueIdentifier>{827a5aab-d1ea-4785-9d28-c386d8fbd280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\tool\background">
+      <UniqueIdentifier>{bb24457b-5bdb-45f3-bb69-3c84ce2dca67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\tool\timer">
+      <UniqueIdentifier>{f1fc4a2c-c900-4bb3-94fa-ff16ca00da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="データファイル">
+      <UniqueIdentifier>{f2800654-d3cd-42bc-b8a2-dc1dd28bd3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\tool\movableObject">
+      <UniqueIdentifier>{fe56280f-1fc0-4fca-8d8f-8599d830e4b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\lib\charbase">
+      <UniqueIdentifier>{edaef453-c838-4749-95ba-512622beaf75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="データファイル\map1">
+      <UniqueIdentifier>{eb70a0a9-654d-42e9-b158-951b983c2b70}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lib\ci_ext\object.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\DrawObj.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\vec3.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\math.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Counter.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\xinput.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Line.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Polygon.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Triangle.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\ci_ext.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Console.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\define.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\MeasureTime.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Task.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\TaskManager.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\color.hpp">
+      <Filter>ソース ファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib_Window.hpp">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib_windowDx.hpp">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Logo.hpp">
+      <Filter>ソース ファイル\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collider.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stage.h">
+      <Filter>ソース ファイル\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\background.h">
+      <Filter>ソース ファイル\tool\background</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movableObject.h">
+      <Filter>ソース ファイル\tool\movableObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timer.h">
+      <Filter>ソース ファイル\tool\timer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\root.hpp">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\CharBase.h">
+      <Filter>ソース ファイル\lib\charbase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\title.h">
+      <Filter>ソース ファイル\title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\temp.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\gplib.cpp">
+      <Filter>ソース ファイル\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collider.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stage.cpp">
+      <Filter>ソース ファイル\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\background.cpp">
+      <Filter>ソース ファイル\tool\background</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movableObject.cpp">
+      <Filter>ソース ファイル\tool\movableObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\timer.cpp">
+      <Filter>ソース ファイル\tool\timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\CharBase.cpp">
+      <Filter>ソース ファイル\lib\charbase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\title.cpp">
+      <Filter>ソース ファイル\title</Filter>
+    </ClCompile>
+    <ClCompile Include="src\temp.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\res.rc">
+      <Filter>ソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="res\data\data.ini">
+      <Filter>データファイル</Filter>
+    </None>
+    <None Include="res\data\map1.ini">
+      <Filter>データファイル\map1</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\data\map1.txt">
+      <Filter>データファイル\map1</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

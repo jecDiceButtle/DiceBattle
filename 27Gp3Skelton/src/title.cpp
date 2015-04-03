@@ -63,7 +63,7 @@ void CSceneTitle::update()
 	case STATE::FADEOUT:
 
 
-		insertToParentSleep(new CSceneStage("scene_stage1"), 120);
+		insertToParentSleep(new CSceneStage("scene_stage"), 120);
 		kill();
 		//ƒV[ƒ“‘JˆÚ
 		break;

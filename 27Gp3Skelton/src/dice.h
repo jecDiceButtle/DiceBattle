@@ -11,17 +11,19 @@ class Dice : public ci_ext::Object
 	//　定数
 	//*************************************************//
 private:
+	enum DIRECT{LEFT,RIGHT,FOWARD,BACK};
+	enum TYPE{GU,CH,PA,DEF};
 
-	static const int HOGE;				// 定数の例。削除すること。
-
+	
 
 	//*************************************************//
 	//　変数
 	//*************************************************//
 private:
-
-	int piyo;							// 変数の例。削除すること。
-
+	int diceID_;
+	int playerID_;
+	TYPE num[6];
+	DIRECT dir_;
 
 	//*************************************************//
 	//　関数
@@ -30,26 +32,18 @@ private:
 
 
 public:
+	Dice(const std::string& objectName,const int playerID,const int diceID);
 
-	/*
-		@brief							コンストラクタ
-		@param[in]	objectName			オブジェクト名
-		@return							なし
-	*/
-	Dice(const std::string& objectName);
-
-
-	/*
-		@brief							描画
-		@return							なし
-	*/
 	void render() override;
-
-	/*
-		@brief							フレーム更新
-		@return							なし
-	*/
 	void update() override;
+
+
+	
+	void swap(DIRECT dir);
+
+	int getTopType();
+	int getId_Player();
+	int getId_Dice();
 
 };
 

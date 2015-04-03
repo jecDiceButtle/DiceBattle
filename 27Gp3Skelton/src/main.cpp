@@ -74,7 +74,7 @@ public:
     auto ret = window_->doMsg2();
     //ルートオブジェクトから処理を行う
     if (ret == ci_ext::Window::MsgReturn::update)
-    {
+	{
       window_->update_before();
       root->updateWithChildren();
       root->renderWithChildren();

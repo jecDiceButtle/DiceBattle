@@ -38,6 +38,11 @@ public:
   }
   void render() override
   {
+#ifdef _DEBUG
+
+	  //gplib::debug::DFPS();
+
+#endif
   }
   int frame() const { return frame_; }
 

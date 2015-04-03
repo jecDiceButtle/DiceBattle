@@ -1,5 +1,6 @@
 #include "player.h"
 #include "../../lib/gplib.h"
+#include "stage.h"
 
 namespace game
 {
@@ -16,7 +17,6 @@ namespace game
 	Player::Player(const std::string& objectName)
 		:
 		Object(objectName)
-
 	{
 
 	}
@@ -28,7 +28,13 @@ namespace game
 
 	void Player::update()
 	{
+		if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+		{
+			auto stage = getObjectFromRoot("scene_stage");
+			auto object = ci_ext::weak_to_shared<CSceneStage>(stage);
 
+			object->NextPhase();
+		}
 	}
 
 }

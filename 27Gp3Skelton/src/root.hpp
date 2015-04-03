@@ -28,7 +28,7 @@ public:
   void init(std::shared_ptr<ci_ext::Object> thisObjectPtr)
   {
     setWeakPtr(thisObjectPtr);
-    insertAsChild(new game::Logo("logo"));
+    insertAsChild(new game::Logo("scene_logo"));
   }
 
   void update() override

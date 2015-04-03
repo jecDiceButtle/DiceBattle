@@ -1,16 +1,10 @@
 #include "stage.h"
 #include "title.h"
-#include "movableObject.h"
 #include <memory>
 #include <string>
 #include <iostream>
 
-#include "collider.h"
 #include "logo.hpp"
-
-#include "background.h"
-
-#include <stdio.h>
 
 #include "root.hpp"
 
@@ -34,14 +28,6 @@ void CSceneTitle::init()
 
 	auto wndsize = object->getWindowSize();
 
-
-  insertAsChild(new IBackGround("title_back","title_back"));
-}
-
-void CSceneTitle::InAnim()
-{
-		state_ = STATE::WAIT;
-
 }
 void CSceneTitle::Wait()
 {
@@ -54,7 +40,9 @@ void CSceneTitle::Wait()
 
 void CSceneTitle::render()
 {
-
+#if _DEBUG
+	gplib::font::Draw_FontTextNC(0, 0, 0.f, "タイトル画面", ARGB(255, 255, 255, 255), 0);
+#endif
 }
 
 void CSceneTitle::update()
@@ -63,13 +51,7 @@ void CSceneTitle::update()
 	{
 	case STATE::FADEIN:
 
-			state_ = STATE::IN_ANIM;
-
-		break;
-
-	case STATE::IN_ANIM:
-
-		InAnim();
+		state_ = STATE::WAIT;
 
 		break;
 
@@ -81,8 +63,7 @@ void CSceneTitle::update()
 	case STATE::FADEOUT:
 
 
-		insertToParentSleep(new Stage("Stage1"), 120);
-
+		insertToParentSleep(new CSceneStage("scene_stage1"), 120);
 		kill();
 		//シーン遷移
 		break;

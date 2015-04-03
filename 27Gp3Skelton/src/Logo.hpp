@@ -46,7 +46,7 @@ class Logo : public ci_ext::Object
 
     case State::end:
       //ƒV[ƒ“‘JˆÚ
-      insertToParentSleep(new CSceneTitle("Title"), 120);
+      insertToParentSleep(new CSceneTitle("scene_title"), 120);
       kill();
       break;
     }

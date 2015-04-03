@@ -94,33 +94,30 @@
     <ClInclude Include="..\lib\ci_ext\MeasureTime.hpp" />
     <ClInclude Include="..\lib\ci_ext\object.hpp" />
     <ClInclude Include="..\lib\ci_ext\Polygon.hpp" />
-    <ClInclude Include="..\lib\ci_ext\Task.hpp" />
     <ClInclude Include="..\lib\ci_ext\TaskManager.hpp" />
     <ClInclude Include="..\lib\ci_ext\Triangle.hpp" />
     <ClInclude Include="..\lib\ci_ext\vec3.hpp" />
     <ClInclude Include="..\lib\ci_ext\xinput.hpp" />
-    <ClInclude Include="src\background.h" />
+    <ClInclude Include="src\board.h" />
     <ClInclude Include="src\collider.h" />
+    <ClInclude Include="src\dice.h" />
     <ClInclude Include="src\lib_Window.hpp" />
     <ClInclude Include="src\lib_windowDx.hpp" />
     <ClInclude Include="src\Logo.hpp" />
-    <ClInclude Include="src\movableObject.h" />
+    <ClInclude Include="src\player.h" />
     <ClInclude Include="src\root.hpp" />
     <ClInclude Include="src\stage.h" />
-    <ClInclude Include="src\temp.h" />
-    <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\title.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\CharBase.cpp" />
     <ClCompile Include="..\lib\gplib.cpp" />
-    <ClCompile Include="src\background.cpp" />
+    <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\collider.cpp" />
+    <ClCompile Include="src\dice.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\movableObject.cpp" />
+    <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\stage.cpp" />
-    <ClCompile Include="src\temp.cpp" />
-    <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -128,11 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
-    <None Include="res\data\data.ini" />
-    <None Include="res\data\map1.ini" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="res\data\map1.txt" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

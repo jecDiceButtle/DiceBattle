@@ -1,6 +1,5 @@
 #include "Collider.h"
 #include "../../lib/gplib.h"
-#include "movableObject.h"
 
 #include "effect.h"
 

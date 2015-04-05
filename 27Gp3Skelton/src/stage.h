@@ -75,6 +75,16 @@ namespace game
 		*/
 		void NextPhase();
 
+		/*
+			@brief					ダイス移動処理
+			@param[in]	pos			移動先の座標
+			@return					処理したかどうか
+			@true					処理された
+			@false					処理されていない
+		*/
+		bool checkMovableDice(const ci_ext::Vec3i &pos);
+
+
 		void init() override;
 		void render() override;
 		void update() override;

@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "logo.hpp"
-#include "dice.h"
 #include "player.h"
+#include "dicemanager.h"
 
 #include <stdio.h>
 
@@ -56,6 +56,22 @@ namespace game
 		}
 	}
 
+	bool CSceneStage::checkMovableDice(const ci_ext::Vec3i &pos)
+	{
+		//ボードがOKしてくれたら
+		if (true)
+		{
+			//プレイヤーのコストがあるのならば
+			if (true)
+			{
+				//プレイヤーのコストを減らす
+
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	//**************************************************************************************//
 	//デフォルト関数
@@ -72,16 +88,9 @@ namespace game
 	}
 	void CSceneStage::init()
 	{
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				//std::string str = "dice_player" + std::to_string(i+1) + "_no" + std::to_string(j);
-				insertAsChild(new Dice("dice", i, j));
-			}
-		}
 
 		insertAsChild(new Player("player"));
+		insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
 		
 	}
 	void CSceneStage::render()

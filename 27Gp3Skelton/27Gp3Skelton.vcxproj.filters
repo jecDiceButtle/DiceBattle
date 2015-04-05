@@ -44,6 +44,9 @@
     <Filter Include="ソース ファイル\game\board">
       <UniqueIdentifier>{681166b5-a5c2-4c61-9aea-c03f2f6beeb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\game\dicemanager">
+      <UniqueIdentifier>{95fa580c-c062-4aef-a609-d286fe4af899}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\ci_ext\object.hpp">
@@ -124,6 +127,9 @@
     <ClInclude Include="src\player.h">
       <Filter>ソース ファイル\game\player</Filter>
     </ClInclude>
+    <ClInclude Include="src\dicemanager.h">
+      <Filter>ソース ファイル\game\dicemanager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -152,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="src\player.cpp">
       <Filter>ソース ファイル\game\player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dicemanager.cpp">
+      <Filter>ソース ファイル\game\dicemanager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,11 @@ namespace game
 		{
 			MovingPos(selectDice_, ci_ext::Vec3i(0, -1, 0));
 		}
+		if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+		{
+			//ダイスオブジェクトに生死を聞くこと。
+			(selectDice_ += 1) %= 3;
+		}
 
 	}
 
@@ -57,6 +62,16 @@ namespace game
 			dicepos[turnPlayer_][no].offset(pos.x(),pos.y());
 		}
 
+	}
+	/*
+		@brief							ターンの変更
+		@param[in]	playerID			プレイヤー識別番号
+		@return							なし
+	*/
+	void DiceManager::ChangeTurn(const int playerID)
+	{
+		turnPlayer_ = playerID;
+		selectDice_ = 0;
 	}
 
 
@@ -110,6 +125,30 @@ namespace game
 			", Y:" + std::to_string(dicepos[turnPlayer_][selectDice_].y());
 
 		gplib::font::Draw_FontTextNC(100, 100, 0.f, str, ARGB(255, 255, 255, 255), 0);
+
+
+		for (int i = 0; i < dicepos.size(); i++)
+		{
+			for (int j = 0; j < dicepos[i].size(); j++)
+			{
+				std::string str = "プレイヤー" + std::to_string(i) +
+					",  ダイス" + std::to_string(j) + "  X:" +
+					std::to_string(dicepos[i][j].x()) +
+					", Y:" + std::to_string(dicepos[i][j].y());
+
+				if (i == turnPlayer_ && j == selectDice_)
+				{
+					gplib::font::Draw_FontTextNC(500 + (i * 300), 100 + 30 * j, 0.f, str, ARGB(255, 255, 0, 0), 0);
+				}
+				else
+				{
+					gplib::font::Draw_FontTextNC(500 + (i * 300), 100 + 30 * j, 0.f, str, ARGB(255, 255, 255, 255), 0);
+				}
+				
+			}
+		}
+
+
 
 
 #endif

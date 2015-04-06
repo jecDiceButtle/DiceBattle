@@ -4,8 +4,10 @@
 #include "../../lib/ci_ext/xinput.hpp" 
 
 #include "Logo.hpp"
-//debug
+
+#ifdef _DEBUG
 #include "stage.h"
+#endif
 
 #include"lib_WindowDx.hpp"
 #include"lib_Window.hpp"
@@ -28,7 +30,17 @@ public:
   void init(std::shared_ptr<ci_ext::Object> thisObjectPtr)
   {
     setWeakPtr(thisObjectPtr);
-    insertAsChild(new game::Logo("scene_logo"));
+
+#ifdef _DEBUG
+
+	insertAsChild(new game::CSceneStage("scene_stage"));
+#elif
+
+	insertAsChild(new game::Logo("scene_logo"));
+
+#endif
+
+    
   }
 
   void update() override

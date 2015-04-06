@@ -1,9 +1,8 @@
-﻿2015/04/06 12:21:09 にビルドを開始しました。
+﻿2015/04/06 13:04:07 にビルドを開始しました。
 ノード 2 上のプロジェクト "C:\Users\Yoichiro Maruyama\Documents\DiceButtle\27Gp3Skelton\27Gp3Skelton.vcxproj" (Build ターゲット)。
 ClCompile:
-  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\dicemanager.cpp
-  dicemanager.cpp
-c:\users\yoichiro maruyama\documents\dicebuttle\27gp3skelton\src\dicemanager.cpp(39): warning C4018: '<' : signed と unsigned の数値を比較しようとしました。
+  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\dice.cpp
+  dice.cpp
 Link:
   C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Yoichiro Maruyama\Documents\DiceButtle\Debug\27Gp3Skelton.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Yoichiro Maruyama\Documents\DiceButtle\Debug\27Gp3Skelton.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Yoichiro Maruyama\Documents\DiceButtle\Debug\27Gp3Skelton.lib" /MACHINE:X86 Debug\res.res
   Debug\CharBase.obj
@@ -21,4 +20,4 @@ Link:
 
 ビルドに成功しました。
 
-経過時間 00:00:02.63
+経過時間 00:00:03.06

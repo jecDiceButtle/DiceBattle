@@ -12,15 +12,13 @@ class Board : public ci_ext::Object
 	//*************************************************//
 private:
 
-	static const int HOGE;				// 定数の例。削除すること。
+	static const ci_ext::Vec3i MAPSIZE;					//マップの最大値
 
 
 	//*************************************************//
 	//　変数
 	//*************************************************//
 private:
-
-	int piyo;							// 変数の例。削除すること。
 
 
 	//*************************************************//
@@ -50,6 +48,18 @@ public:
 		@return							なし
 	*/
 	void update() override;
+
+
+	/*
+		@brief							座標の移動確認
+		@param[in]	pos					移動先の座標
+		@return							移動可能かどうか
+		@true							可
+		@false							不可
+	*/
+	bool isMovablePosition(const ci_ext::Vec3i &pos);
+
+
 
 };
 

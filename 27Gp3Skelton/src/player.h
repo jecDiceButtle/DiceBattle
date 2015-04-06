@@ -11,16 +11,15 @@ class Player : public ci_ext::Object
 	//　定数
 	//*************************************************//
 private:
-
-	static const int HOGE;				// 定数の例。削除すること。
-
+	static const int DEFAULTCOST;
 
 	//*************************************************//
 	//　変数
 	//*************************************************//
 private:
 
-	int piyo;							// 変数の例。削除すること。
+	std::weak_ptr<ci_ext::Object> p_parent;				// 親のポインタ
+	std::vector<int>cost;								// コスト
 
 
 	//*************************************************//
@@ -34,9 +33,11 @@ public:
 	/*
 		@brief							コンストラクタ
 		@param[in]	objectName			オブジェクト名
+		@param[in]	ptr					親のポインタ
 		@return							なし
 	*/
-	Player(const std::string& objectName);
+	Player(const std::string& objectName, const std::weak_ptr<Object> ptr);
+
 
 
 	/*
@@ -50,6 +51,31 @@ public:
 		@return							なし
 	*/
 	void update() override;
+
+	/*
+		@brief							コスト確認
+		@param[in] id					プレイヤーID
+		@return							コスト残ってるかどうか
+		@true							残っている
+		@false							残っていない
+	*/
+	bool isCostRemain(const int id);		
+
+	/*
+		@brief							コスト減少
+		@param[in] id					プレイヤーID
+		@param[in] point				減らす量（基本値1）
+		@return							なし
+	*/
+	void CostDecrease(const int id,const int point = 1);		
+
+	/*
+		@brief							コストを戻す
+		@param[in] id					プレイヤーID
+		@return							なし
+	*/
+	void CostReset(const int id);
+
 
 };
 

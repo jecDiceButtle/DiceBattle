@@ -6,6 +6,7 @@
 #include "logo.hpp"
 #include "player.h"
 #include "dicemanager.h"
+#include "board.h"
 
 #include <stdio.h>
 
@@ -58,14 +59,17 @@ namespace game
 
 	bool CSceneStage::checkMovableDice(const ci_ext::Vec3i &pos)
 	{
+
+		auto board = ci_ext::weak_to_shared<Board>(p_board);
 		//ボードがOKしてくれたら
-		if (true)
+		if (board->isMovablePosition(pos))
 		{
+			auto player = ci_ext::weak_to_shared<Player>(p_player);
 			//プレイヤーのコストがあるのならば
-			if (true)
+			if (player->isCostRemain(0))
 			{
 				//プレイヤーのコストを減らす
-
+				player->CostDecrease(0);
 				return true;
 			}
 		}
@@ -89,8 +93,10 @@ namespace game
 	void CSceneStage::init()
 	{
 
-		insertAsChild(new Player("player"));
+		p_player = insertAsChild(new Player("player", this->selfPtr()));
 		insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
+		p_board = insertAsChild(new Board("board"));
+
 		
 	}
 	void CSceneStage::render()
@@ -160,15 +166,19 @@ namespace game
 			//プレイヤーターン交換処理
 			if (phase_ == PHASE::END)
 			{
+				auto player = ci_ext::weak_to_shared<Player>(p_player);
+
 				if (turn_ == TURN::PLAYER1)
 				{
 					turn_ = TURN::PLAYER2;
+					player->CostReset(1);
 					NextPhase();
 				}
 
 				else if (turn_ == TURN::PLAYER2)
 				{
 					turn_ = TURN::PLAYER1;
+					player->CostReset(0);
 					NextPhase();
 				}
 			}

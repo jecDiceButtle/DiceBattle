@@ -46,11 +46,13 @@ namespace game
 	private:
 		static const int JUDGE[3][3];
 
-		bool		phaseinit_;			// フェイズの更新フラグ
+		bool		phaseinit_;						// フェイズの更新フラグ
 
-		TURN		turn_;				// プレイヤーターン
-		STAGESTATE	state_;				// 状態遷移
-		PHASE		phase_;				// ターンフェイズ
+		std::weak_ptr<ci_ext::Object> p_player;		// プレイヤーのポインタ
+		std::weak_ptr<ci_ext::Object> p_board;		// ボードのポインタ
+		TURN		turn_;							// プレイヤーターン
+		STAGESTATE	state_;							// 状態遷移
+		PHASE		phase_;							// ターンフェイズ
 
 
 		//*************************************************//

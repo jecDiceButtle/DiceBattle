@@ -8,22 +8,48 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
-	const int Player::HOGE = 100;
+	const int Player::DEFAULTCOST = 3;
 
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
 
-	Player::Player(const std::string& objectName)
-		:
-		Object(objectName)
+	bool Player::isCostRemain(const int id)
 	{
+		return cost[id] > 0;
+	}
 
+	void Player::CostDecrease(const int id, const int point)
+	{
+		cost[id] -= point;
+	}
+	
+	void Player::CostReset(const int id)
+	{
+		cost[id] = DEFAULTCOST;
+	}
+
+
+	Player::Player(const std::string& objectName, const std::weak_ptr<Object> ptr)
+		:
+		Object(objectName),
+		p_parent(ptr)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			cost.push_back(DEFAULTCOST);
+		}
 	}
 
 	void Player::render()
 	{
-		
+#if _DEBUG
+
+		std::string str = "cost" + std::to_string(cost[0]);
+
+		gplib::font::Draw_FontTextNC(100, 150, 0.f, str, ARGB(255, 255, 255, 255), 0);
+
+#endif
 	}
 
 	void Player::update()

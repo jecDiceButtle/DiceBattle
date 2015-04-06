@@ -19,7 +19,18 @@ namespace game
 		{
 			MovingPos(0, ci_ext::Vec3i(-1, 0, 0));
 		}
-
+		if (gplib::input::CheckPush(gplib::input::KEY_RIGHT))
+		{
+			MovingPos(0, ci_ext::Vec3i(1, 0, 0));
+		}
+		if (gplib::input::CheckPush(gplib::input::KEY_UP))
+		{
+			MovingPos(0, ci_ext::Vec3i(0, 1, 0));
+		}
+		if (gplib::input::CheckPush(gplib::input::KEY_DOWN))
+		{
+			MovingPos(0, ci_ext::Vec3i(0, -1, 0));
+		}
 
 	}
 

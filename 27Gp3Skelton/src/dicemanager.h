@@ -51,6 +51,14 @@ private:
 public:
 
 	/*
+		@brief							ターンの変更
+		@param[in]	playerID			プレイヤー識別番号
+		@return							なし
+	*/
+	void ChangeTurn(const int playerID);
+
+
+	/*
 		@brief							コンストラクタ
 		@param[in]	objectName			オブジェクト名
 		@param[in]	ptr					親のポインタ
@@ -77,6 +85,7 @@ public:
 		@return							なし
 	*/
 	void update() override;
+
 
 };
 

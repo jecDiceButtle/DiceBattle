@@ -21,7 +21,7 @@ namespace game
 		};
 
 		//プレイヤーターン
-		enum class TURN
+		enum TURN
 		{
 			null = -1,				//ターン未設定
 			PLAYER1,				//プレイヤー１
@@ -50,6 +50,7 @@ namespace game
 
 		std::weak_ptr<ci_ext::Object> p_player;		// プレイヤーのポインタ
 		std::weak_ptr<ci_ext::Object> p_board;		// ボードのポインタ
+		std::weak_ptr<ci_ext::Object> p_dm;			// ボードのポインタ
 		TURN		turn_;							// プレイヤーターン
 		STAGESTATE	state_;							// 状態遷移
 		PHASE		phase_;							// ターンフェイズ

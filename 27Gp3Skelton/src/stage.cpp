@@ -66,10 +66,10 @@ namespace game
 		{
 			auto player = ci_ext::weak_to_shared<Player>(p_player);
 			//プレイヤーのコストがあるのならば
-			if (player->isCostRemain(0))
+			if (player->isCostRemain((int)turn_))
 			{
 				//プレイヤーのコストを減らす
-				player->CostDecrease(0);
+				player->CostDecrease((int)turn_);
 				return true;
 			}
 		}
@@ -94,7 +94,7 @@ namespace game
 	{
 
 		p_player = insertAsChild(new Player("player", this->selfPtr()));
-		insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
+		p_dm = insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
 		p_board = insertAsChild(new Board("board"));
 
 		
@@ -167,11 +167,13 @@ namespace game
 			if (phase_ == PHASE::END)
 			{
 				auto player = ci_ext::weak_to_shared<Player>(p_player);
+				auto dm = ci_ext::weak_to_shared<DiceManager>(p_dm);
 
 				if (turn_ == TURN::PLAYER1)
 				{
 					turn_ = TURN::PLAYER2;
 					player->CostReset(1);
+					dm->ChangeTurn(1);
 					NextPhase();
 				}
 
@@ -179,6 +181,7 @@ namespace game
 				{
 					turn_ = TURN::PLAYER1;
 					player->CostReset(0);
+					dm->ChangeTurn(0);
 					NextPhase();
 				}
 			}
@@ -194,7 +197,7 @@ namespace game
 			
 		case game::CSceneStage::STAGESTATE::RESULT:
 
-			if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+			if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
 			{
 				kill();
 				//シーン遷移

@@ -45,7 +45,7 @@ namespace game
 	{
 #if _DEBUG
 
-		std::string str = "cost" + std::to_string(cost[0]);
+		std::string str = "P1_COST:" + std::to_string(cost[0]) + "  P2_COST:" + std::to_string(cost[1]);
 
 		gplib::font::Draw_FontTextNC(100, 150, 0.f, str, ARGB(255, 255, 255, 255), 0);
 

@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.h" />
     <ClInclude Include="..\lib\CharBase.h" />
     <ClInclude Include="..\lib\ci_ext\ci_ext.hpp" />
     <ClInclude Include="..\lib\ci_ext\color.hpp" />
@@ -98,6 +99,20 @@
     <ClInclude Include="..\lib\ci_ext\Triangle.hpp" />
     <ClInclude Include="..\lib\ci_ext\vec3.hpp" />
     <ClInclude Include="..\lib\ci_ext\xinput.hpp" />
+    <ClInclude Include="..\lib\dx_media_\dx.h" />
+    <ClInclude Include="..\lib\dx_media_\dx3dmeshmanager.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_anime_cont_auxiliary.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_anime_mesh.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_base_mesh.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_camera.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_font.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_graphics3d.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_mesh.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_piece_texture.h" />
+    <ClInclude Include="..\lib\dx_media_\dx_texture.h" />
+    <ClInclude Include="..\lib\dx_media_\media_manager.h" />
+    <ClInclude Include="..\lib\dx_media_\mesh_manager.h" />
+    <ClInclude Include="..\lib\dx_media_\texture_manager.h" />
     <ClInclude Include="src\board.h" />
     <ClInclude Include="src\collider.h" />
     <ClInclude Include="src\dice.h" />
@@ -111,7 +126,21 @@
     <ClInclude Include="src\title.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.cpp" />
     <ClCompile Include="..\lib\CharBase.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx3dmeshmanager.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_anime_cont_auxiliary.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_anime_mesh.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_base_mesh.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_camera.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_font.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_graphics3d.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_mesh.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_piece_texture.cpp" />
+    <ClCompile Include="..\lib\dx_media_\dx_texture.cpp" />
+    <ClCompile Include="..\lib\dx_media_\media_manager.cpp" />
+    <ClCompile Include="..\lib\dx_media_\mesh_manager.cpp" />
+    <ClCompile Include="..\lib\dx_media_\texture_manager.cpp" />
     <ClCompile Include="..\lib\gplib.cpp" />
     <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\collider.cpp" />

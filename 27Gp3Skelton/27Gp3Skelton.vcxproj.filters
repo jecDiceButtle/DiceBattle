@@ -178,7 +178,7 @@
     <ClInclude Include="..\lib\dx_media_\texture_manager.h">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.h">
+    <ClInclude Include="src\movableObject.h">
       <Filter>ソース ファイル\MovableObject</Filter>
     </ClInclude>
   </ItemGroup>
@@ -252,7 +252,7 @@
     <ClCompile Include="..\lib\dx_media_\texture_manager.cpp">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.cpp">
+    <ClCompile Include="src\movableObject.cpp">
       <Filter>ソース ファイル\MovableObject</Filter>
     </ClCompile>
   </ItemGroup>

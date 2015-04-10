@@ -82,7 +82,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.h" />
     <ClInclude Include="..\lib\CharBase.h" />
     <ClInclude Include="..\lib\ci_ext\ci_ext.hpp" />
     <ClInclude Include="..\lib\ci_ext\color.hpp" />
@@ -120,13 +119,13 @@
     <ClInclude Include="src\lib_Window.hpp" />
     <ClInclude Include="src\lib_windowDx.hpp" />
     <ClInclude Include="src\Logo.hpp" />
+    <ClInclude Include="src\movableObject.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\root.hpp" />
     <ClInclude Include="src\stage.h" />
     <ClInclude Include="src\title.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.cpp" />
     <ClCompile Include="..\lib\CharBase.cpp" />
     <ClCompile Include="..\lib\dx_media_\dx3dmeshmanager.cpp" />
     <ClCompile Include="..\lib\dx_media_\dx_anime_cont_auxiliary.cpp" />
@@ -147,6 +146,7 @@
     <ClCompile Include="src\dice.cpp" />
     <ClCompile Include="src\dicemanager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\movableObject.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\stage.cpp" />
     <ClCompile Include="src\title.cpp" />

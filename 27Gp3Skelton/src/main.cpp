@@ -1,4 +1,5 @@
 #include "../../lib/ci_ext/object.hpp"
+#include "../../lib/ci_ext/counter.hpp"
 #include "../../lib/ci_ext/Console.hpp"
 #include <iostream>
 #include <Windows.h>

@@ -23,6 +23,7 @@ MeshManager::MeshManager(LPDIRECT3DDEVICE9 dev,TextureManager *t_manager)
 	//登録メッシュ数の初期化
 	this->mesh_val = 0;
 }
+
 //デストラクタ
 MeshManager::~MeshManager()
 {
@@ -59,7 +60,7 @@ MeshManager::~MeshManager()
 //外部参照用ロード関数
 //**************************************************************************
 //Xファイルからの３Ｄモデルデータをロード　　（簡易版、アニメーション制御不可）
-DxMesh* MeshManager::LoadMeshFromX(char *fName,char *path)
+DxMesh* MeshManager::LoadMeshFromX(const string& fName,const string& path)
 {
 	//生成用オブジェクトの宣言
 	DxMesh *create = NULL;
@@ -72,12 +73,13 @@ DxMesh* MeshManager::LoadMeshFromX(char *fName,char *path)
 	}
 
 	//オブジェクトの生成
-	create = new DxMesh;
+	create = new DxMesh();
 	//生成用オブジェクトにパス及びファイル名からロード
 	if(FAILED(this->LoadMeshFromX(create,fName,path)))
 	{
 		//ロードに失敗した場合、領域確保した情報を破棄
 		SAFE_DELETE(create);
+		gplib::debug::BToMR("%sの読み込みに失敗", fName.c_str());
 		return NULL;
 	}
 
@@ -90,19 +92,18 @@ DxMesh* MeshManager::LoadMeshFromX(char *fName,char *path)
 	return create;
 }
 //Xファイルからの３Ｄモデルデータをロード　　（詳細版、アニメーション制御可能）
-DxAnimeMesh* MeshManager::LoadAnimeMeshFromX(char *fName,char *path)
+DxAnimeMesh* MeshManager::LoadAnimeMeshFromX(const string& fName,const string& path)
 {
 	//生成用オブジェクトの宣言
 	DxAnimeMesh *create = NULL;
 
-	/*
 	//重複ロード防止のためファイル名チェックを行う
 	if((create=(DxAnimeMesh*)this->CheckFileName(fName))!=NULL)
 	{
 		//登録済みオブジェクトを戻り値とする
+		this->LoadAnimeFromX(create->pAnimController,create,fName,path);
 		return create;
 	}
-	*/
 
 	//オブジェクトの生成
 	create = new DxAnimeMesh;
@@ -112,6 +113,7 @@ DxAnimeMesh* MeshManager::LoadAnimeMeshFromX(char *fName,char *path)
 	{
 		//ロードに失敗した場合、領域確保した情報を破棄
 		SAFE_DELETE(create);
+		gplib::debug::BToMR("%sの読み込みに失敗", fName.c_str());
 		return NULL;
 	}
 
@@ -128,29 +130,23 @@ DxAnimeMesh* MeshManager::LoadAnimeMeshFromX(char *fName,char *path)
 //内部参照用ロード関数
 //**************************************************************************
 //Xファイルからの３Ｄモデルデータをロード　　（簡易版、アニメーション制御不可）
-HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh, char *fName,char *path)
+HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh,const string& fName,const string& path)
 {
 	//ロード用バッファ
 	LPD3DXBUFFER		lpD3DBuffer;
 	D3DXMATERIAL		*d3dxMat;
 
-	char				str[256]="";
-	char				wstr[256]="";
-
-	strcat(str,path);
-	strcat(str,fName);
-
+	string pathfilename = path + fName;
 	//メッシュデータのロード
-	if(FAILED(D3DXLoadMeshFromX(str,D3DXMESH_SYSTEMMEM,this->dev,
-			NULL,&lpD3DBuffer,NULL,&mesh->matCount,&mesh->lpMesh)))
+	auto ret = D3DXLoadMeshFromX(pathfilename.c_str(), D3DXMESH_SYSTEMMEM, this->dev,
+		nullptr, &lpD3DBuffer, NULL, &mesh->matCount, &mesh->lpMesh);
+	if(FAILED(ret))
 	{
 		return E_FAIL;
 	}
 
-	//ファイル名の領域確保
-	mesh->file_name = new char[strlen(fName)+1];
 	//ファイル名の設置
-	strcpy(mesh->file_name,fName);
+	mesh->file_name.append(fName);
 
 	//ロード用バッファからマテリアル情報郡を取得
 	d3dxMat = (D3DXMATERIAL*)lpD3DBuffer->GetBufferPointer();
@@ -164,7 +160,8 @@ HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh, char *fName,char *path)
 	for(DWORD i=0;i<mesh->matCount;i++)
 	{
 		//マテリアル情報の取得
-		mesh->pMat[i]=d3dxMat[i].MatD3D;
+		mesh->pMat[i] = d3dxMat[i].MatD3D;
+		mesh->pMat[i].Ambient = mesh->pMat[i].Diffuse;
 		//テクスチャ情報の初期化
 		mesh->pTex[i] = NULL;
 		//ファイル名を取得
@@ -172,7 +169,7 @@ HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh, char *fName,char *path)
 		//マテリアル情報に名前の情報が存在する場合、テクスチャ情報を取得
 		if(d3dxMat[i].pTextureFilename!=NULL)
 		{
-			mesh->pTex[i] = this->t_manager->LoadTextureFromFile(tex_name,path);
+			mesh->pTex[i] = this->t_manager->LoadTextureFile(tex_name,path);
 		}
 	}
 
@@ -182,18 +179,16 @@ HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh, char *fName,char *path)
 	return S_OK;
 }
 //Xファイルからの３Ｄモデルデータをロード　　（詳細版、アニメーション制御可能）
-HRESULT MeshManager::LoadAnimeMeshFromX(DxAnimeMesh *mesh,char *fName,char *path)
+HRESULT MeshManager::LoadAnimeMeshFromX(DxAnimeMesh *mesh,const string& fName,const string& path)
 {
 	//読み込み用アニメーションコントローラ
 	LPD3DXANIMATIONCONTROLLER pAnimControllerTmp = NULL;
-	char str[256]="";
 
-	strcat(str,path);
-	strcat(str,fName);
+	string str = path + fName;
 
 	//Xファイルからフレーム階層とアニメーション情報をロード
-	if(FAILED(D3DXLoadMeshHierarchyFromX(
-		str,
+  if(FAILED(D3DXLoadMeshHierarchyFromX(
+		str.c_str(),
 		D3DXMESH_MANAGED,
 		this->dev,
 		this->hierarchy,
@@ -204,10 +199,22 @@ HRESULT MeshManager::LoadAnimeMeshFromX(DxAnimeMesh *mesh,char *fName,char *path
 		return E_FAIL;
 	}
 
-	//ファイル名の領域確保
-	mesh->file_name = new char[strlen(fName)+1];
 	//ファイル名の設置
-	strcpy(mesh->file_name,fName);
+	mesh->file_name=fName;
+
+	if(FAILED(LoadAnimeFromX(pAnimControllerTmp,mesh,fName,path)))
+	{
+		return E_FAIL;
+	}
+	SAFE_RELEASE(pAnimControllerTmp);
+	return S_OK;
+}
+
+HRESULT MeshManager::LoadAnimeFromX(LPD3DXANIMATIONCONTROLLER &pAnimControllerTmp,DxAnimeMesh *mesh,
+																		const string& fName,const string& path)
+{
+	//読み込み用アニメーションコントローラ
+//	LPD3DXANIMATIONCONTROLLER pAnimControllerTmp = NULL;
 
 	/*アニメーションコントローラ関連*/
 	//アニメーションコントローラの設定
@@ -233,7 +240,7 @@ HRESULT MeshManager::LoadAnimeMeshFromX(DxAnimeMesh *mesh,char *fName,char *path
 		{
 		}
 		//読み込み用アニメーションコントローラの開放
-		SAFE_RELEASE(pAnimControllerTmp);
+//		SAFE_RELEASE(pAnimControllerTmp);
 
 		//トラックに全てのアニメーションセットを読み込む
 		for(unsigned i = 1; i < AnimSetsNum; i++ )
@@ -342,7 +349,7 @@ void MeshManager::ReleaseMesh(DxBaseMesh *base_mesh)
 	//マテリアル情報の領域を破棄
 	SAFE_DELETE_ARRAY(mesh->pMat);
 	//ファイル名の破棄
-	SAFE_DELETE_ARRAY(mesh->file_name);
+//	SAFE_DELETE_ARRAY(mesh->file_name);
 	//メッシュデータの開放
 	SAFE_RELEASE(mesh->lpMesh);
 
@@ -355,7 +362,7 @@ void MeshManager::ReleaseAnimeMesh(DxBaseMesh *base_mesh)
 	DxAnimeMesh *ani_mesh = (DxAnimeMesh*)base_mesh;
 
 	//ファイル名の破棄
-	SAFE_DELETE_ARRAY(ani_mesh->file_name);
+//	SAFE_DELETE_ARRAY(ani_mesh->file_name);
 
 	//アニメーションコントローラの開放
 	SAFE_RELEASE(ani_mesh->pAnimController);
@@ -373,17 +380,17 @@ void MeshManager::ReleaseAnimeMesh(DxBaseMesh *base_mesh)
 //その他の関数
 //**************************************************************************
 //登録済みメッシュデータのファイル名をチェックし重複ロードを防止する
-DxBaseMesh* MeshManager::CheckFileName(char *fName)
+DxBaseMesh* MeshManager::CheckFileName(const string& fName)
 {
-	char str1[50]="";
-	char str2[50]="";
+	string str1="";
+	string str2="";
 
-	strcpy(str1,fName);
+	str1+=fName;
 
 	for(short i=0;i<this->mesh_val;i++)
 	{
-		strcpy(str2,this->mesh_data[i]->file_name);
-		if(!strcmp(str1,str2))
+		str2+=this->mesh_data[i]->file_name;
+		if((str1 == str2))
 		{
 			return this->mesh_data[i];
 		}

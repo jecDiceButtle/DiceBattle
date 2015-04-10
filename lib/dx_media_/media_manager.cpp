@@ -5,7 +5,6 @@
 //派生型　：　なし
 //**************************************************************************
 
-
 #include "media_manager.h"
 
 //コンストラクタ
@@ -27,25 +26,25 @@ MediaManager::~MediaManager()
 //テクスチャ関連
 //**************************************************************************
 //イメージファイルからDxTextureをロード　　（簡易版）
-LPDIRECT3DTEXTURE9 MediaManager::LoadTextureFromFile(char *fName,char *path)
+LPDIRECT3DTEXTURE9 MediaManager::LoadTexture(string fName,string path)
 {
-	return this->tex_manager->LoadTextureFromFile(fName,path);
+	return this->tex_manager->LoadTextureFile(fName,path);
 }
 //イメージファイルからDxTextureをロード　　（詳細版）
-DxTexture* MediaManager::LoadTextureFromFileEx(char *fName,char *path)
+DxTexture* MediaManager::LoadTextureEx(string fName,string path)
 {
-	return this->tex_manager->LoadTextureFromFileEx(fName,path);
+	return this->tex_manager->LoadTextureFileEx(fName,path);
 }
 
 //**************************************************************************
 //**************************************************************************
 //Xファイルからの３Ｄモデルデータをロード　　（簡易版、アニメーション制御不可）
-DxMesh* MediaManager::LoadMeshFromX(char *fName,char *path)
+DxMesh* MediaManager::LoadMesh(string fName,string path)
 {
 	return this->mesh_manager->LoadMeshFromX(fName,path);
 }
 //Xファイルからの３Ｄモデルデータをロード　　（詳細版、アニメーション制御可能）
-DxAnimeMesh* MediaManager::LoadAnimeMeshFromX(char *fName,char *path)
+DxAnimeMesh* MediaManager::LoadAnimeMesh(string fName,string path)
 {
 	return this->mesh_manager->LoadAnimeMeshFromX(fName,path);
 }

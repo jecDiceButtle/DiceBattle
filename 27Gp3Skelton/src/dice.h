@@ -14,7 +14,7 @@
 namespace game
 {
 
-	class Dice : public MovableObjectt
+	class Dice : public MovableObject
 {
 	//*************************************************//
 	//@’è”

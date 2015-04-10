@@ -1,7 +1,6 @@
 #include "dice.h"
 #include "../../lib/gplib.h"
-
-
+#include "../../lib/ci_ext/DrawObj.hpp"
 
 #include "movableObject.h"
 
@@ -29,7 +28,7 @@ namespace game
 	Dice::Dice(const std::string& objectName,const int playerid,const int diceid)
 		:
 		MovableObject(
-		DrawObjf(objectName)
+		ci_ext::DrawObjf(objectName)
 		),
 		playerID_(playerid),
 		diceID_(diceid)

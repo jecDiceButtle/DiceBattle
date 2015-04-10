@@ -13,10 +13,10 @@
 typedef struct DxBaseMesh
 {
 	//ファイル名
-	char *file_name;
+	std::string file_name;
 
 	//コンストラクタ
 	DxBaseMesh();
 	//ファイル名の取得
-	virtual char* GetFileName();
+	virtual string GetFileName();
 }DxBaseMesh;

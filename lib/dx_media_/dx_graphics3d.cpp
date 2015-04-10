@@ -41,7 +41,35 @@ void Dx_Graphics3D::Setup3DEnv(Dx_Camera *camera)
 	this->device->SetTransform(D3DTS_VIEW,&camera->GetViewMat());
 	//射影行列の設定
 	this->device->SetTransform(D3DTS_PROJECTION,&camera->GetProjectionMat());
+
+
+
 }
+
+void Dx_Graphics3D::Setup3DEnv(std::shared_ptr<Dx_Camera> camera)
+{
+	//ZBAFA
+	this->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+	this->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	//CULLMODE
+	this->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	//LIGHT
+	this->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	this->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+
+	//カメラの制御
+	camera->Step();
+
+	//ビュー行列の設定
+	this->device->SetTransform(D3DTS_VIEW, &camera->GetViewMat());
+	//射影行列の設定
+	this->device->SetTransform(D3DTS_PROJECTION, &camera->GetProjectionMat());
+
+
+
+}
+
 //３Ｄセットアップ　　（行列直接指定型）
 void Dx_Graphics3D::Setup3DEnv(D3DXMATRIX view,D3DXMATRIX projection)
 {
@@ -49,7 +77,7 @@ void Dx_Graphics3D::Setup3DEnv(D3DXMATRIX view,D3DXMATRIX projection)
 	this->SetRenderState(D3DRS_ZENABLE,D3DZB_TRUE);
 	this->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);
 	//CULLMODE
-	this->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
+	this->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	//LIGHT
 	this->SetRenderState(D3DRS_LIGHTING,TRUE);
 
@@ -200,7 +228,7 @@ void Dx_Graphics3D::DrawSubset(LPD3DXMESH lpMesh,DWORD AttribId,D3DMATERIAL9 *pM
 	this->device->SetMaterial(pMat);
 	//デバイスのステージにテクスチャを割り当てる
 	this->device->SetTexture(0,pTex);
-
+//	this->device->SetFVF();
 	//メッシュサブセットの属性IDを指定して描画
 	lpMesh->DrawSubset(AttribId);
 }

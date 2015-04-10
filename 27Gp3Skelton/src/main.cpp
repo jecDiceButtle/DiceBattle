@@ -1,4 +1,5 @@
 #include "../../lib/ci_ext/object.hpp"
+#include "../../lib/ci_ext/counter.hpp"
 #include "../../lib/ci_ext/Console.hpp"
 #include <iostream>
 #include <Windows.h>
@@ -9,16 +10,10 @@
 #include"lib_WindowDx.hpp"
 #include <string>
 
-
 #include "../../lib/dx_media_/dx_graphics3d.h"
 #include "../../lib/dx_media_/dx3dmeshmanager.h"
 
-//3Dカメラ
-Dx_Camera *dxCamera = nullptr;
-//メッシュ全体管理クラス
-DX3DMESHMANAGER *meshManage = nullptr;
-
-
+#include "root.hpp"
 
 
 namespace gplib{
@@ -33,6 +28,9 @@ namespace gplib{
 }
 int ci_ext::Object::uid_ = 0;
 int ci_ext::Window::uid_ = 0;
+std::shared_ptr<Dx_Camera> dxCamera = nullptr;
+std::shared_ptr<DX3DMESHMANAGER> meshManage = nullptr;
+
 
 //継承、内包でのゲーム実装例 コメントアウトで内包例
 //内包例ではwindowを複数作る際のサンプル
@@ -40,8 +38,6 @@ int ci_ext::Window::uid_ = 0;
 //#define EXTENDS
 
 #ifndef EXTENDS
-
-#include "root.hpp"
 
 //ゲームクラス
 //このクラスは、ルートの管理のみ行い、ゲーム特有の処理はルートオブジェクトで行う
@@ -110,50 +106,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPreInst, LPSTR lpszCmdLine, i
     Game game;//コンストラクタでアプリ駆動Game()でもOK
   }
   return 0;
-}
-
-
-void gplib::system::OnCreate()
-{
-	////////
-	//debug
-	////////
-
-
-
-
-	gplib::camera::InitCamera(gplib::system::WINW / 2, gplib::system::WINH / 2, 0, 0);
-
-	//3Dカメラ設定　カメラ位置はデフォルト　注視点は0,0,0
-	float eye_pos_x = 0.0f;
-	float eye_pos_y = 0.0f;
-	float eye_pos_z = -50.0f;
-	float eye_look_x = 0.0f;
-	float eye_look_y = -10.0f;
-	float eye_look_z = -30.0f;
-
-	/////////////////////////////////////////////////////////////////////////　　
-	//?)このカメラは何に使うんだ？
-	//////////////////////////////////////////////////////////////////////////
-	dxCamera = new Dx_Camera();
-	dxCamera->SetEyePos(DxVec3(eye_pos_x, eye_pos_y, eye_pos_z));
-	dxCamera->SetLookPos(eye_look_x, eye_look_y, eye_look_z);
-
-	/////////////////////////////////////////////////////////////////////////　　
-	//?)meshManageとは一体
-	//////////////////////////////////////////////////////////////////////////
-	//ステージ３Dオブジェクト
-	meshManage = new DX3DMESHMANAGER();
-	//カメラからビュー行列と射影行列を設定
-	meshManage->getG()->Setup3DEnv(dxCamera);
-
-	meshManage->loadMesh("dice", "dice.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
-}
-
-void gplib::system::OnDestroy(){
-	SAFE_DELETE(meshManage);
-	//カメラの破棄
-	SAFE_DELETE(dxCamera);
 }
 
 

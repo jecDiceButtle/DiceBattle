@@ -72,6 +72,8 @@ class Dx_Camera
 		//回転関連の初期化
 		void InitRotation();
 
+		//クォータニオンによるカメラの回転角度
+		D3DXQUATERNION m_Rotation;
 	public:
 		//コンストラクタ
 		Dx_Camera(float lx=0.0f,float ly=0.0f,float lz=0.0f);
@@ -128,4 +130,11 @@ class Dx_Camera
 
 		//射影タイプの設定
 		void	SetMatrixType(MatrixType type);
+
+		//クォータニオンを利用した回転
+		void RotationQuaternion(const float inX, const float inY, const float inZ);
+
+		//視点を中心に回転
+		void LookAtRotation(const D3DXVECTOR3& inAt, const D3DXVECTOR2& inRotation);
+
 };

@@ -32,11 +32,18 @@ void Dx_Camera::Init()
 //制御関数
 void Dx_Camera::Step()
 {
+	// 位置ベクトルの設定
+	view_mat._41 = -::D3DXVec3Dot(&D3DXVECTOR3(view_mat._11, view_mat._12, view_mat._13), &eye_pos);
+	view_mat._42 = -::D3DXVec3Dot(&D3DXVECTOR3(view_mat._21, view_mat._22, view_mat._23), &eye_pos);
+	view_mat._43 = -::D3DXVec3Dot(&D3DXVECTOR3(view_mat._31, view_mat._32, view_mat._33), &eye_pos);
+
 	/*回転関連*/
 	this->Rotation();
 
 	/*カメラ本体設定*/
 	this->SetupMatrix();
+
+
 }
 
 //
@@ -49,12 +56,13 @@ void Dx_Camera::SetupMatrix()
 	switch(this->mat_type)
 	{
 		//遠近射影行列を使用する場合
-		case this->DX_PERS_MAT:
+	case MatrixType::DX_PERS_MAT:
 			//遠近射影行列の設定
-			D3DXMatrixPerspectiveFovLH(&this->projection_mat,D3DXToRadian(60.0f),1280/720,0.1f,20000.0f);
-			break;
+		D3DXMatrixPerspectiveFovLH(&this->projection_mat, D3DXToRadian(45.0f), float(gplib::system::WINW ) / float(gplib::system::WINH ), 0.1f, 50000.0f);
+//		D3DXMatrixPerspectiveFovLH(&this->projection_mat, D3DXToRadian(45.0f), 1920.0f / 1080.0f, 0.1f, 50000.0f);
+		break;
 		//正射影行列を使用する場合
-		case this->DX_ORTHO_MAT:
+	case MatrixType::DX_ORTHO_MAT:
 			//正射影行列の設定
 			D3DXMatrixOrthoLH(&this->projection_mat,8,8,0,20);
 			break;
@@ -320,3 +328,44 @@ void	Dx_Camera::SetMatrixType(MatrixType type)
 {
 	this->mat_type = type;
 }
+
+void Dx_Camera::RotationQuaternion(const float inX, const float inY, const float inZ)
+{
+	// 角軸のクォータニオンを求める
+	D3DXQUATERNION rot_x, rot_y, rot_z;
+	::D3DXQuaternionRotationAxis(&rot_x, &D3DXVECTOR3(1.0f, 0.0f, 0.0f), D3DXToRadian(inX));
+	::D3DXQuaternionRotationAxis(&rot_y, &D3DXVECTOR3(0.0f, 1.0f, 0.0f), D3DXToRadian(-inY));
+	::D3DXQuaternionRotationAxis(&rot_z, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), D3DXToRadian(-inZ));
+	// 回転
+	m_Rotation *= rot_x * rot_y * rot_z;
+	// ビュー行列の軸の設定
+	::D3DXMatrixRotationQuaternion(&view_mat, &m_Rotation);
+}
+
+void Dx_Camera::LookAtRotation(const D3DXVECTOR3& inAt, const D3DXVECTOR2& inRotation)
+{
+	// 注視点を原点としたときの視点の座標を求め、ビュー行列をワールド行列にする
+	view_mat._41 = eye_pos.x - inAt.x;
+	view_mat._42 = eye_pos.y - inAt.y;
+	view_mat._43 = eye_pos.z - inAt.z;
+	// 角軸の回転行列を作成する
+	D3DXMATRIX rot_x, rot_y;
+	::D3DXMatrixRotationX(&rot_x, D3DXToRadian(inRotation.x));
+	::D3DXMatrixRotationY(&rot_y, D3DXToRadian(inRotation.y));
+	// カメラを回転させる
+	view_mat *= rot_y * rot_x;
+	// 視点を戻す
+	eye_pos = D3DXVECTOR3(view_mat._41, view_mat._42, view_mat._43) + inAt;
+	// クォータニオンの保存
+	::D3DXQuaternionRotationMatrix(&m_Rotation, &view_mat);
+}
+//
+//void Dx_Camera::Step()
+//{
+//	// 位置ベクトルの設定
+//	view_mat._41 = -::D3DXVec3Dot(&D3DXVECTOR3(view_mat._11, view_mat._12, view_mat._13), &eye_pos);
+//	view_mat._42 = -::D3DXVec3Dot(&D3DXVECTOR3(view_mat._21, view_mat._22, view_mat._23), &eye_pos);
+//	view_mat._43 = -::D3DXVec3Dot(&D3DXVECTOR3(view_mat._31, view_mat._32, view_mat._33), &eye_pos);
+//}
+
+

@@ -17,7 +17,7 @@ typedef struct DxTexture
 	//テクスチャ情報
 	D3DXIMAGE_INFO info;
 	//ファイル名
-	char* file_name;
+	std::string file_name;
 
 	//コンストラクタ
 	DxTexture();

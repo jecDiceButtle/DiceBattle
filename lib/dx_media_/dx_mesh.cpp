@@ -17,7 +17,7 @@ DxMesh::DxMesh() : DxBaseMesh()
 	this->pTex = NULL;
 }
 //ƒtƒ@ƒCƒ‹–¼‚ÌŽæ“¾
-char* DxMesh::GetFileName()
+string DxMesh::GetFileName()
 {
 	return this->file_name;
 }

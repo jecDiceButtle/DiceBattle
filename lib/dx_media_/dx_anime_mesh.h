@@ -16,6 +16,9 @@
 
 #include "dx_anime_cont_auxiliary.h"
 
+#include <string>
+using namespace std;
+
 //派生フレーム構造体
 typedef struct DxFrame: public D3DXFRAME
 {
@@ -60,7 +63,7 @@ class Dx_Hierarchy : public ID3DXAllocateHierarchy
 		//独自フレームの生成
 		STDMETHOD(CreateFrame)(THIS_ LPCSTR , LPD3DXFRAME *);
 		//独自メッシュコンテナの生成
-		STDMETHOD(CreateMeshContainer)(THIS_ LPCTSTR ,CONST D3DXMESHDATA* ,CONST D3DXMATERIAL* , 
+		STDMETHOD(CreateMeshContainer)(THIS_ LPCSTR ,CONST D3DXMESHDATA* ,CONST D3DXMATERIAL* , 
 			CONST D3DXEFFECTINSTANCE* , DWORD , CONST DWORD *, LPD3DXSKININFO , LPD3DXMESHCONTAINER *);
 		//ボーンの生成
 		HRESULT CreateBone(DxMeshContainer *pMeshContainer,LPDIRECT3DDEVICE9 lpD3DDev);
@@ -82,5 +85,5 @@ typedef struct DxAnimeMesh : public DxBaseMesh
 	//コンストラクタ
 	DxAnimeMesh();
 	//ファイル名の取得
-	char* GetFileName();
+	string GetFileName();
 }DxAnimeMesh;

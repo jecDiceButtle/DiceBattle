@@ -7,8 +7,13 @@
 #include "player.h"
 #include "dicemanager.h"
 #include "board.h"
+#include "root.hpp"
 
 #include <stdio.h>
+
+extern std::shared_ptr<DX3DMESHMANAGER> meshManage;
+extern std::shared_ptr<Dx_Camera> dxCamera;
+
 
 namespace game
 {
@@ -97,14 +102,32 @@ namespace game
 		p_dm = insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
 		p_board = insertAsChild(new Board("board"));
 
+		gplib::graph::Draw_LoadObject("logo", "res/gra/logo.png");
 		
 	}
 	void CSceneStage::render()
 	{
+		dxCamera->SetEyePos(DxVec3(0.f, 0.f, -250.f));
+		dxCamera->SetLookPos(0.f, 0.f, 0.f);
+
+		meshManage->getG()->Setup3DEnv(dxCamera);
+
+		meshManage->drawMesh(DxVec3(0, 0, 0), "dice", DxVec3(0.f, 0.f, 0.f), ARGB(255, 255, 255, 255), DxVec3(1, 1, 1));
 
 #if _DEBUG
-		gplib::font::Draw_FontTextNC(0, 0, 0.f, "ÉQÅ[ÉÄâÊñ ", ARGB(255, 255, 255, 255), 0);
-		
+
+		gplib::graph::Draw_2DClear();
+		gplib::font::Draw_FontText(50, 50, 0.f, "ÉQÅ[ÉÄâÊñ ", ARGB(255, 255, 255, 255), 0);
+		gplib::graph::Draw_Graphics(
+			0,0, 0.5f,
+			"logo",
+			0, 0,
+			700, 700,
+			0,
+			0.1f, 0.1f
+			);
+		gplib::graph::Draw_2DRefresh();
+
 		switch (turn_)
 		{
 		case game::CSceneStage::TURN::PLAYER1:

@@ -136,6 +136,24 @@
     <ClInclude Include="src\dicemanager.h">
       <Filter>ソース ファイル\game\dicemanager</Filter>
     </ClInclude>
+    <ClInclude Include="src\movableObject.h">
+      <Filter>ソース ファイル\MovableObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_graphics3d.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_mesh.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_piece_texture.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_texture.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\texture_manager.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
     <ClInclude Include="..\lib\dx_media_\dx.h">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClInclude>
@@ -154,18 +172,6 @@
     <ClInclude Include="..\lib\dx_media_\dx_font.h">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\lib\dx_media_\dx_graphics3d.h">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\dx_media_\dx_mesh.h">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\dx_media_\dx_piece_texture.h">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\dx_media_\dx_texture.h">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClInclude>
     <ClInclude Include="..\lib\dx_media_\dx3dmeshmanager.h">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClInclude>
@@ -174,12 +180,6 @@
     </ClInclude>
     <ClInclude Include="..\lib\dx_media_\mesh_manager.h">
       <Filter>ソース ファイル\lib\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="..\lib\dx_media_\texture_manager.h">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="src\movableObject.h">
-      <Filter>ソース ファイル\MovableObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +213,24 @@
     <ClCompile Include="src\dicemanager.cpp">
       <Filter>ソース ファイル\game\dicemanager</Filter>
     </ClCompile>
+    <ClCompile Include="src\movableObject.cpp">
+      <Filter>ソース ファイル\MovableObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_graphics3d.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_mesh.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_piece_texture.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_texture.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\texture_manager.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
     <ClCompile Include="..\lib\dx_media_\dx_anime_cont_auxiliary.cpp">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClCompile>
@@ -228,18 +246,6 @@
     <ClCompile Include="..\lib\dx_media_\dx_font.cpp">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\lib\dx_media_\dx_graphics3d.cpp">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\dx_media_\dx_mesh.cpp">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\dx_media_\dx_piece_texture.cpp">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\dx_media_\dx_texture.cpp">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClCompile>
     <ClCompile Include="..\lib\dx_media_\dx3dmeshmanager.cpp">
       <Filter>ソース ファイル\lib\3d</Filter>
     </ClCompile>
@@ -248,12 +254,6 @@
     </ClCompile>
     <ClCompile Include="..\lib\dx_media_\mesh_manager.cpp">
       <Filter>ソース ファイル\lib\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lib\dx_media_\texture_manager.cpp">
-      <Filter>ソース ファイル\lib\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="src\movableObject.cpp">
-      <Filter>ソース ファイル\MovableObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

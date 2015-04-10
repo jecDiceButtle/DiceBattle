@@ -11,11 +11,11 @@
 //コンストラクタ
 DxBaseMesh::DxBaseMesh()
 {
-	this->file_name = NULL;
+	this->file_name = "";
 }
 
 //ファイル名の取得
-char* DxBaseMesh::GetFileName()
+string DxBaseMesh::GetFileName()
 {
-	return NULL;
+	return nullptr;
 }

@@ -6,6 +6,7 @@
 //**************************************************************************
 
 #pragma once
+
 #include "dx.h"
 
 #include "dx_base_mesh.h"
@@ -38,22 +39,25 @@ class MeshManager
 
 		/*メッシュデータ関連*/
 		//Xファイルからの３Ｄモデルデータをロード　　（簡易版、アニメーション制御不可）
-		DxMesh* LoadMeshFromX(char *fName,char *path);
+		DxMesh* LoadMeshFromX(const string& fName,const string& path);
 
 		/*アニメーションメッシュデータ関連*/
 		//Xファイルからの３Ｄモデルデータをロード　　（詳細版、アニメーション制御可能）
-		DxAnimeMesh* LoadAnimeMeshFromX(char *fName,char *path);
+		DxAnimeMesh* LoadAnimeMeshFromX(const string& fName,const string& path);
 
 	private:
 		/*メッシュデータ関連*/
 		//Xファイルからの３Ｄモデルデータをロード　　（簡易版、アニメーション制御不可）
-		HRESULT LoadMeshFromX(DxMesh *mesh,char *fName,char *path);
+		HRESULT LoadMeshFromX(DxMesh *mesh,const string& fName,const string& path);
 		//DxMeshの内部データの破棄および開放
 		void ReleaseMesh(DxBaseMesh *base_mesh);
 
 		/*アニメーションメッシュデータ関連*/
 		//Xファイルからの３Ｄモデルデータをロード　　（詳細版、アニメーション制御可能）
-		HRESULT LoadAnimeMeshFromX(DxAnimeMesh *mesh,char *fName,char *path);
+		HRESULT LoadAnimeMeshFromX(DxAnimeMesh *mesh,const string& fName,const string& path);
+		//アニメのみ別に読み込み作成
+		HRESULT LoadAnimeFromX(LPD3DXANIMATIONCONTROLLER &pAnimControllerTmp,DxAnimeMesh *mesh,const string& fName,const string& path);
+
 		//DxAnimeMeshの内部データの破棄および開放
 		void ReleaseAnimeMesh(DxBaseMesh *base_mesh);
 
@@ -64,5 +68,5 @@ class MeshManager
 		HRESULT SetupBoneFromMeshContainer(LPD3DXFRAME pFrameRoot,LPD3DXMESHCONTAINER pMeshCont);
 
 		//登録済みメッシュデータのファイル名をチェックし重複ロードを防止する
-		DxBaseMesh* CheckFileName(char *fName);
+		DxBaseMesh* CheckFileName(const string& fName);
 };

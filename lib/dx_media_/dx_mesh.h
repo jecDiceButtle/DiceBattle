@@ -24,5 +24,5 @@ typedef struct DxMesh : public DxBaseMesh
 	//コンストラクタ
 	DxMesh();
 	//ファイル名の取得
-	char* GetFileName();
+	string GetFileName();
 }DxMesh;

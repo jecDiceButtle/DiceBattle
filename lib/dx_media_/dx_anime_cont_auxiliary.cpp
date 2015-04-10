@@ -72,7 +72,7 @@ void Dx_AnimeAuxiliary::ChangeAnim(int ID)
 {
 	D3DXTRACK_DESC desc;
 	//一度トラックをクリアする
-	for(int i = 0 ; i < this->max_num_track ; i ++)
+	for(int i = 0 ; i <= this->max_num_track ; i ++)
 	{	
 		this->lpAnimCont->GetTrackDesc(i,&desc);
 		desc.Enable = FALSE;
@@ -89,6 +89,7 @@ void Dx_AnimeAuxiliary::ChangeAnim(int ID)
 	desc.Weight = 10;
 	this->lpAnimCont->SetTrackDesc(ID,&desc);
 	this->lpAnimCont->AdvanceTime(0.0f,NULL);
+
 }
 
 //指定のアニメーションの終了を調べる

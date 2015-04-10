@@ -14,5 +14,5 @@ DxTexture::DxTexture()
 	//テクスチャデータの初期化
 	this->lpTex = NULL;
 	//ファイル名の初期化
-	this->file_name = NULL;
+	this->file_name = "";
 }

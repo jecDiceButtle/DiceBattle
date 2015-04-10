@@ -2,10 +2,19 @@
 #include "../../lib/ci_ext/object.hpp"
 #include "../../lib/ci_ext/vec3.hpp"
 
+
+
+#include "../../lib/dx_media_/dx_graphics3d.h"
+#include "../../lib/dx_media_/dx3dmeshmanager.h"
+#include "../../lib/ci_ext/DrawObj.hpp"
+#include "movableObject.h"
+	
+
+
 namespace game
 {
 
-class Dice : public ci_ext::Object
+	class Dice : public MovableObjectt
 {
 	//*************************************************//
 	//Å@íËêî

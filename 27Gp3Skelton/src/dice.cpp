@@ -1,6 +1,20 @@
 #include "dice.h"
 #include "../../lib/gplib.h"
 
+
+
+#include "movableObject.h"
+
+//3Dカメラ
+extern Dx_Camera *dxCamera;
+extern LPDIRECT3DDEVICE9 pD3DDevice;
+//メッシュ全体管理クラス
+extern DX3DMESHMANAGER *meshManage;
+extern Dx_Camera *dxCamera;
+
+
+
+
 namespace game
 {
 	//**************************************************************************************//
@@ -14,7 +28,9 @@ namespace game
 
 	Dice::Dice(const std::string& objectName,const int playerid,const int diceid)
 		:
-		Object(objectName),
+		MovableObject(
+		DrawObjf(objectName)
+		),
 		playerID_(playerid),
 		diceID_(diceid)
 	{

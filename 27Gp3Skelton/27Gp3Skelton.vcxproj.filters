@@ -44,8 +44,14 @@
     <Filter Include="ソース ファイル\game\board">
       <UniqueIdentifier>{681166b5-a5c2-4c61-9aea-c03f2f6beeb4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\lib\3d">
+      <UniqueIdentifier>{256d9829-92b6-445a-9e87-68d5ff9a54bc}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ソース ファイル\game\dicemanager">
       <UniqueIdentifier>{95fa580c-c062-4aef-a609-d286fe4af899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\MovableObject">
+      <UniqueIdentifier>{1400cf1e-0af8-447f-bf4d-f976e85b8a4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,51 @@
     <ClInclude Include="src\dicemanager.h">
       <Filter>ソース ファイル\game\dicemanager</Filter>
     </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_anime_cont_auxiliary.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_anime_mesh.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_base_mesh.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_camera.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_font.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_graphics3d.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_mesh.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_piece_texture.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_texture.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx3dmeshmanager.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\media_manager.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\mesh_manager.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\texture_manager.h">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.h">
+      <Filter>ソース ファイル\MovableObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -161,6 +212,48 @@
     </ClCompile>
     <ClCompile Include="src\dicemanager.cpp">
       <Filter>ソース ファイル\game\dicemanager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_anime_cont_auxiliary.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_anime_mesh.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_base_mesh.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_camera.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_font.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_graphics3d.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_mesh.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_piece_texture.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_texture.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx3dmeshmanager.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\media_manager.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\mesh_manager.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\texture_manager.cpp">
+      <Filter>ソース ファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Desktop\DiceButtle\27Gp3Skelton\src\movableObject.cpp">
+      <Filter>ソース ファイル\MovableObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

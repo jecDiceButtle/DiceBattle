@@ -73,7 +73,7 @@ DxMesh* MeshManager::LoadMeshFromX(const string& fName,const string& path)
 	}
 
 	//オブジェクトの生成
-	create = new DxMesh();
+	create = new DxMesh;
 	//生成用オブジェクトにパス及びファイル名からロード
 	if(FAILED(this->LoadMeshFromX(create,fName,path)))
 	{
@@ -146,7 +146,7 @@ HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh,const string& fName,const string
 	}
 
 	//ファイル名の設置
-	mesh->file_name.append(fName);
+	mesh->file_name+=fName;
 
 	//ロード用バッファからマテリアル情報郡を取得
 	d3dxMat = (D3DXMATERIAL*)lpD3DBuffer->GetBufferPointer();
@@ -169,7 +169,7 @@ HRESULT MeshManager::LoadMeshFromX(DxMesh *mesh,const string& fName,const string
 		//マテリアル情報に名前の情報が存在する場合、テクスチャ情報を取得
 		if(d3dxMat[i].pTextureFilename!=NULL)
 		{
-			mesh->pTex[i] = this->t_manager->LoadTextureFile(tex_name,path);
+			mesh->pTex[i] = this->t_manager->LoadTextureFromFile(tex_name,path);
 		}
 	}
 

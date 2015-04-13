@@ -29,15 +29,15 @@ class TextureManager
 		~TextureManager();
 
 		//イメージファイルからDxTextureをロード　　（簡易版）
-		LPDIRECT3DTEXTURE9 LoadTextureFile(const string& fName,const string& path);
+		LPDIRECT3DTEXTURE9 LoadTextureFromFile(const string& fName,const string& path);
 		//イメージファイルからDxTextureをロード　　（詳細版）
-		DxTexture* LoadTextureFileEx(const string& fName,const string& path);
+		DxTexture* LoadTextureFromFileEx(const string& fName,const string& path);
 
 	private:
 		//イメージファイルからDxTextureをロード　　（簡易版）
-		HRESULT LoadTextureFile(DxTexture* tex,const string& fName,const string& path);
+		HRESULT LoadTextureFromFile(DxTexture* tex,const string& fName,const string& path);
 		//イメージファイルからDxTextureをロード　　（詳細版）
-		HRESULT LoadTextureFileEx(DxTexture* tex,const string& fName,const string& path);
+		HRESULT LoadTextureFromFileEx(DxTexture* tex,const string& fName,const string& path);
 
 		//テクスチャデータの開放
 		void ReleaseTexture(DxTexture *tex);

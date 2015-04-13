@@ -67,8 +67,6 @@
 #include <vector>
 #include <map>
 
-#include "ci_ext\vec3.hpp"
-
 
 //**************************************************************************************//
 //マクロ　変数　宣言
@@ -232,6 +230,9 @@
 		  void OnDestroy();
 		  void InitDx();
 		  void DelDx();
+      void GetIniFileDataStr(std::string section, std::string keyname, std::string &buff, std::string filename);
+      int  GetIniFileDataInt(std::string section, std::string keyname, std::string filename);
+
 	  }
 	  namespace camera{
 		  //カメラ制御
@@ -317,15 +318,6 @@
 			  u_char g = 255,
 			  u_char b = 255
 			  );
-		  void Draw_Graphics(
-			  ci_ext::Vec3f &pos,
-			  const std::string& resname,
-			  ci_ext::Vec3i &src, ci_ext::Vec3i &size,
-			  float	degree,
-			  ci_ext::Vec3i& scale,
-			  u_char a, u_char r, u_char g, u_char b
-			  );
-
 		  void Draw_GraphicsLeftTop(
 			  float x, float y, float z,
 			  const std::string& resname,
@@ -605,19 +597,8 @@
 		  void  Time_StartTimerCount();
 		  bool  Time_CheckTimer();
 	  }
-
-	  namespace file{
-		  //ファイル読み込み関連
-		  void Sys_GetIniFileDataStr(const std::string &section, const std::string &keyname, std::string &buff, const std::string &filename);
-		  int Sys_GetIniFileDataInt(const std::string &section, const std::string &keyname, const std::string &filename);
-
-	  }
-
 	  ////拡張機能を使わない場合はコメントアウトすること
 	  //#include "ci_ext/ci_ext.hpp"
-
-
-
   }
 
 #ifdef CI_EXT_USEOGG

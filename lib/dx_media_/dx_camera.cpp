@@ -58,7 +58,7 @@ void Dx_Camera::SetupMatrix()
 		//遠近射影行列を使用する場合
 	case MatrixType::DX_PERS_MAT:
 			//遠近射影行列の設定
-		D3DXMatrixPerspectiveFovLH(&this->projection_mat, D3DXToRadian(45.0f), float(gplib::system::WINW ) / float(gplib::system::WINH ), 0.1f, 50000.0f);
+		D3DXMatrixPerspectiveFovLH(&this->projection_mat, D3DXToRadian(32.0f), float(gplib::system::WINW ) / float(gplib::system::WINH ), 0.1f, 50000.0f);
 //		D3DXMatrixPerspectiveFovLH(&this->projection_mat, D3DXToRadian(45.0f), 1920.0f / 1080.0f, 0.1f, 50000.0f);
 		break;
 		//正射影行列を使用する場合

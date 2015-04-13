@@ -45,31 +45,6 @@ void Dx_Graphics3D::Setup3DEnv(Dx_Camera *camera)
 
 
 }
-
-void Dx_Graphics3D::Setup3DEnv(std::shared_ptr<Dx_Camera> camera)
-{
-	//ZBAFA
-	this->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
-	this->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-	//CULLMODE
-	this->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	//LIGHT
-	this->SetRenderState(D3DRS_LIGHTING, TRUE);
-
-	this->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
-
-	//カメラの制御
-	camera->Step();
-
-	//ビュー行列の設定
-	this->device->SetTransform(D3DTS_VIEW, &camera->GetViewMat());
-	//射影行列の設定
-	this->device->SetTransform(D3DTS_PROJECTION, &camera->GetProjectionMat());
-
-
-
-}
-
 //３Ｄセットアップ　　（行列直接指定型）
 void Dx_Graphics3D::Setup3DEnv(D3DXMATRIX view,D3DXMATRIX projection)
 {

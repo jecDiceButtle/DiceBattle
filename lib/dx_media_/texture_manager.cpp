@@ -35,7 +35,7 @@ TextureManager::~TextureManager()
 //外部参照用ロード関数
 //**************************************************************************
 //イメージファイルからDxTextureをロード　　（簡易版）
-LPDIRECT3DTEXTURE9 TextureManager::LoadTextureFile(const string& fName,const string& path)
+LPDIRECT3DTEXTURE9 TextureManager::LoadTextureFromFile(const string& fName,const string& path)
 {
 	//生成用オブジェクト
 	DxTexture *create=NULL;
@@ -60,9 +60,9 @@ LPDIRECT3DTEXTURE9 TextureManager::LoadTextureFile(const string& fName,const str
 	}
 
 	//オブジェクトの生成
-	create = new DxTexture();
+	create = new DxTexture;
 	//生成用オブジェクトにパス及びファイル名からロード
-	if(FAILED(this->LoadTextureFile(create,s_f_name,path)))
+	if(FAILED(this->LoadTextureFromFile(create,s_f_name,path)))
 	{
 		//ロードに失敗した場合、領域確保した情報を破棄
 		SAFE_DELETE(create);
@@ -78,7 +78,7 @@ LPDIRECT3DTEXTURE9 TextureManager::LoadTextureFile(const string& fName,const str
 	return create->lpTex;
 }
 //イメージファイルからDxTextureをロード　　（詳細版）
-DxTexture* TextureManager::LoadTextureFileEx(const string& fName,const string& path)
+DxTexture* TextureManager::LoadTextureFromFileEx(const string& fName,const string& path)
 {
 	//生成用オブジェクト
 	DxTexture *create=NULL;
@@ -106,7 +106,7 @@ DxTexture* TextureManager::LoadTextureFileEx(const string& fName,const string& p
 	//オブジェクトの生成
 	create = new DxTexture;
 	//生成用オブジェクトにパス及びファイル名からロード
-	if(FAILED(this->LoadTextureFileEx(create,s_f_name,path)))
+	if(FAILED(this->LoadTextureFromFileEx(create,s_f_name,path)))
 	{
 		//ロードに失敗した場合、領域確保した情報を破棄
 		SAFE_DELETE(create);
@@ -126,7 +126,7 @@ DxTexture* TextureManager::LoadTextureFileEx(const string& fName,const string& p
 //内部参照用ロード関数
 //**************************************************************************
 //イメージファイルからDxTextureをロード　　（簡易版）
-HRESULT TextureManager::LoadTextureFile(DxTexture* tex,const string& fName,const string& path)
+HRESULT TextureManager::LoadTextureFromFile(DxTexture* tex,const string& fName,const string& path)
 {
 	HRESULT hr=S_OK;
 	string  str = path + fName;
@@ -144,7 +144,7 @@ HRESULT TextureManager::LoadTextureFile(DxTexture* tex,const string& fName,const
   return S_OK;
 }
 //イメージファイルからDxTextureをロード　　（詳細版）
-HRESULT TextureManager::LoadTextureFileEx(DxTexture* tex,const string& fName,const string& path)
+HRESULT TextureManager::LoadTextureFromFileEx(DxTexture* tex,const string& fName,const string& path)
 {
 	HRESULT hr=S_OK;
 	string str = path + fName;

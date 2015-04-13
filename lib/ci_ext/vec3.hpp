@@ -4,6 +4,7 @@
 #include <cmath>
 #include <Windows.h>
 #include <vector>
+#include <d3dx9.h>
 #include "math.h"
 namespace ci_ext
 {
@@ -12,8 +13,8 @@ template<typename T = float>
 class Vec3
 {
   T x_, y_, z_;
-
 public:
+  operator D3DXVECTOR3() { return D3DXVECTOR3(x_, y_, z_); }
   static Vec3<T> one()
   {
     return Vec3<T>(1,1,1);
@@ -22,11 +23,10 @@ public:
   {
     return Vec3<T>(0, 0, 0);
   }
-
   void x(T x) { x_ = x; }
   void y(T y) { y_ = y; }
   void z(T z) { z_ = z; }
-  Vec3(T x = 0.0f, T y = 0.0f, T z = 1.0f) :
+  Vec3(T x = 0.0f, T y = 0.0f, T z = 0.0f) :
     x_(x),
     y_(y),
     z_(z) {}
@@ -166,18 +166,11 @@ public:
     z(z() * scale.z());
     return *this;
   }
-  Vec3<T>& scale(T scale)
-  {
-	  x(x() * scale);
-	  y(y() * scale);
-	  z(z() * scale);
-	  return *this;
-  }
   static Vec3<T>* null() { return static_cast<Vec3<T>*>(nullptr); }
 };
 
 typedef Vec3<float> Vec3f;
-typedef Vec3<double> Vec3d;
 typedef Vec3<int> Vec3i;
+typedef Vec3<double> Vec3d;
 
 }

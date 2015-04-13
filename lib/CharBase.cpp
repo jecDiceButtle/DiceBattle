@@ -3,8 +3,6 @@
 #include "gplib.h"
 #include "CharBase.h"
 #include "ci_ext/Polygon.hpp"
-#include "ci_ext/color.hpp"
-#include "ci_ext/vec3.hpp"
 
 using namespace gplib;
 
@@ -24,7 +22,7 @@ void charabase::SetAnim(Anim& anim, int max, float speed)
 
 //アニメ更新
 //この関数はnoの値を更新する。noの値は
-//CharBase.src.x()に代入する。
+//CharBase.src.xに代入する。
 //アニメの順序を変更したい場合は以下
 /*
 	StepAnim(obj.anim);
@@ -85,84 +83,72 @@ UseCharで可視状態にすること。
 void charabase::InitCharBase(CharaBase& cb, const BaseData& base,
 						float x,float y,float z,float addx,float addy,float addz,
 					  int srcX,int srcY,int srcZ,float angle, float scaleX,float scaleY,float scaleZ,
-						int alpha, int red, int green, int blue)
+						float alpha, float red, float green, float blue)
 {
 	cb.width = base.wid;
 	cb.height = base.hgt;
 	cb.resname = base.resname;
 	
-	cb.pos.set(x, y, z);
-	cb.add.set(addx, addy, addz);
-	cb.scale.set(scaleX, scaleY, scaleZ);
-	cb.angle = angle;
-	cb.src.set((float)srcX, (float)srcY, (float)srcZ);
+	cb.pos.x = x;
+	cb.pos.y = y;
+	cb.pos.z = z;
+	cb.add.x = addx;
+	cb.add.y = addy;
+	cb.add.z = addz;
+	cb.scale.x = scaleX;
+	cb.scale.y = scaleY;
+	cb.scale.z = scaleZ;
+	cb.angle = 0.f;
+	cb.src.x = (float)srcX;
+	cb.src.y = (float)srcY;
+	cb.src.z = (float)srcZ;
 	
-	cb.color.set((unsigned int)alpha, (unsigned int)red, (unsigned int)green, (unsigned int)blue);
-
+	cb.a = alpha;
+	cb.r = red;
+	cb.g = green;
+	cb.b = blue;
+	
 	cb.show = false;
 }
 
 void charabase::InitCharBase(CharaBase& cb, float x, float y, float z, float addx, float addy, float addz,
 					const std::string& resname, int srcX, int srcY, int srcZ, int w, int h,
 					float angle, float scaleX,float scaleY,float scaleZ,
-					int alpha, int red, int green, int blue)
+					float alpha, float red, float green, float blue)
 {
-	cb.pos.set(x, y, z);
-	cb.add.set(addx, addy, addz);
-	cb.scale.set(scaleX, scaleY, scaleZ);
-	cb.src.set((float)srcX, (float)srcY, (float)srcZ);
-
+	cb.pos.x = x;
+	cb.pos.y = y;
+	cb.pos.z = z;
+	cb.add.x = addx;
+	cb.add.y = addy;
+	cb.add.z = addz;
+	cb.scale.x = scaleX;
+	cb.scale.y = scaleY;
+	cb.scale.z = scaleZ;
+	cb.src.x = (float)srcX;
+	cb.src.y = (float)srcY;
+	cb.src.z = (float)srcZ;
 	cb.resname = resname;
 	cb.width = w;
 	cb.height = h;
 	cb.angle = angle;
-
-	cb.color.set((unsigned int)alpha, (unsigned int)red, (unsigned int)green, (unsigned int)blue);
-
+	cb.a = alpha;
+	cb.r = red;
+	cb.g = green;
+	cb.b = blue;
 	cb.show = false;
 
 }
-
-void charabase::InitCharBase(CharaBase& cb, const ci_ext::Vec3f& pos, const ci_ext::Vec3f& add,
-	const std::string& resname, const ci_ext::Vec3f& src, int w, int h,
-	float angle, const ci_ext::Vec3f& scale,
-	int alpha, int red ,int green, int blue)
-{
-	cb.pos = pos;
-	cb.add = add;
-	cb.scale = scale;
-	cb.src = src;
-
-	cb.resname = resname;
-	cb.width = w;
-	cb.height = h;
-	cb.angle = angle;
-
-	cb.color.set((unsigned int)alpha, (unsigned int)red, (unsigned int)green, (unsigned int)blue);
-
-	cb.show = false;
-
-}
-
-//------------------------------------------------------
-//CharBaseコンストラクタ
-
-charabase::CharaBase::CharaBase()
-:
-color(255)
-{
-}
-
 
 //------------------------------------------------------
 //CharBase初期化処理
 //すべて０にする。
-
 void charabase::InitCharBase(CharaBase& cb)
 {
 	CharaBase zeroCharBase = {};
 	cb = zeroCharBase;
 }
+
 
 //----------------------
 //利用チェック
@@ -175,7 +161,9 @@ bool charabase::CheckUseChar(const CharaBase& cb)
 //汎用移動
 void charabase::MoveChar(CharaBase& cb)
 {
-	cb.pos.offset(cb.add);
+	cb.pos.x += cb.add.x;
+	cb.pos.y += cb.add.y;
+	cb.pos.z += cb.add.z;
 }
 
 //----------------------
@@ -199,8 +187,8 @@ void charabase::UseChar(CharaBase& cb)
 //endx,endy : 右下点からのオフセット値、値分右下から減算される
 void charabase::MakeRectLeftTop(RECT &rt, const CharaBase& cb, int startx, int starty, int endx, int endy)
 {
-	SetRect(&rt, (int)cb.pos.x()+startx, (int)cb.pos.y() + starty,
-				(int)cb.pos.x()+cb.width - endx,(int)cb.pos.y()+cb.height - endy);
+	SetRect(&rt, (int)cb.pos.x+startx, (int)cb.pos.y + starty,
+				(int)cb.pos.x+cb.width - endx,(int)cb.pos.y+cb.height - endy);
 }
 
 //----------------------
@@ -210,8 +198,8 @@ void charabase::MakeRectLeftTop(RECT &rt, const CharaBase& cb, int startx, int s
 //endx,endy : 右下点からのオフセット値、値分右下から減算される
 void charabase::MakeRect(RECT &rt, const CharaBase& cb, int startx, int starty, int endx, int endy)
 {
-	SetRect(&rt, (int)cb.pos.x() - cb.width / 2 + startx, (int)cb.pos.y() - cb.height / 2 + starty,
-				(int)cb.pos.x()+cb.width/2 - endx,(int)cb.pos.y()+cb.height/2 - endy);
+	SetRect(&rt, (int)cb.pos.x - cb.width / 2 + startx, (int)cb.pos.y - cb.height / 2 + starty,
+				(int)cb.pos.x+cb.width/2 - endx,(int)cb.pos.y+cb.height/2 - endy);
 }
 
 //----------------------
@@ -223,10 +211,10 @@ void charabase::MakeRectScales(RECT &rt, const CharaBase& cb, int startx, int st
 {
 	SetRect(
     &rt,
-    int(cb.pos.x() - ((float)cb.width*cb.scale.x()) / 2.f + (float)startx),
-    int(cb.pos.y() - ((float)cb.height * cb.scale.y()) / 2.f + (float)starty),
-    int(cb.pos.x() + ((float)cb.width*cb.scale.x()) / 2.f - (float)endx),
-    int(cb.pos.y() + ((float)cb.height * cb.scale.y()) / 2.f - (float)endy));
+    int(cb.pos.x - ((float)cb.width*cb.scale.x) / 2.f + (float)startx),
+    int(cb.pos.y - ((float)cb.height * cb.scale.y) / 2.f + (float)starty),
+    int(cb.pos.x + ((float)cb.width*cb.scale.x) / 2.f - (float)endx),
+    int(cb.pos.y + ((float)cb.height * cb.scale.y) / 2.f - (float)endy));
 }
 //----------------------
 //汎用描画処理 中央基準
@@ -235,14 +223,14 @@ void charabase::Draw_CharBuruburu(const CharaBase& cb, int range)
   int buruburu_x = math::GetRandom(-range, range);
 	int buruburu_y = math::GetRandom(-range, range);
 	graph::Draw_Graphics(
-    cb.pos.x()+buruburu_x, cb.pos.y()+buruburu_y, cb.pos.z(),
+    cb.pos.x+buruburu_x, cb.pos.y+buruburu_y, cb.pos.z,
     cb.resname,
-    cb.width	* (int)(cb.src.x()),
-    cb.height * (int)(cb.src.y()),
+    cb.width	* (int)(cb.src.x),
+    cb.height * (int)(cb.src.y),
     cb.width, cb.height,
     cb.angle,
-    cb.scale.x(), cb.scale.y(),
-	(u_char)cb.color.a(), (u_char)cb.color.r(), (u_char)cb.color.g(), (u_char)cb.color.b());
+    cb.scale.x, cb.scale.y,
+    (u_char)cb.a, (u_char)cb.r, (u_char)cb.g, (u_char)cb.b);
 }
 
 //----------------------
@@ -250,14 +238,14 @@ void charabase::Draw_CharBuruburu(const CharaBase& cb, int range)
 void charabase::Draw_Char(const CharaBase& pos)
 {
 	graph::Draw_Graphics(
-				pos.pos.x(),pos.pos.y(),pos.pos.z(),
+				pos.pos.x,pos.pos.y,pos.pos.z,
 				pos.resname,
-				pos.width	* (int)(pos.src.x()),
-				pos.height * (int)(pos.src.y()),
+				pos.width	* (int)(pos.src.x),
+				pos.height * (int)(pos.src.y),
 				pos.width,pos.height,
 				pos.angle,
-				pos.scale.x(),pos.scale.y(),
-				(u_char)pos.color.a(), (u_char)pos.color.r(), (u_char)pos.color.g(), (u_char)pos.color.b());
+				pos.scale.x,pos.scale.y,
+				(u_char)pos.a,(u_char)pos.r,(u_char)pos.g,(u_char)pos.b);
 }
 
 //----------------------
@@ -265,14 +253,14 @@ void charabase::Draw_Char(const CharaBase& pos)
 void charabase::Draw_Char2(const CharaBase& pos)
 {
   graph::Draw_GraphicsLeftTop(
-				pos.pos.x(),pos.pos.y(),pos.pos.z(),
+				pos.pos.x,pos.pos.y,pos.pos.z,
 				pos.resname,
-				pos.width	* (int)(pos.src.x()),
-				pos.height * (int)(pos.src.y()),
+				pos.width	* (int)(pos.src.x),
+				pos.height * (int)(pos.src.y),
 				pos.width,pos.height,
 				pos.angle,nullptr,
-				pos.scale.x(),pos.scale.y(),
-				(u_char)pos.color.a(), (u_char)pos.color.r(), (u_char)pos.color.g(), (u_char)pos.color.b());
+				pos.scale.x,pos.scale.y,
+				(u_char)pos.a,(u_char)pos.r,(u_char)pos.g,(u_char)pos.b);
 }
 
 
@@ -282,14 +270,14 @@ void charabase::Draw_CharNC(const CharaBase& pos)
 {
 
 	graph::Draw_GraphicsNC(
-				pos.pos.x(),pos.pos.y(),pos.pos.z(),
+				pos.pos.x,pos.pos.y,pos.pos.z,
 				pos.resname,
-				pos.width	* (int)(pos.src.x()),
-				pos.height * (int)(pos.src.y()),
+				pos.width	* (int)(pos.src.x),
+				pos.height * (int)(pos.src.y),
 				pos.width,pos.height,
 				pos.angle,
-				pos.scale.x(),pos.scale.y(),
-				(u_char)pos.color.a(), (u_char)pos.color.r(), (u_char)pos.color.g(), (u_char)pos.color.b());
+				pos.scale.x,pos.scale.y,
+				(u_char)pos.a,(u_char)pos.r,(u_char)pos.g,(u_char)pos.b);
 }
 
 //----------------------
@@ -297,14 +285,14 @@ void charabase::Draw_CharNC(const CharaBase& pos)
 void charabase::Draw_Char2NC(const CharaBase& pos)
 {
 	graph::Draw_GraphicsLeftTopNC(
-				pos.pos.x(),pos.pos.y(),pos.pos.z(),
+				pos.pos.x,pos.pos.y,pos.pos.z,
 				pos.resname,
-				pos.width	* (int)(pos.src.x()),
-				pos.height * (int)(pos.src.y()),
+				pos.width	* (int)(pos.src.x),
+				pos.height * (int)(pos.src.y),
 				pos.width,pos.height,
 				pos.angle,nullptr,
-				pos.scale.x(),pos.scale.y(),
-				(u_char)pos.color.a(), (u_char)pos.color.r(), (u_char)pos.color.g(), (u_char)pos.color.b());
+				pos.scale.x,pos.scale.y,
+				(u_char)pos.a,(u_char)pos.r,(u_char)pos.g,(u_char)pos.b);
 }
 //----------------------
 //あたりチェック
@@ -359,7 +347,7 @@ bool charabase::HitCheckScales(const CharaBase& v1, const CharaBase& v2, bool de
 void charabase::Draw_Frame(const CharaBase& cb, ci_ext::Color color, int lineweight)
 {
   ci_ext::Polygon<float> a(
-    ci_ext::Vec3<float>(cb.pos.x(), cb.pos.y(), cb.pos.z()), //pos
+    ci_ext::Vec3<float>(cb.pos.x, cb.pos.y, cb.pos.z), //pos
     {
     ci_ext::Vec3<float>(-cb.width / 2.0f, -cb.height / 2.0f, 0.0f),
     ci_ext::Vec3<float>(-cb.width / 2.0f, cb.height / 2.0f, 0.0f),
@@ -367,7 +355,7 @@ void charabase::Draw_Frame(const CharaBase& cb, ci_ext::Color color, int linewei
     ci_ext::Vec3<float>(cb.width / 2.0f, -cb.height / 2.0f, 0.0f),
     },//vertex
     cb.angle,//degree
-    ci_ext::Vec3<float>(cb.scale.x(), cb.scale.y(), 1.0f)//scale
+    ci_ext::Vec3<float>(cb.scale.x, cb.scale.y, 1.0f)//scale
     );
 
     a.draw(color, lineweight);
@@ -378,7 +366,7 @@ bool charabase::HitCheck2(const CharaBase& cb1, const CharaBase& cb2, bool debug
 {
   //ポリゴン作って判定させる
   ci_ext::Polygon<float> a(
-    ci_ext::Vec3<float>(cb1.pos.x(), cb1.pos.y(), cb1.pos.z()), //pos
+    ci_ext::Vec3<float>(cb1.pos.x, cb1.pos.y, cb1.pos.z), //pos
     {
     ci_ext::Vec3<float>(-cb1.width / 2.0f, -cb1.height / 2.0f, 0.0f),
     ci_ext::Vec3<float>(-cb1.width / 2.0f, cb1.height / 2.0f, 0.0f),
@@ -386,11 +374,11 @@ bool charabase::HitCheck2(const CharaBase& cb1, const CharaBase& cb2, bool debug
     ci_ext::Vec3<float>(cb1.width / 2.0f, -cb1.height / 2.0f, 0.0f),
     },//vertex
     cb1.angle,//degree
-    ci_ext::Vec3<float>(cb1.scale.x(), cb1.scale.y(), 1.0f)//scale
+    ci_ext::Vec3<float>(cb1.scale.x, cb1.scale.y, 1.0f)//scale
     );
 
   ci_ext::Polygon<float> b(
-    ci_ext::Vec3<float>(cb2.pos.x(), cb2.pos.y(), cb2.pos.z()),
+    ci_ext::Vec3<float>(cb2.pos.x, cb2.pos.y, cb2.pos.z),
     {
     ci_ext::Vec3<float>(-cb2.width / 2.0f, -cb2.height / 2.0f, 0.0f),
     ci_ext::Vec3<float>(-cb2.width / 2.0f, cb2.height / 2.0f, 0.0f),
@@ -398,7 +386,7 @@ bool charabase::HitCheck2(const CharaBase& cb1, const CharaBase& cb2, bool debug
     ci_ext::Vec3<float>(cb2.width / 2.0f, -cb2.height / 2.0f, 0.0f),
     },
     cb2.angle,
-    ci_ext::Vec3<float>(cb2.scale.x(), cb2.scale.y(), 1.0f)
+    ci_ext::Vec3<float>(cb2.scale.x, cb2.scale.y, 1.0f)
     );
 
   if (debug_mode)

@@ -13,7 +13,7 @@
 typedef struct DxBaseMesh
 {
 	//ファイル名
-	std::string file_name;
+	string file_name;
 
 	//コンストラクタ
 	DxBaseMesh();

@@ -27,14 +27,14 @@ class MediaManager
 
 		/*テクスチャ関連*/
 		//イメージファイルからDxTextureをロード　　（簡易版）
-		LPDIRECT3DTEXTURE9 LoadTexture(string fName,string path);
+		LPDIRECT3DTEXTURE9 LoadTextureFromFile(string fName,string path);
 		//イメージファイルからDxTextureをロード　　（詳細版）
-		DxTexture* LoadTextureEx(string fName,string path);
+		DxTexture* LoadTextureFromFileEx(string fName,string path);
 
 		/*３Ｄモデル関連*/
 		//Xファイルからの３Ｄモデルデータをロード　　（簡易版、アニメーション制御不可）
-		DxMesh* LoadMesh(string fName,string path);
+		DxMesh* LoadMeshFromX(string fName,string path);
 		//Xファイルからの３Ｄモデルデータをロード　　（詳細版、アニメーション制御可能）
-		DxAnimeMesh* LoadAnimeMesh(string fName,string path);
+		DxAnimeMesh* LoadAnimeMeshFromX(string fName,string path);
 };
 

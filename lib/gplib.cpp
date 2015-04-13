@@ -8,7 +8,6 @@
 //inlude
 //**************************************************************************************//
 #include	"GpLib.h"
-#include	"ci_ext\vec3.hpp"
 
 using namespace gplib;
 //**************************************************************************************//
@@ -164,54 +163,6 @@ void ClearWheelDelta()
 	input::delta = 0;
 }
 namespace gplib{
-
-
-	//======================================================================================//
-	//自作関数
-	//======================================================================================//
-	
-
-	namespace file
-	{
-
-		//********************************************************************//
-		//
-		//				ファイル読み込み　関連関数
-		//
-		//********************************************************************//
-
-		/*
-		@brief					ファイルデータから指定したキーワードの文字列の読み込み
-		@param	[in] section	読み込みするデータのキーワード ("[]"で囲われたもの)
-		@param	[in] keyname	読み込みするデータのキーワード
-		@param	[out] buff		取得した文字列
-		@param	[in] filename	ファイル名
-		@return					なし
-		*/
-		void Sys_GetIniFileDataStr(const std::string &section, const std::string &keyname, std::string &buff, const std::string &filename)
-		{
-			char temp[256];
-			GetPrivateProfileString(section.c_str(), keyname.c_str(),
-				"this string not get", temp, 256, filename.c_str());
-
-			buff = temp;
-		}
-
-		/*
-		@brief					ファイルデータから指定したキーワードの数値の読み込み
-		@param	[in] section	読み込みするデータのキーワード ("[]"で囲われたもの)
-		@param	[in] keyname	読み込みするデータのキーワード
-		@param	[in] filename	ファイル名
-		@return					取得した数値
-		*/
-		int Sys_GetIniFileDataInt(const std::string &section, const std::string &keyname, const std::string &filename)
-		{
-
-			return GetPrivateProfileInt(section.c_str(), keyname.c_str(), 0, filename.c_str());
-
-		}
-	}
-
 	namespace camera{
 
 		//********************************************************************//
@@ -2403,25 +2354,6 @@ void graph::Draw_Graphics(
 		camera::camera->changeScale(scaleY),
 		a, r, g, b);
 }
-void graph::Draw_Graphics(
-	ci_ext::Vec3f &pos,
-	const std::string& resname,
-	ci_ext::Vec3i &src, ci_ext::Vec3i &size,
-	float	degree,
-	ci_ext::Vec3i& scale,
-	u_char a, u_char r, u_char g, u_char b)
-{
-	graph::Draw_GraphicsNC(
-		camera::camera->ixchange(pos.x()), camera::camera->iychange(pos.y()),
-		pos.z(), resname,
-		src.x(), src.y(), size.x(), size.y(),
-		degree,
-		camera::camera->changeScale(scale.x()),
-		camera::camera->changeScale(scale.y()),
-		a, r, g, b);
-}
-
-
 
 //---------------------------------------------------------------------------------------
 //IMGOBJを表示する。回転、拡大、色変更対応
@@ -2546,8 +2478,8 @@ void graph::Draw_3DClear()
 	//Scene Clear Black
 	if (pD3DDevice != NULL)
 		pD3DDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-//	D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
+//		D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+	D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 	//Draw Start
 	if (pD3DDevice != NULL)
 		pD3DDevice->BeginScene();
@@ -2863,6 +2795,21 @@ void graph::SetMtrl(int a, int r, int g, int b)
 
 }
 
+//INIファイルから文字列を取得する。
+void system::GetIniFileDataStr(std::string section, std::string keyname, std::string &buff, std::string filename)
+{
+  char temp[256];
+
+  GetPrivateProfileString((section.c_str()), (keyname.c_str()),
+    "this string not get", temp, 1024, filename.c_str());
+  buff = temp;
+}
+
+//INIファイルから整数を取得する。
+int system::GetIniFileDataInt(std::string section, std::string keyname, std::string filename)
+{
+  return GetPrivateProfileInt(section.c_str(), keyname.c_str(), 0, filename.c_str());
+}
 //---------------------------------------------------------------------------------------
 //DirectDraw初期化
 //---------------------------------------------------------------------------------------
@@ -3098,7 +3045,7 @@ int system::DoWindow(HINSTANCE hInstance,HINSTANCE hPreInst,LPSTR lpszCmdLine,in
 	srand((unsigned)::time(NULL));
 	time::Time_CheckTimer();
 	//user init
-//	system::OnCreate();
+	system::OnCreate();
 #ifdef CI_EXT
 //	StartOutputDbgString();
   ShowConsole();
@@ -3116,17 +3063,15 @@ int system::DoWindow(HINSTANCE hInstance,HINSTANCE hPreInst,LPSTR lpszCmdLine,in
 			TranslateMessage(&lpMsg);
 			DispatchMessage(&lpMsg);
 		}else if( system::hWnd == GetActiveWindow()){
-			graph::Draw_Clear();
 			input::CheckKey();
 			//ゲームループ
 #ifdef CI_EXT
 			if(game.run()) DestroyWindow(system::hWnd);
 			ci_ext::dsCheck_Stream();
 #else
-//			system::GameLoop();
+			system::GameLoop();
 #endif
 			camera::StepCamera();
-			graph::Draw_Refresh();
 			//サウンド終了チェック
 #ifdef USE_DIRECTSHOW
 			bgm::DShow_EndCheck();
@@ -3142,7 +3087,7 @@ int system::DoWindow(HINSTANCE hInstance,HINSTANCE hPreInst,LPSTR lpszCmdLine,in
 		}
 	}
 	//user release
-//	system::OnDestroy();			//ゲーム後始末処理
+	system::OnDestroy();			//ゲーム後始末処理
 	//resource release
 	Draw_DelImgTable();
 	Draw_DeleteFont();
@@ -3162,7 +3107,7 @@ int system::DoWindow(HINSTANCE hInstance,HINSTANCE hPreInst,LPSTR lpszCmdLine,in
 	//pad delete
 	DeletePlayerInput();
 	//memory leaks dump
-	_CrtDumpMemoryLeaks();
+//	_CrtDumpMemoryLeaks();
 	}
 	return static_cast<int>(lpMsg.wParam);
 }

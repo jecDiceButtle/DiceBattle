@@ -1,6 +1,5 @@
 #pragma once
 #include "ci_ext/color.hpp"
-#include "ci_ext/vec3.hpp"
 namespace charabase{
 
 	//代入可能なベースデータ
@@ -10,6 +9,9 @@ namespace charabase{
 		const std::string 	resname;		//使用イメージ名
 	};
 
+	struct Vec3f{
+		float x, y, z;
+	};
 
 	//
 	//
@@ -18,30 +20,25 @@ namespace charabase{
 	struct Anim{
 		int		no;					//現在のアニメNO　この値は0,1,2,3,4,とカウントするだけ
 		float	cnt;				//アニメ更新カウンタ
-		float	speed;				//アニメ更新速度
+		float	speed;			//アニメ更新速度
 		int		max;				//アニメ枚数　この値にnoが来ると0からカウント
 	};
 
 	struct CharaBase
 	{
-		ci_ext::Color		color;				//色
+		Vec3f   pos;							//座標
+		Vec3f		add;							//移動量
+		int			width, height;		//画像幅高さ
 
-		ci_ext::Vec3f		pos;				//座標
-		ci_ext::Vec3f		add;				//移動量
-		
-		ci_ext::Vec3f		src;				//抽出位置
-		int					width, height;		//画像幅高さ
+		Vec3f   scale;						//拡大率
+		Vec3f   src;							//抽出位置
+		std::string resname;			//使用イメージ名
 
-		ci_ext::Vec3f		scale;				//拡大率
-		float				angle;				//角度
+		bool		show;							//利用フラグ
 
-		std::string			resname;			//使用イメージ名
-
-		bool				show;				//利用フラグ
-
-
-		CharaBase();							//コンストラクタ
-
+		float		angle;						//角度
+		float		a;								//アルファ
+		float		r, g, b;					//色
 	};
 
 	
@@ -127,7 +124,7 @@ namespace charabase{
 	extern void InitCharBase(CharaBase& cb, const BaseData& base,
 		float x = 0.f, float y = 0.f, float z = 0.f, float addx = 0.f, float addy = 0.f, float addz = 0.f,
 		int srcX = 0, int srcY = 0, int srcZ = 0, float angle = 0.f, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.f,
-		int alpha = 255, int red = 255, int green = 255, int blue = 255);
+		float alpha = 255.f, float red = 255.f, float green = 255.f, float blue = 255.f);
 
 	//------------------------------------------------------
 	//CharBase初期化処理
@@ -140,21 +137,8 @@ namespace charabase{
 	extern void	InitCharBase(CharaBase& cb, float x, float y, float z, float addx, float addy, float addz,
 		const std::string& resname, int srcX, int srcY, int srcZ, int w, int h,
 		float angle = 0.f, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f,
-		int alpha = 255, int red = 255, int green = 255, int blue = 255);
+		float alpha = 255.f, float red = 255.f, float green = 255.f, float blue = 255.f);
 	
-	//------------------------------------------------------
-	//CharBase初期化処理,ci_ext::Vec3f使用
-	//
-	/*
-	//初期化　指定外の値は初期値になる。
-	利用する際は可視フラグshowも偽になっているため、
-	UseCharで可視状態にすること。
-	*/
-	extern void	InitCharBase(CharaBase& cb, const ci_ext::Vec3f& pos, const ci_ext::Vec3f& add,
-		const std::string& resname, const ci_ext::Vec3f& src, int w, int h,
-		float angle = 0.f, const ci_ext::Vec3f& scale = ci_ext::Vec3f(1.f,1.f),
-		int alpha = 255, int red = 255, int green = 255, int blue = 255);
-
 	//------------------------------------------------------
 	//CharBase初期化処理
 	//内部構造体を０クリアする

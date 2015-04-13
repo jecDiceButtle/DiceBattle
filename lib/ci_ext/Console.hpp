@@ -14,15 +14,13 @@ namespace ci_ext
 class Console
 {
   std::FILE* in_;
-  std::FILE* out_;
+	std::FILE* out_;
 public:
   Console()
   {
     AllocConsole();
     freopen_s(&out_, "CONOUT$", "w", stdout); //標準出力をコンソールにする
     freopen_s(&in_,  "CONIN$" , "r", stdin);  //標準入力をコンソールにする
-    HMENU menuHandle = GetSystemMenu(GetConsoleWindow(), 0);
-    RemoveMenu(menuHandle, SC_CLOSE, MF_BYCOMMAND);
   }
   ~Console()
   {
@@ -35,47 +33,46 @@ public:
 //coutでデバッグウインドウに出力できるようになるクラス
 class coutDbgString
 {
-  class DbgStreambuf : public std::streambuf
-  {
-  public:
-    std::streamsize xsputn(const char* s, std::streamsize n)
-    {
-      OutputDebugString(s);
-      return n;
-    }
-    int_type overflow(int_type c = EOF)
-    {
-      if(c != EOF)
-      {
-        char buf[2] = {c, '\0'};
-        OutputDebugString(buf);
-      }
-      return c;
-    }
-  };
-  std::streambuf* default_stream;
-  DbgStreambuf debug_stream;
+	class DbgStreambuf : public std::streambuf
+	{
+	public:
+		std::streamsize xsputn(const char* s, std::streamsize n)
+		{
+			OutputDebugString(s);
+			return n;
+		}
+		int_type overflow(int_type c = EOF)
+		{
+			if(c != EOF)
+			{
+				char buf[2] = {c, '\0'};
+				OutputDebugString(buf);
+			}
+			return c;
+		}
+	};
+	std::streambuf* default_stream;
+	DbgStreambuf debug_stream;
 public:
-  coutDbgString()
-  {
-    default_stream = std::cout.rdbuf(&debug_stream);
-  }
-  ~coutDbgString()
-  {
-    std::cout.rdbuf(default_stream);
-  }
+	coutDbgString()
+	{
+		default_stream = std::cout.rdbuf(&debug_stream);
+	}
+	~coutDbgString()
+	{
+		std::cout.rdbuf(default_stream);
+	}
 };
 
 #ifdef _DEBUG
 //複数はサポートしない
 # define ShowConsole() ci_ext::Console c
 # define StartOutputDbgString() ci_ext::coutDbgString c
-# define DOUT std::cout
 #else
 # define ShowConsole() __noop
 # define StartOutputDbgString() __noop
-# define DOUT
 #endif
 
+#define dout std::cout << __FUNCTION__ << ":"
 #define FILENAME_AND_LINE __FILE__ << ":" << __LINE__
 }

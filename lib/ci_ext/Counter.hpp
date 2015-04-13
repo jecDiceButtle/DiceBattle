@@ -67,27 +67,12 @@ public:
     Object::pause();
   }
 
-  //Sleep移行時に時間を取得しておく
-  virtual void sleep(int framecount) override
-  {
-    if (!isSleeping())
-      intervalTimePoint_ = system_clock::now();
-
-    Object::sleep(framecount);
-  }
   //
   virtual void run() override
   {
-    updateIntervalTime();
     intervalTotalSec_ += intervalSec_;
     intervalSec_ = 0;
     Object::run();
-  }
-
-  //
-  virtual void resume() override
-  {
-    run();
   }
 
   //pause進行中の時間を計測しておく
@@ -96,13 +81,7 @@ public:
     updateIntervalTime();
     Object::updatePause();
   }
-  
-  //sleep進行中の時間を計測しておく
-  virtual void updateSleep() override
-  {
-    updateIntervalTime();
-    Object::updateSleep();
-  }
+
   //経過時間取得
   T get()
   {

@@ -211,7 +211,7 @@ HRESULT Dx_Hierarchy::CreateMeshContainer(
 
 				//テクスチャ情報の生成
 				pMeshContainer->ppTextures[iMaterial] = 
-					this->t_manager->LoadTextureFile(fName,path);
+					this->t_manager->LoadTextureFromFile(fName,path);
 				//テクスチャ名の破棄
                 pMeshContainer->pMaterials[iMaterial].pTextureFilename = NULL;
             }

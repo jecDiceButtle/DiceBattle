@@ -61,9 +61,6 @@ class Dx_Graphics3D
 		/*３Ｄ描画関連*/
 		//３Ｄセットアップ　　（カメラ使用型）
 		void Setup3DEnv(Dx_Camera *camera);
-
-		//３Ｄセットアップ　　（カメラ使用型）
-		void Dx_Graphics3D::Setup3DEnv(std::shared_ptr<Dx_Camera> camera);
 		//３Ｄセットアップ　　（行列直接指定型）
 		void Setup3DEnv(D3DXMATRIX view,D3DXMATRIX projection);
 

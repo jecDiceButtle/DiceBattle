@@ -4,8 +4,8 @@
 
 extern LPDIRECT3DDEVICE9		pD3DDevice;
 
-Dx_Graphics3D* DX3DMESHMANAGER::getG(){
-	return g;
+Dx_Graphics3D* DX3DMESHMANAGER::getG(){	
+	return g; 
 }
 
 DX3DMESHMANAGER::DX3DMESHMANAGER()
@@ -20,18 +20,18 @@ DX3DMESHMANAGER::DX3DMESHMANAGER()
 DX3DMESHMANAGER::~DX3DMESHMANAGER()
 {
 	//各メッシュの消去
-	/*	for(auto& obj : DxMeshTable)
+/*	for(auto& obj : DxMeshTable)
 	{
-	obj.second->del();
+		obj.second->del();
 	}
-	-*/
+-*/
 	DxMeshTable.clear();
-	/*
+/*
 	for(auto& obj : DxAnimMeshTable)
 	{
-	obj.second->del();
+		obj.second->del();
 	}
-	*/
+*/
 	DxAnimMeshTable.clear();
 	//メディア管理クラスの破棄
 	SAFE_DELETE(m_manager);
@@ -39,18 +39,17 @@ DX3DMESHMANAGER::~DX3DMESHMANAGER()
 	SAFE_DELETE(g);
 }
 
-void DX3DMESHMANAGER::loadMesh(const string& handleName, const string& fileName, const string& path, MESHTYPE type)
+void DX3DMESHMANAGER::loadMesh(const string& handleName,const string& fileName,const string& path,MESHTYPE type)
 {
 	//アニメ無しとありで別の読み込みを行う
-	if (type == MESHTYPE::MESH){
+	if(type == MESHTYPE::MESH){
 		//同じものをチェックする。
 		DxMeshTable.insert(std::unordered_map<string, DX3DMESHMANAGER::pMesh>::value_type(
 			handleName,
 			pMesh(new Mesh(m_manager, fileName, path))
 			)
 			);
-	}
-	else if (type == MESHTYPE::ANIMMESH){
+	}else if(type == MESHTYPE::ANIMMESH){
 		//同じものをチェックする。
 
 		DxAnimMeshTable.insert(std::unordered_map<string, DX3DMESHMANAGER::pAnimMesh>::value_type(
@@ -63,34 +62,33 @@ void DX3DMESHMANAGER::loadMesh(const string& handleName, const string& fileName,
 
 void DX3DMESHMANAGER::drawMesh(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color, DxVec3 scale)
 {
-	if (DxMeshTable.find(handleName) != DxMeshTable.end())
+	if(DxMeshTable.find(handleName) != DxMeshTable.end())
 		g->DrawModel(DxMeshTable.at(handleName)->mesh, &pos, &scale, &angle, &color);
 }
 void DX3DMESHMANAGER::drawAnimMesh(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color, DxVec3 scale)
 {
-	if (DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end())
-		g->DrawModel(DxAnimMeshTable.at(handleName)->mesh, &pos, &scale, &angle, &color);
+	if(DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end())
+		g->DrawModel(DxAnimMeshTable.at(handleName)->mesh,&pos,&scale,&angle,&color);
 }
-void DX3DMESHMANAGER::ChangeAnim(const string& handleName, int nowMotion)
+void DX3DMESHMANAGER::ChangeAnim(const string& handleName,int nowMotion)
 {
-	if (DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end())
+	if(DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end())
 		DxAnimMeshTable.at(handleName)->anime->ChangeAnim(nowMotion);
 }
-void DX3DMESHMANAGER::step(const string& handleName, float spd)
+void DX3DMESHMANAGER::step(const string& handleName,float spd)
 {
 	//アニメーション再生
-	if (DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end()){
+	if(DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end()){
 		DxAnimMeshTable.at(handleName)->anime->PlayAnimation(spd);
 	}
 }
-float DX3DMESHMANAGER::nowTrack(const string& handleName, int nowMotion)
+float DX3DMESHMANAGER::nowTrack(const string& handleName,int nowMotion)
 {
 	D3DXTRACK_DESC desc;
-	if (DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end()){
-		DxAnimMeshTable.at(handleName)->anime->GetTrackDesc(nowMotion, &desc);
+	if(DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end()){
+		DxAnimMeshTable.at(handleName)->anime->GetTrackDesc(nowMotion,&desc);
 		return (float)desc.Position;
-	}
-	else{
+	}else{
 		return -1;
 	}
 	return -1;
@@ -98,45 +96,14 @@ float DX3DMESHMANAGER::nowTrack(const string& handleName, int nowMotion)
 
 void DX3DMESHMANAGER::createCloneAnimeController(const string& handleName, Dx_AnimeAuxiliary *anime)
 {
-	LPD3DXANIMATIONCONTROLLER anim;
-	DxAnimMeshTable.at(handleName)->mesh->pAnimController->CloneAnimationController(
-		DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumAnimationOutputs(),
-		DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumAnimationSets(),
-		DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumTracks(),
-		DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumEvents(),
-		&anim);
-	anime->SetAnimController(anim);
+  LPD3DXANIMATIONCONTROLLER anim;
+  DxAnimMeshTable.at(handleName)->mesh->pAnimController->CloneAnimationController(
+    DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumAnimationOutputs(),
+    DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumAnimationSets(),
+    DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumTracks(),
+    DxAnimMeshTable.at(handleName)->mesh->pAnimController->GetMaxNumEvents(),
+    &anim);
+  anime->SetAnimController(anim);
 }
 
 
-DX3DMESHMANAGER::AnimMesh::AnimMesh(MediaManager *manager, const string& fileName, const string& path)
-{
-	mesh = manager->LoadAnimeMesh(fileName, path);
-	anime = new Dx_AnimeAuxiliary(mesh->pAnimController);
-	filename_ = fileName;
-}
-
-DX3DMESHMANAGER::AnimMesh::~AnimMesh()
-{
-	SAFE_DELETE(anime);
-}
-
-void DX3DMESHMANAGER::AnimMesh::del()
-{
-
-}
-
-DX3DMESHMANAGER::Mesh::Mesh(MediaManager *manager, const string& fileName, const string& path)
-{
-	mesh = manager->LoadMesh(fileName, path);
-	filename_ = fileName;
-}
-
-DX3DMESHMANAGER::Mesh::~Mesh()
-{
-}
-
-void DX3DMESHMANAGER::Mesh::del()
-{
-	SAFE_DELETE(mesh);
-}

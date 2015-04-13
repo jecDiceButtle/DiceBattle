@@ -5,7 +5,6 @@
 #include <string>
 #include <algorithm>
 #include <functional>
-#include <map>
 #include <assert.h>
 
 namespace ci_ext
@@ -76,9 +75,9 @@ public:
     //      f << "destractor:" << name_ << std::endl;
   }
 
-  //-----------------------------------------------------------------------
-  //親にオブジェクトを追加
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//親にオブジェクトを追加
+//-----------------------------------------------------------------------
   template<typename Ptr>
   std::weak_ptr<Object> insertToParent(Ptr* o)
   {
@@ -106,9 +105,9 @@ public:
     return ret;
   }
 
-  //-----------------------------------------------------------------------
-  //子供にオブジェクトを追加
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//子供にオブジェクトを追加
+//-----------------------------------------------------------------------
   template<typename Ptr>
   std::weak_ptr<Object> insertAsChild(Ptr* p)
   {
@@ -137,10 +136,10 @@ public:
     o->sleep(framecount);
     return ret;
   }
-
-  //-----------------------------------------------------------------------
-  //ポインタ関連
-  //-----------------------------------------------------------------------
+    
+//-----------------------------------------------------------------------
+//ポインタ関連
+//-----------------------------------------------------------------------
   //自分のweak_ptrを取得する
   std::weak_ptr<Object> selfPtr() const
   {
@@ -166,9 +165,9 @@ public:
       return parent.lock()->getRootObject();
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクト取得関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクト取得関連
+//-----------------------------------------------------------------------
   //全子供タスクを取得
   std::vector<std::weak_ptr<Object>> getChildren() const
   {
@@ -250,7 +249,7 @@ public:
   {
     for (auto& child : children_)
     {
-      if (child->name() == objectName) return child;
+      if (child->name() == objectName)      return child;
       auto temp = child->getObjectFromChildren(objectName);
       if (!temp.expired()) return temp;
     }
@@ -261,7 +260,13 @@ public:
     const std::string& objectName) const
   {
     std::shared_ptr<Object> root = getRootObject().lock();
-	return root->getObjectFromChildren(objectName);
+    for (auto& child : root->children_)
+    {
+      if (child->name() == objectName)      return child;
+      auto temp = child->getObjectFromChildren(objectName);
+      if (!temp.expired()) return temp;
+    }
+    return std::weak_ptr<Object>();
   }
   //オブジェクトのユニークIDからオブジェクトを取得
   //但し、自分の子供以下から探し、親方向には検索しない
@@ -284,9 +289,9 @@ public:
     return root.lock()->getObjectFromChildren(id);
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクト名前関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクト名前関連
+//-----------------------------------------------------------------------
   //オブジェクトの名前が一致しているかを調べる
   bool matchingName(const std::string& name) const
   {
@@ -310,9 +315,9 @@ public:
     name_ += append;
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクトID関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクトID関連
+//-----------------------------------------------------------------------
   //オブジェクトのIDが一致しているかを調べる
   bool matchingID(int id) const
   {
@@ -331,13 +336,13 @@ public:
     return (temp->ID() == ID());
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクト駆動変更関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクト駆動変更関連
+//-----------------------------------------------------------------------
 
-  //-----------------------------------------------------------------------
-  //オブジェクト破棄関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクト破棄関連
+//-----------------------------------------------------------------------
   //オブジェクトを破棄する予約をする
   virtual void kill()
   {
@@ -358,7 +363,11 @@ public:
   void killFromRoot(const std::string& name)
   {
     auto root = getRootObject().lock();
-    root->killFromChildren(name);
+    for (auto& child : root->children_)
+    {
+      if (child->name() == name)
+        child->kill();
+    }
   }
   //objectの名前にfindNamesがふくまれているか、findNotNamesが含まれていないものを破棄する予約をする
   void killFromChildren(
@@ -377,12 +386,16 @@ public:
     const std::vector<std::string>& objectNotNames2 = {})
   {
     auto root = getRootObject().lock();
-    root->killFromChildren(objectNames1, objectNotNames2);
+    for (auto& child : root->children_)
+    {
+      if (findObject(child, objectNames1, objectNotNames2))
+        child->kill();
+    }
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクトを駆動させる
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクトを駆動させる
+//-----------------------------------------------------------------------
   virtual void run()
   {
     status_ = Status::run;
@@ -407,7 +420,11 @@ public:
   void runFromRoot(const std::string& name)
   {
     auto root = getRootObject().lock();
-    root->runFromChildren(name);
+    for (auto& child : root->children_)
+    {
+      if (child->name() == name)
+        child->run();
+    }
   }
   //objectの名前にfindNamesがふくまれているか、findNotNamesが含まれていないものを駆動させる
   void runFromChildren(
@@ -426,12 +443,16 @@ public:
     const std::vector<std::string>& objectNotNames2 = {})
   {
     auto root = getRootObject().lock();
-    root->runFromChildren(objectNames1, objectNotNames2);
+    for (auto& child : root->children_)
+    {
+      if (findObject(child, objectNames1, objectNotNames2))
+        child->run();
+    }
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクトをスリープ
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクトをスリープ
+//-----------------------------------------------------------------------
 
   virtual void sleep(int framecount)
   {
@@ -446,7 +467,7 @@ public:
       child->sleepAll(framecount);
   }
   //指定した名前のオブジェクトをスリープさせる
-  void sleepFromChildren(const std::string& name, int framecount)
+  void pauseFromChildren(const std::string& name, int framecount)
   {
     for (auto& child : children_)
     {
@@ -455,13 +476,17 @@ public:
     }
   }
   //指定した名前のオブジェクトをスリープさせる
-  void sleepFromRoot(const std::string& name, int framecount)
+  void pauseFromRoot(const std::string& name, int framecount)
   {
     auto root = getRootObject().lock();
-    root->sleepFromChildren(name, framecount);
+    for (auto& child : root->children_)
+    {
+      if (child->name() == name)
+        child->sleep(framecount);
+    }
   }
   //objectの名前にfindNamesがふくまれているか、findNotNamesが含まれていないものをスリープさせる
-  void sleepFromChildren(
+  void pauseFromChildren(
     const std::vector<std::string>& objectNames1,
     const std::vector<std::string>& objectNotNames2,
     int framecount)
@@ -473,18 +498,22 @@ public:
     }
   }
   //objectの名前にfindNamesがふくまれているか、findNotNamesが含まれていないものをスリープさせる
-  void sleepFromRoot(
+  void pauseFromRoot(
     const std::vector<std::string>& objectNames1,
     const std::vector<std::string>& objectNotNames2,
     int framecount)
   {
     auto root = getRootObject().lock();
-    root->sleepFromChildren(objectNames1, objectNotNames2, framecount);
+    for (auto& child : root->children_)
+    {
+      if (findObject(child, objectNames1, objectNotNames2))
+        child->sleep(framecount);
+    }
   }
 
-  //-----------------------------------------------------------------------
-  //オブジェクトを停止させる
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//オブジェクトを停止させる
+//-----------------------------------------------------------------------
   virtual void pause()
   {
     status_ = Status::pause;
@@ -509,7 +538,11 @@ public:
   void pauseFromRoot(const std::string& name)
   {
     auto root = getRootObject().lock();
-    root->pauseFromChildren(name);
+    for (auto& child : root->children_)
+    {
+      if (child->name() == name)
+        child->pause();
+    }
   }
   //objectの名前にfindNamesがふくまれているか、findNotNamesが含まれていないものを停止させる
   void pauseFromChildren(
@@ -528,17 +561,21 @@ public:
     const std::vector<std::string>& objectNotNames2 = {})
   {
     auto root = getRootObject().lock();
-    root->pauseFromChildren(objectNames1, objectNotNames2);
+    for (auto& child : root->children_)
+    {
+      if (findObject(child, objectNames1, objectNotNames2))
+        child->pause();
+    }
   }
-  //レジューム(sleepから復帰するときに呼ばれる)
+  //レジューム
   virtual void resume()
   {
     status_ = Status::run;
   }
 
-  //-----------------------------------------------------------------------
-  //アクセサ
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//アクセサ
+//-----------------------------------------------------------------------
   const std::string& name() const { return name_; }
   bool isDestroy()  const { return (status_ == Status::destroy); }
   bool isDead()  const { return (status_ == Status::dead); }
@@ -550,9 +587,9 @@ public:
   void changePriority(int priority) { priority_ = priority; }
 
 
-  //-----------------------------------------------------------------------
-  //比較用叙述関数
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//比較用叙述関数
+//-----------------------------------------------------------------------
   static bool greaterPriority(const std::shared_ptr<Object>& a, const std::shared_ptr<Object>& b)
   {
     return a->priority() > b->priority();
@@ -562,58 +599,15 @@ public:
     return a->priority() < b->priority();
   }
 
-  //-----------------------------------------------------------------------
-  //メッセージ送信（Nishiyama追加）
-  //-----------------------------------------------------------------------
-  // 共用体を利用したパラメーター定義
-  union Param {
-    Param(const bool value) : bool_value(value) {}
-    Param(const int value) : int_value(value) {}
-    Param(const float value) : float_value(value) {}
+//-----------------------------------------------------------------------
+//メッセージ送信（未実装）
+//-----------------------------------------------------------------------
+  virtual int postMsg(std::weak_ptr<Object>& receiver, const std::string& msg) { return receiver.lock()->receiveMsg(selfPtr(), msg); }
+  virtual int  receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg) { return 0; }
 
-    bool bool_value;
-    int int_value;
-    float float_value;
-  };
-  using Params = std::map<std::string, Param>;
-  virtual void receiveMsg(std::weak_ptr<Object>& sender, const int msg, Params& params) { }
-
-  void postMsg(std::weak_ptr<Object>& receiver, const int msg, Params& params) {
-    if (isActive(receiver)) {
-      receiver.lock()->receiveMsg(selfPtr(), msg, params);
-    }
-  }
-
-  void postMsgAllChildren(const int msg, Params& params) {
-    for (auto child : children_) {
-      if (child->isRunning()) {
-        std::weak_ptr<Object> obj = child;
-        postMsg(obj, msg, params);
-        child->postMsgAllChildren(msg, params);
-      }
-    }
-  }
-
-  void postMsgCurrentAndAllChildren(const int msg, Params& params) {
-    receiveMsg(selfPtr(), msg, params);
-
-    for (auto child : children_) {
-      if (child->isRunning()) {
-        std::weak_ptr<Object> obj = child;
-        postMsg(obj, msg, params);
-        child->postMsgAllChildren(msg, params);
-      }
-    }
-  }
-
-  // 有効かつrun状態であればtrue
-  static bool isActive(std::weak_ptr<Object> object) {
-    return !object.expired() && object.lock()->isRunning();
-  }
-
-  //-----------------------------------------------------------------------
-  //render関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//render関連
+//-----------------------------------------------------------------------
   //ルート以外で呼ばないでください
   void renderWithChildren()
   {
@@ -623,13 +617,13 @@ public:
   }
   //overrideして各ステータスのrenderを記述する
   virtual void render() {};     //通常描画処理
-  virtual void renderPause() { render(); } //ポーズ中の処理
-  virtual void renderSleep() { render(); } //スリープ中の処理
+  virtual void renderPause() {} //ポーズ中の処理
+  virtual void renderSleep() {} //スリープ中の処理
   virtual void renderDestroy() {} //削除予約中の処理
 
-  //-----------------------------------------------------------------------
-  //update関連
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//update関連
+//-----------------------------------------------------------------------
   //ルート以外で呼ばないでください
   void updateWithChildren()
   {
@@ -642,20 +636,17 @@ public:
   virtual void updateSleep() {} //スリープ中の処理
   virtual void updateDestroy() {} //削除予約中の処理
 
-  //-----------------------------------------------------------------------
-  //あたり判定用（ゲームPG教材用に）
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//あたり判定用（ゲームPG教材用に）
+//-----------------------------------------------------------------------
   //やられ判定に攻撃を食らった
   virtual void defenseHit(std::weak_ptr<ci_ext::Object>&) {}
   //攻撃判定により攻撃を与えた
   virtual void offenseHit(std::weak_ptr<ci_ext::Object>&) {}
 
-  //あたり判定はオブジェクトにゆだねる場合にoverrideして使う
-  virtual void collision(std::weak_ptr<ci_ext::Object>&) {}
-
-  //-----------------------------------------------------------------------
-  //親子関係構築用
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//あたり判定用（ゲームPG教材用に）
+//-----------------------------------------------------------------------
   //コンストラクタでは親子関係が構築できない仕様なので、
   //生成時に子供を登録したい場合はinit()で行う
   virtual void init() {}
@@ -694,18 +685,18 @@ private:
   //sleepからrunへのチェック用
   void awake()
   {
-    if (--framecount_ < 0)
+    if (--framecount_ < 0) 
       resume();
   }
 
-  //-----------------------------------------------------------------------
-  //update関連
-  //１．ルートのみupdateWithChildren()を呼び、オブジェクトの親子関係の駆動をはじめる
-  //２．updateWithChildren()がupdateChildObjects()を呼び子供オブジェクトの駆動を行う
-  //    updateChildObjects()内でオブジェクトの削除、追加が行われる
-  //    その際updateSelect()が駆動ステータスによって各々のupdate()を呼び出す
-  //３．プログラマは各オブジェクトごとにupdate()を作成しなければならない
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//update関連
+//１．ルートのみupdateWithChildren()を呼び、オブジェクトの親子関係の駆動をはじめる
+//２．updateWithChildren()がupdateChildObjects()を呼び子供オブジェクトの駆動を行う
+//    updateChildObjects()内でオブジェクトの削除、追加が行われる
+//    その際updateSelect()が駆動ステータスによって各々のupdate()を呼び出す
+//３．プログラマは各オブジェクトごとにupdate()を作成しなければならない
+//-----------------------------------------------------------------------
   void updateWithChildrenNormal()
   {
     update();
@@ -773,12 +764,12 @@ private:
     ins_.clear();
   }
 
-  //-----------------------------------------------------------------------
-  //render関連
-  //１．ルートのみrenderWithChildren()を呼び、オブジェクトの親子関係の描画をはじめる
-  //    アルファブレンド等で不具合が出る場合は、別途描画順を構築しなければならない
-  //２．プログラマは各オブジェクトごとにrender()を作成しなければならない
-  //-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+//render関連
+//１．ルートのみrenderWithChildren()を呼び、オブジェクトの親子関係の描画をはじめる
+//    アルファブレンド等で不具合が出る場合は、別途描画順を構築しなければならない
+//２．プログラマは各オブジェクトごとにrender()を作成しなければならない
+//-----------------------------------------------------------------------
   void renderWithChildrenNormal()
   {
     render();

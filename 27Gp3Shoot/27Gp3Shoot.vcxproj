@@ -120,6 +120,7 @@
     <ClInclude Include="src\easing.h" />
     <ClInclude Include="src\effect.h" />
     <ClInclude Include="src\effect3D.h" />
+    <ClInclude Include="src\monster.h" />
     <ClInclude Include="src\movableObject.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\script.hpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="src\effect.cpp" />
     <ClCompile Include="src\effect3D.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\monster.cpp" />
     <ClCompile Include="src\movableObject.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\stage.cpp" />

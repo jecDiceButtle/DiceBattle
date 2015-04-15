@@ -44,6 +44,9 @@
     <Filter Include="プログラムファイル\game\camera">
       <UniqueIdentifier>{c67055e0-d991-47b5-b569-460edc6367e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\game\Back">
+      <UniqueIdentifier>{bb7debec-47c2-4584-9541-dc7f505a3ad7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -172,6 +175,9 @@
     <ClInclude Include="src\camera.h">
       <Filter>プログラムファイル\game\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\back.h">
+      <Filter>プログラムファイル\game\Back</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\gplib.cpp">
@@ -254,6 +260,9 @@
     </ClCompile>
     <ClCompile Include="src\camera.cpp">
       <Filter>プログラムファイル\game\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\back.cpp">
+      <Filter>プログラムファイル\game\Back</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

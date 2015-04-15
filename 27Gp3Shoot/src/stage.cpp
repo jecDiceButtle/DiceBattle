@@ -10,6 +10,7 @@
 
 //tuika
 #include "camera.h"
+#include "back.h"
 
 #include <stdio.h>
 
@@ -106,6 +107,8 @@ namespace game
 
 		//tuika
 		p_camera = insertAsChild(new Camera("camera"));
+
+		p_back = insertAsChild(new Back("stageback"));
 #endif
 		
 	}

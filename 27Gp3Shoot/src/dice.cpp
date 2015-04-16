@@ -6,11 +6,10 @@
 #include "movableObject.h"
 
 //3Dカメラ
-extern Dx_Camera *dxCamera;
 extern LPDIRECT3DDEVICE9 pD3DDevice;
 //メッシュ全体管理クラス
-extern DX3DMESHMANAGER *meshManage;
-extern Dx_Camera *dxCamera;
+extern std::shared_ptr<Dx_Camera> dxCamera;
+extern std::shared_ptr<DX3DMESHMANAGER> meshManage;
 
 
 
@@ -25,10 +24,8 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 	//float Yaw = 0.f, Pit = 0.f, Roll = 0.f;
-	
-	//ダイスの座標
-	float masuX = 3;
-	float masuY = 3;
+
+
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
@@ -39,9 +36,12 @@ namespace game
 		DrawObjf(objectName)
 		),
 		playerID_(playerid),
-		diceID_(diceid)
+		diceID_(diceid),
+		masuX(3),
+		masuY(3)
 	{
 		yy = 5.0f;
+		
 	}
 
 	int Dice::getTopType(){

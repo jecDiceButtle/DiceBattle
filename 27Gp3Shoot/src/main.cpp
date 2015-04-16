@@ -41,9 +41,9 @@ int ci_ext::Object::uid_ = 0;
 //////////////////////////////////////////////////////////////////////////
 
 //3Dカメラ
-Dx_Camera *dxCamera = nullptr;
+std::shared_ptr<Dx_Camera> dxCamera = nullptr;
 //メッシュ全体管理クラス
-DX3DMESHMANAGER *meshManage = nullptr;
+std::shared_ptr<DX3DMESHMANAGER> meshManage = nullptr;
 
 
 
@@ -178,7 +178,7 @@ void gplib::system::OnCreate()
 	/////////////////////////////////////////////////////////////////////////　　
 	//?)このカメラは何に使うんだ？
 	//////////////////////////////////////////////////////////////////////////
-	dxCamera = new Dx_Camera();
+	dxCamera = std::shared_ptr<Dx_Camera>(new Dx_Camera);
 	dxCamera->SetEyePos(DxVec3(eye_pos_x, eye_pos_y, eye_pos_z));
 	dxCamera->SetLookPos(eye_look_x, eye_look_y, eye_look_z);
 
@@ -186,7 +186,7 @@ void gplib::system::OnCreate()
 	//?)meshManageとは一体
 	//////////////////////////////////////////////////////////////////////////
 	//ステージ３Dオブジェクト
-	meshManage = new DX3DMESHMANAGER();
+	meshManage = std::shared_ptr<DX3DMESHMANAGER>(new DX3DMESHMANAGER);
 	//カメラからビュー行列と射影行列を設定
 	meshManage->getG()->Setup3DEnv(dxCamera);
 
@@ -198,7 +198,7 @@ void gplib::system::OnCreate()
 }
 
 void gplib::system::OnDestroy(){
-	SAFE_DELETE(meshManage);
+	//SAFE_DELETE(meshManage);
 	//カメラの破棄
-	SAFE_DELETE(dxCamera);
+	//SAFE_DELETE(dxCamera);
 }

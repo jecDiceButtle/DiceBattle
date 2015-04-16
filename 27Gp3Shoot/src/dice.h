@@ -39,8 +39,8 @@ private:
 	float yy;											//ダイスのY座標
 	float zz;											//ダイスのZ座標〔今は0〕
 	
-	float masuX = 0;
-	float masuY = 0;
+	float masuX;
+	float masuY;
 	
 	//*************************************************//
 	//　関数

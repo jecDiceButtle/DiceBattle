@@ -2,11 +2,10 @@
 #include "../../lib/gplib.h"
 
 //3Dカメラ
-extern Dx_Camera *dxCamera;
 extern LPDIRECT3DDEVICE9 pD3DDevice;
 //メッシュ全体管理クラス
-extern DX3DMESHMANAGER *meshManage;
-extern Dx_Camera *dxCamera;
+extern std::shared_ptr<Dx_Camera> dxCamera;
+extern std::shared_ptr<DX3DMESHMANAGER> meshManage;
 
 namespace game
 {

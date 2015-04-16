@@ -2,17 +2,30 @@
 #include "../../lib/gplib.h"
 #include "dice.h"
 #include "stage.h"
+#include "../../lib/ci_ext/object.hpp"
 
 namespace game
 {
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
-
+	const int DiceManager::JUDGE[3][3]
+	{
+	//		  G  C  P
+	/*G*/	{ 0, 1,-1},
+	/*C*/	{-1, 0, 1},
+	/*P*/	{ 1,-1, 0}
+	};
 
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
+	
+	int DiceManager::getAttackJudge(int player, int enemy){
+		return JUDGE[player][enemy];
+	}
+	
+	
 	void DiceManager::key()
 	{
 		if(gplib::input::CheckPush(gplib::input::KEY_LEFT))
@@ -48,9 +61,9 @@ namespace game
 				if (i == turnPlayer_ && j == no)
 					continue;
 
-				if ((dicepos[turnPlayer_][no] + pos) == dicepos[i][no])
+				if ((dicepos[turnPlayer_][no] + pos).x() == dicepos[i][no].x() 
+					&& (dicepos[turnPlayer_][no] + pos).y() == dicepos[i][no].y())
 				{
-					
 					return;
 				}
 			}
@@ -160,8 +173,7 @@ namespace game
 				else
 				{
 					gplib::font::Draw_FontTextNC(500 + (i * 300), 100 + 30 * j, 0.f, str, ARGB(255, 0, 0, 0), 0);
-				}
-				
+				}	
 			}
 		}
 		gplib::graph::Draw_2DRefresh();//tuika
@@ -179,4 +191,17 @@ namespace game
 		DiceManager::SetMasu();
 	}
 
+	void DiceManager::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)
+	{
+
+		if (msg == "turn")
+		{
+			ChangeTurn(num);
+		}
+		if (msg == "phase")
+		{
+
+		}
+
+	}
 }

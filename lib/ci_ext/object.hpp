@@ -600,10 +600,69 @@ public:
   }
 
 //-----------------------------------------------------------------------
-//メッセージ送信（未実装）
+//メッセージ送信 (2015/04/16,maruyama)
 //-----------------------------------------------------------------------
-  virtual int postMsg(std::weak_ptr<Object>& receiver, const std::string& msg) { return receiver.lock()->receiveMsg(selfPtr(), msg); }
-  virtual int  receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg) { return 0; }
+
+  virtual void receiveMsg(std::weak_ptr<Object>& sender,const std::string& msg){ }
+  virtual void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg,const int num){ }
+
+  void postMsg(std::weak_ptr<Object>& receiver, const std::string& msg){
+	  if (isActive(receiver)) {
+		  receiver.lock()->receiveMsg(selfPtr(), msg);
+	  }
+  }
+  void postMsg(std::weak_ptr<Object>& receiver, const std::string& msg, const int num){
+	  if (isActive(receiver)) {
+		  receiver.lock()->receiveMsg(selfPtr(), msg, num);
+	  }
+  }
+
+  void postMsgAllChildren(const std::string& msg) {
+	  for (auto child : children_) {
+		  if (child->isRunning()) {
+			  std::weak_ptr<Object> obj = child;
+			  postMsg(obj, msg);
+			  child.get()->postMsgAllChildren(msg);
+		  }
+	  }
+  }
+  void postMsgAllChildren(const std::string& msg, const int num) {
+	  for (auto child : children_) {
+		  if (child->isRunning()) {
+			  std::weak_ptr<Object> obj = child;
+			  postMsg(obj, msg, num);
+			  child.get()->postMsgAllChildren(msg, num);
+		  }
+	  }
+  }
+
+  void postMsgCurrentAndAllChildren(const std::string& msg) {
+	  receiveMsg(selfPtr(), msg);
+
+	  for (auto child : children_) {
+		  if (child->isRunning()) {
+			  std::weak_ptr<Object> obj = child;
+			  postMsg(obj, msg);
+			  child->postMsgAllChildren(msg);
+		  }
+	  }
+  }
+  void postMsgCurrentAndAllChildren(const std::string& msg,const int num) {
+	  receiveMsg(selfPtr(), msg, num);
+
+	  for (auto child : children_) {
+		  if (child->isRunning()) {
+			  std::weak_ptr<Object> obj = child;
+			  postMsg(obj, msg, num);
+			  child->postMsgAllChildren(msg, num);
+		  }
+	  }
+  }
+
+  // 有効かつrun状態であればtrue
+  static bool isActive(std::weak_ptr<Object> object) {
+	  return !object.expired() && object.lock()->isRunning();
+  }
 
 //-----------------------------------------------------------------------
 //render関連

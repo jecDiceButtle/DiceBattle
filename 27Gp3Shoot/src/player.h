@@ -76,6 +76,14 @@ public:
 	*/
 	void CostReset(const int id);
 
+	/*
+		@brief							メッセージ読み取り
+		@param[in] sender				送り主ポインタ
+		@param[in] msg					メッセージ（文字列）
+		@param[in] num					メッセージ（数値）
+		@return							なし
+	*/
+	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg,const int num) override;
 
 };
 

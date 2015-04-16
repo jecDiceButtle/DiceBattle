@@ -14,6 +14,8 @@ class DiceManager : public ci_ext::Object
 	//*************************************************//
 private:
 
+	static const int JUDGE[3][3];						//判定
+
 	//*************************************************//
 	//　変数
 	//*************************************************//
@@ -48,6 +50,14 @@ private:
 	void MovingPos(const int no, const ci_ext::Vec3i& pos);	
 
 
+	/*
+		@brief			勝敗判定
+		@param			なし
+		@return			勝敗結果		-1:敗北 0:あいこ 1:勝利
+	*/
+	int getAttackJudge(int player, int enemy);
+
+
 public:
 
 	/*
@@ -69,9 +79,6 @@ public:
 	//tuika
 	void SetMasu();
 
-
-
-
 	/*
 		@brief							サイコロ作成
 		@return							なし
@@ -90,6 +97,15 @@ public:
 		@return							なし
 	*/
 	void update() override;
+
+	/*
+		@brief							メッセージ読み取り
+		@param[in] sender				送り主ポインタ
+		@param[in] msg					メッセージ（文字列）
+		@param[in] num					メッセージ（数値）
+		@return							なし
+	*/
+	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg,const int num) override;
 
 
 };

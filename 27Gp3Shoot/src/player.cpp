@@ -63,4 +63,18 @@ namespace game
 		}
 	}
 
+	void Player::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)
+	{
+
+		if (msg == "turn")
+		{
+			CostReset(num);
+		}
+		if (msg == "phase")
+		{
+
+		}
+
+	}
+
 }

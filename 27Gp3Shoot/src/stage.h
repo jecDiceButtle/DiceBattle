@@ -45,7 +45,7 @@ namespace game
 		//*************************************************//
 
 	private:
-		static const int JUDGE[3][3];
+		
 
 		bool		phaseinit_;						// フェイズの更新フラグ
 
@@ -69,12 +69,7 @@ namespace game
 
 		CSceneStage(const std::string& objectName);
 
-		/*
-			@brief			勝敗判定
-			@param			なし
-			@return			勝敗結果		-1:敗北 0:あいこ 1:勝利
-		*/
-		int getAttackJudge(int player, int enemy);
+		
 		
 
 		/*

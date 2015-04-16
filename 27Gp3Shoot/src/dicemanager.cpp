@@ -2,17 +2,37 @@
 #include "../../lib/gplib.h"
 #include "dice.h"
 #include "stage.h"
+#include "../../lib/ci_ext/object.hpp"
 
 namespace game
 {
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
-
+	const int DiceManager::JUDGE[3][3]
+	{
+	//		  G  C  P
+	/*G*/	{ 0, 1,-1},
+	/*C*/	{-1, 0, 1},
+	/*P*/	{ 1,-1, 0}
+	};
 
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
+	
+	int DiceManager::getAttackJudge(int player, int enemy){
+		return JUDGE[player][enemy];
+	}
+	
+	std::weak_ptr<ci_ext::Object> DiceManager::getDicePtr(const int player, const int id)
+	{
+		std::string str = "dice_p" + std::to_string(player) + "_no" + std::to_string(id);
+
+		return getObjectFromChildren(str);
+	}
+
+	
 	void DiceManager::key()
 	{
 		if(gplib::input::CheckPush(gplib::input::KEY_LEFT))
@@ -41,6 +61,11 @@ namespace game
 
 	void DiceManager::MovingPos(const int no, const ci_ext::Vec3i& pos)
 	{
+		auto dice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, no));
+		//待機中以外は移動不可
+		if (!dice->isIdoling()) 
+			return;
+
 		for (int i = 0; i < dicepos.size(); i++)	//プレイヤー
 		{
 			for (int j = 0; j < dicepos[i].size(); j++)	//ダイス
@@ -48,9 +73,9 @@ namespace game
 				if (i == turnPlayer_ && j == no)
 					continue;
 
-				if ((dicepos[turnPlayer_][no] + pos) == dicepos[i][no])
+				if ((dicepos[turnPlayer_][no] + pos).x() == dicepos[i][j].x() 
+					&& (dicepos[turnPlayer_][no] + pos).y() == dicepos[i][j].y())
 				{
-					
 					return;
 				}
 			}
@@ -61,6 +86,10 @@ namespace game
 		if (stage->checkMovableDice((dicepos[turnPlayer_][no] + pos)))
 		{
 			dicepos[turnPlayer_][no].offset(pos.x(),pos.y());
+
+			auto dice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, selectDice_));
+			
+			dice->Move(pos, dicepos[turnPlayer_][no]);
 		}
 
 
@@ -74,21 +103,6 @@ namespace game
 	{
 		turnPlayer_ = playerID;
 		selectDice_ = 0;
-	}
-
-	//tuika
-	void DiceManager::SetMasu()
-	{
-		for (int i = 0; i < 2; i++)	//プレイヤー
-		{
-			for (int j = 0; j < 3; j++)	//ダイスの数
-			{
-				int num = i * 3 + j;
-				auto dice = ci_ext::weak_to_shared<Dice>(p_dice[num]);
-				dice->setMasu(dicepos[i][j].x(), dicepos[i][j].y());
-			}
-		}
-
 	}
 
 	//**************************************************************************************//
@@ -113,9 +127,8 @@ namespace game
 		{
 			for (int j = 0; j < 3; j++)	//ダイスの数
 			{
-				/*std::string str = "dice_player" + std::to_string(i+1) + "_no" + std::to_string(j);*/
-				auto ptr = insertAsChild(new game::Dice("dice", i, j));
-				p_dice.push_back(ptr);
+				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
+				auto ptr = insertAsChild(new game::Dice(str, ci_ext::Vec3i(i, j, 0)));
 			}
 		}
 
@@ -160,8 +173,7 @@ namespace game
 				else
 				{
 					gplib::font::Draw_FontTextNC(500 + (i * 300), 100 + 30 * j, 0.f, str, ARGB(255, 0, 0, 0), 0);
-				}
-				
+				}	
 			}
 		}
 		gplib::graph::Draw_2DRefresh();//tuika
@@ -175,8 +187,18 @@ namespace game
 	{
 		key();
 
-		//tuika
-		DiceManager::SetMasu();
 	}
 
+	void DiceManager::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)
+	{
+
+		if (msg == "turn")
+		{
+			ChangeTurn(num);
+		}
+		if (msg == "phase")
+		{
+
+		}
+	}
 }

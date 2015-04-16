@@ -112,6 +112,7 @@
     <ClInclude Include="..\lib\dx_media_\mesh_manager.h" />
     <ClInclude Include="..\lib\dx_media_\texture_manager.h" />
     <ClInclude Include="..\lib\gplib.h" />
+    <ClInclude Include="src\back.h" />
     <ClInclude Include="src\board.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\dice.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="src\easing.h" />
     <ClInclude Include="src\effect.h" />
     <ClInclude Include="src\effect3D.h" />
+    <ClInclude Include="src\monster.h" />
     <ClInclude Include="src\movableObject.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\script.hpp" />
@@ -141,6 +143,7 @@
     <ClCompile Include="..\lib\dx_media_\mesh_manager.cpp" />
     <ClCompile Include="..\lib\dx_media_\texture_manager.cpp" />
     <ClCompile Include="..\lib\gplib.cpp" />
+    <ClCompile Include="src\back.cpp" />
     <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\dice.cpp" />
@@ -149,6 +152,7 @@
     <ClCompile Include="src\effect.cpp" />
     <ClCompile Include="src\effect3D.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\monster.cpp" />
     <ClCompile Include="src\movableObject.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\stage.cpp" />

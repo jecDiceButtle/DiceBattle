@@ -23,8 +23,6 @@ private:
 
 	std::weak_ptr<ci_ext::Object> p_parent;				// 親のポインタ
 
-	std::vector<std::weak_ptr<ci_ext::Object>> p_dice;	// ダイスオブジェクトのポインタ
-
 	std::vector<std::vector<ci_ext::Vec3i>> dicepos;	// ダイスオブジェクトの座標（前プレイヤー:後ダイス）
 
 	int	turnPlayer_;									// 現在のターンプレイヤー
@@ -58,6 +56,15 @@ private:
 	int getAttackJudge(int player, int enemy);
 
 
+	/*
+		@brief							ダイスオブジェクトの取得
+		@param[in] player				ダイスの配列
+		@param[in] id					識別番号
+		@return							オブジェクトポインタ
+	*/
+	std::weak_ptr<Object> getDicePtr(const int player,const int id);
+
+
 public:
 
 	/*
@@ -77,7 +84,7 @@ public:
 	DiceManager(const std::string& objectName, const std::weak_ptr<Object> ptr);
 
 	//tuika
-	void SetMasu();
+	//void SetMasu();
 
 	/*
 		@brief							サイコロ作成

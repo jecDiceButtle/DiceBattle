@@ -23,69 +23,58 @@ namespace game
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
-	//float Yaw = 0.f, Pit = 0.f, Roll = 0.f;
+
 
 
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
 
-	Dice::Dice(const std::string& objectName, const int playerid, const int diceid)
-		:
-		MovableObject(
-		DrawObjf(objectName)
-		),
-		playerID_(playerid),
-		diceID_(diceid),
-		masuX(3),
-		masuY(3)
+	//===================================
+	//	アクセサ
+	//===================================
+	bool Dice::isIdoling()
 	{
-		yy = 5.0f;
-		
+		return state_ == IDOL;
 	}
+	
+	void Dice::Move(const Vec3i& dir,const Vec3i& pos)
+	{
+		state_ = MOVE;
+
+		if (dir.x() < 0) dir_ = LEFT;
+		if (dir.x() > 0) dir_ = RIGHT;
+		if (dir.y() < 0) dir_ = FOWARD;
+		if (dir.y() > 0) dir_ = BACK;
+
+
+		setMasu(masuX + dir.x(), masuY + dir.y());
+
+		//とりあえず45フレームで移動しきる
+		count_ = 45;
+		add_.set((((pos.x() - 3) * 10) - pos_.x()) / 45.f, 0.f, (((pos.y() - 3) * 10) -pos_.z()) / 45.f);
+		
+
+
+	}
+	
+	//===================================
 
 	int Dice::getTopType(){
 		return num[0];
 	}
 
-	int Dice::getId_Player(){
-		return playerID_;
-	}
-	int Dice::getId_Dice(){
-		return diceID_;
-	}
-
 
 	float Dice::getDicePosX()
 	{
-		xx = ((masuX - 3) * 10);
-		return xx;
+		pos_.x(((masuX - 3) * 10));
+		return pos_.x();
 	}
 	float Dice::getDicePosY()
 	{
-		zz = ((masuY - 3) * 10);
-		return zz;
+		pos_.z(((masuY - 3) * 10));
+		return pos_.z();
 	}
-
-	//////////////////////
-	/*float Set_Yaw()
-	{
-		Yaw += 10.f;
-		return Yaw;
-	}
-
-	float Set_Pic()
-	{
-		Pit += 10.f;
-		return Pit;
-	}
-
-	float Set_Roll()
-	{
-		Roll += 10.f;
-		return Roll;
-	}*/
-	///////////////////////
 	void Dice::swap(DIRECT dir){
 
 		TYPE Numkeep = num[0];
@@ -122,48 +111,77 @@ namespace game
 		masuY = y;
 	}
 
-	/////////////////////////////////////
-	//俺ゾーン
-	/////////////////////////////////////
 
-	void calc()
+	void Dice::Moving()
+	{
+		pos_.offset(add_);
+
+		if (--count_ < 0)
+		{
+			getDicePosX();
+			getDicePosY();
+
+			state_ = IDOL;
+		}
+
+	}
+	void Dice::Idol()
 	{
 
-
+	}
+	void Dice::Attack()
+	{
 
 	}
 
+	//**************************************************************************************//
+	//デフォルト関数
+	//**************************************************************************************//
+
+	Dice::Dice(const std::string& objectName,const ci_ext::Vec3i &pos)
+		:
+		MovableObject(
+		DrawObjf(objectName)
+		),
+		masuX(pos.x()),
+		masuY(pos.y()),
+		state_(IDOL),
+		dispstate_(DICE)
+	{
+		getDicePosX();
+		getDicePosY();
+		pos_.y(5.f);
+
+	}
 	void Dice::render()
 	{
 		ci_ext::Vec3f angle(0, 0, 0);
 		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
-		ci_ext::Vec3f pos(xx, yy, zz);
-		meshManage->drawMesh(pos, "dice", angle, ARGB(255, 200, 200, 200), scale);
+		meshManage->drawMesh(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale);
 	}
 
 	void Dice::update()
 	{
-		getDicePosY();
-		getDicePosX();
-		//if (gplib::input::CheckPush(gplib::input::KEY_UP))
-		//{
-		//	masuY -= 1;
-		//	getDicePosY();
-		//}
-		//if (gplib::input::CheckPush(gplib::input::KEY_DOWN))
-		//{
-		//	masuY += 1;
-		//	getDicePosY();
-		//}
-		//if (gplib::input::CheckPush(gplib::input::KEY_LEFT))
-		//{
-		//	masuX -= 1;
-		//	getDicePosX();
-		//}
-		//if (gplib::input::CheckPush(gplib::input::KEY_RIGHT))
-		//{
-		//	masuX += 1;
-		//	getDicePosX();
-		//}
+		/*getDicePosY();
+		getDicePosX();*/
+
+		switch (state_)
+		{
+		case game::Dice::DEAD:
+			
+			break;
+		case game::Dice::IDOL:
+			Idol();
+			break;
+
+		case game::Dice::MOVE:
+			Moving();
+			break;
+
+		case game::Dice::ATTACK:
+			Attack();
+			break;
+		}
+
 	}
 }

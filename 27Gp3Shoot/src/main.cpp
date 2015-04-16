@@ -194,7 +194,9 @@ void gplib::system::OnCreate()
 	meshManage->loadMesh("dice", "dice.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
 	meshManage->loadMesh("board", "board.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
 
-
+	meshManage->loadMesh("kuzira", "kuzira.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
+	meshManage->loadMesh("kinoko", "kinoko.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
+	meshManage->loadMesh("tori", "tori.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
 }
 
 void gplib::system::OnDestroy(){

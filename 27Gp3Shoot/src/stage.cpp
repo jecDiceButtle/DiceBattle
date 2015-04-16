@@ -10,6 +10,7 @@
 
 //tuika
 #include "camera.h"
+#include "back.h"
 
 #include <stdio.h>
 
@@ -90,6 +91,9 @@ namespace game
 		p_player = insertAsChild(new Player("player", this->selfPtr()));
 		p_dm = insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
 		p_camera = insertAsChild(new Camera("camera"));
+
+		insertAsChild(new Back("stageback",0));
+
 	}
 	void CSceneStage::render()
 	{

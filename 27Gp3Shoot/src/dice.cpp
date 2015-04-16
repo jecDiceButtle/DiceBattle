@@ -1,6 +1,7 @@
 #include "dice.h"
 #include "../../lib/gplib.h"
-
+//tuika
+#include "monster.h"
 
 
 #include "movableObject.h"
@@ -158,6 +159,8 @@ namespace game
 		ci_ext::Vec3f angle(0, 0, 0);
 		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
 		meshManage->drawMesh(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale);
+
+		//insertAsChild(new Monster("monster", pos, 0));
 	}
 
 	void Dice::update()

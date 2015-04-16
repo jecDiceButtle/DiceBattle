@@ -26,7 +26,8 @@ private:
 	//　変数
 	//*************************************************//
 private:
-
+	int monster_num;
+	ci_ext::Vec3f m_pos;
 
 	//*************************************************//
 	//　関数
@@ -41,7 +42,9 @@ public:
 		@param[in]	objectName			オブジェクト名
 		@return							なし
 	*/
-	Monster(const std::string& objectName);
+
+	//monsternum=0(KUJIRA)monsternum=1(KINOKO)monsternum=2(TORI)
+	Monster(const std::string& objectName, const ci_ext::Vec3f pos, const int monsternum);
 
 
 	/*

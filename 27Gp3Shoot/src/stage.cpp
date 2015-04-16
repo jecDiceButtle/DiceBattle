@@ -108,7 +108,7 @@ namespace game
 		//tuika
 		p_camera = insertAsChild(new Camera("camera"));
 
-		p_back = insertAsChild(new Back("stageback"));
+		p_back = insertAsChild(new Back("stageback",0));
 #endif
 		
 	}

@@ -11,7 +11,6 @@ namespace game
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
-
 	
 
 	//**************************************************************************************//
@@ -19,9 +18,11 @@ namespace game
 	//**************************************************************************************//
 
 
-	Back::Back(const std::string& objectName)
+	
+	Back::Back(const std::string& objectName, const int backnum)
 		:
-		Object(objectName)
+		Object(objectName),
+		back_num(backnum)
 	{
 		gplib::graph::Draw_LoadObject("StageBack", "res/gra/StageBack.png");
 	}
@@ -29,7 +30,13 @@ namespace game
 	void Back::render()
 	{
 		gplib::graph::Draw_2DClear();
-		gplib::graph::Draw_GraphicsLeftTop(0.f, 0.f, 1.f, "StageBack", 0, 0, gplib::system::WINW, gplib::system::WINH);
+
+		switch (back_num){
+			case 0:
+				gplib::graph::Draw_GraphicsLeftTop(0.f, 0.f, 1.f, "StageBack", 0, 0, gplib::system::WINW, gplib::system::WINH);
+				break;
+	}
+		
 		gplib::graph::Draw_2DRefresh();
 	}
 

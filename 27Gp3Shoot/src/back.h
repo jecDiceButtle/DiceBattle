@@ -14,12 +14,12 @@ namespace game
 private:
 	
 
-
 	//*************************************************//
 	//　変数
 	//*************************************************//
 private:
 
+	int back_num;
 
 	//*************************************************//
 	//　関数
@@ -34,7 +34,8 @@ public:
 		@param[in]	objectName			オブジェクト名
 		@return							なし
 	*/
-	Back(const std::string& objectName);
+	//backnum=0(STAGEBACK)
+	Back(const std::string& objectName, const int backnum);
 
 
 	/*

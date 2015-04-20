@@ -23,7 +23,7 @@ private:
 
 	std::weak_ptr<ci_ext::Object> p_parent;				// 親のポインタ
 
-	std::vector<std::vector<ci_ext::Vec3i>> dicepos;	// ダイスオブジェクトの座標（前プレイヤー:後ダイス）
+	std::vector<std::vector<ci_ext::Vec3i>> dicemasu;	// ダイスオブジェクトの座標（前プレイヤー:後ダイス）
 
 	int	turnPlayer_;									// 現在のターンプレイヤー
 	int selectDice_;									// 指定しているダイス

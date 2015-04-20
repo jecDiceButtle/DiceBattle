@@ -55,6 +55,9 @@ private:
 	STATE state_;										// 行動状態
 	DISPSTATE dispstate_;								// 描画状態
 	
+	//追加
+	std::weak_ptr<ci_ext::Object> p_mons;			//モンスターのポインタ
+
 	//dice座標
 	//float xx;											//ダイスのX座標
 	//float yy;											//ダイスのY座標
@@ -94,6 +97,7 @@ private:
 public:
 	Dice(const std::string& objectName, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
 
+	void init()	override;
 	void render() override;
 	void update() override;
 

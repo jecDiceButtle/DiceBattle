@@ -11,6 +11,7 @@
 //tuika
 #include "camera.h"
 #include "back.h"
+#include "ui.h"
 
 #include <stdio.h>
 
@@ -92,7 +93,7 @@ namespace game
 		p_dm = insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
 		p_camera = insertAsChild(new Camera("camera"));
 
-		insertAsChild(new Back("stageback",0));
+		insertAsChild(new Back("stageback","TitleBack"));
 
 	}
 	void CSceneStage::render()
@@ -148,6 +149,14 @@ namespace game
 	}
 	void CSceneStage::update()
 	{
+
+
+		if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
+		{
+			p_ui = insertAsChild(new UI("UI", game::UI::UITYPE::PHASE, gplib::system::WINW / 2, gplib::system::WINH / 2));
+		}
+
+
 		switch (state_)
 		{
 			//=============================================================================

@@ -50,6 +50,9 @@
     <Filter Include="プログラムファイル\game\Monster">
       <UniqueIdentifier>{d3d3008a-e19d-4868-a84f-c7873fc7e016}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\game\UI">
+      <UniqueIdentifier>{41857cdb-a2ef-47ba-a897-d5bce9f427aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -163,9 +166,6 @@
     <ClInclude Include="src\timer.h">
       <Filter>プログラムファイル\utitlty</Filter>
     </ClInclude>
-    <ClInclude Include="src\player.h">
-      <Filter>プログラムファイル\game\Player</Filter>
-    </ClInclude>
     <ClInclude Include="src\dicemanager.h">
       <Filter>プログラムファイル\game\DiceManager</Filter>
     </ClInclude>
@@ -183,6 +183,12 @@
     </ClInclude>
     <ClInclude Include="src\monster.h">
       <Filter>プログラムファイル\game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui.h">
+      <Filter>プログラムファイル\game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player.h">
+      <Filter>プログラムファイル\game\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +258,6 @@
     <ClCompile Include="src\stage.cpp">
       <Filter>プログラムファイル\Stage1</Filter>
     </ClCompile>
-    <ClCompile Include="src\player.cpp">
-      <Filter>プログラムファイル\game\Player</Filter>
-    </ClCompile>
     <ClCompile Include="src\dicemanager.cpp">
       <Filter>プログラムファイル\game\DiceManager</Filter>
     </ClCompile>
@@ -272,6 +275,12 @@
     </ClCompile>
     <ClCompile Include="src\monster.cpp">
       <Filter>プログラムファイル\game\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui.cpp">
+      <Filter>プログラムファイル\game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player.cpp">
+      <Filter>プログラムファイル\game\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

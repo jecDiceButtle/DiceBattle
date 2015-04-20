@@ -101,6 +101,7 @@ public:
 	void render() override;
 	void update() override;
 
+
 	float getDicePosX();
 	float getDicePosY(); 
 

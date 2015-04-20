@@ -154,9 +154,11 @@ namespace game
 		pos_.y(5.f);
 
 	}
+
 	void Dice::init(){
 		p_mons=insertAsChild(new Monster("monster", pos_, 0,Vec3f(0.f,0.f,0.f)));
 	}
+
 	void Dice::render()
 	{
 		ci_ext::Vec3f angle(0, 0, 0);

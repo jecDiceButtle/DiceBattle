@@ -93,9 +93,10 @@ private:
 
 public:
 	Dice(const std::string& objectName, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
-
+	void init()	override;
 	void render() override;
 	void update() override;
+
 
 	float getDicePosX();
 	float getDicePosY(); 

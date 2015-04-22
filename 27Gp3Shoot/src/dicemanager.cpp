@@ -59,22 +59,29 @@ namespace game
 
 	}
 
-	void DiceManager::MovingPos(const int no, const ci_ext::Vec3i& pos)
+	void DiceManager::MovingPos(const int no, const ci_ext::Vec3i& dir)
 	{
+		//=============================
+		// ダイスへ移動できるか確認
+		//=============================
 		auto dice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, no));
 		//待機中以外は移動不可
 		if (!dice->isIdoling()) 
 			return;
 
-		for (int i = 0; i < dicepos.size(); i++)	//プレイヤー
+		//=============================
+		// 隣り合ったダイスを確認
+		//=============================
+
+		for (int i = 0; i < dicemasu.size(); i++)	//プレイヤー
 		{
-			for (int j = 0; j < dicepos[i].size(); j++)	//ダイス
+			for (int j = 0; j < dicemasu[i].size(); j++)	//ダイス
 			{
 				if (i == turnPlayer_ && j == no)
 					continue;
 
-				if ((dicepos[turnPlayer_][no] + pos).x() == dicepos[i][j].x() 
-					&& (dicepos[turnPlayer_][no] + pos).y() == dicepos[i][j].y())
+				if ((dicemasu[turnPlayer_][no] + dir).x() == dicemasu[i][j].x() 
+					&& (dicemasu[turnPlayer_][no] + dir).y() == dicemasu[i][j].y())
 				{
 					return;
 				}
@@ -82,14 +89,18 @@ namespace game
 			
 		}
 
+		//=============================
+		// コストの確認とダイスの移動
+		//=============================
+
 		auto stage = ci_ext::weak_to_shared<CSceneStage>(p_parent);
-		if (stage->checkMovableDice((dicepos[turnPlayer_][no] + pos)))
+		if (stage->checkMovableDice((dicemasu[turnPlayer_][no] + dir)))
 		{
-			dicepos[turnPlayer_][no].offset(pos.x(),pos.y());
+			dicemasu[turnPlayer_][no].offset(dir.x(),dir.y());
 
 			auto dice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, selectDice_));
 			
-			dice->Move(pos, dicepos[turnPlayer_][no]);
+			dice->Move(dir, dicemasu[turnPlayer_][no]);
 		}
 
 
@@ -132,7 +143,7 @@ namespace game
 			}
 		}
 
-		// ダイスのボード座標の初期化
+		// ダイスのマス座標の初期化
 		for (int i = 0; i < 2; i++)
 		{
 			std::vector<ci_ext::Vec3i> temp;
@@ -140,31 +151,31 @@ namespace game
 			{
 				temp.push_back(ci_ext::Vec3i(i, j, 0));
 			}
-			dicepos.push_back(temp);
+			dicemasu.push_back(temp);
 		}
 	}
 	
 
 	void DiceManager::render()
 	{
-#if _DEBUG
+#ifdef _DEBUG
 		gplib::graph::Draw_2DClear();//tuika
 		std::string str = "現在プレイヤー :" + std::to_string(turnPlayer_) +
 			",選択ダイス :" + std::to_string(selectDice_) + "  X:" +
-			std::to_string(dicepos[turnPlayer_][selectDice_].x()) +
-			", Y:" + std::to_string(dicepos[turnPlayer_][selectDice_].y());
+			std::to_string(dicemasu[turnPlayer_][selectDice_].x()) +
+			", Y:" + std::to_string(dicemasu[turnPlayer_][selectDice_].y());
 
 		gplib::font::Draw_FontTextNC(100, 100, 0.f, str, ARGB(255, 0, 0, 0), 0);
 
 
-		for (int i = 0; i < dicepos.size(); i++)
+		for (int i = 0; i < dicemasu.size(); i++)
 		{
-			for (int j = 0; j < dicepos[i].size(); j++)
+			for (int j = 0; j < dicemasu[i].size(); j++)
 			{
 				std::string str = "プレイヤー" + std::to_string(i) +
 					",  ダイス" + std::to_string(j) + "  X:" +
-					std::to_string(dicepos[i][j].x()) +
-					", Y:" + std::to_string(dicepos[i][j].y());
+					std::to_string(dicemasu[i][j].x()) +
+					", Y:" + std::to_string(dicemasu[i][j].y());
 
 				if (i == turnPlayer_ && j == selectDice_)
 				{
@@ -198,7 +209,7 @@ namespace game
 		}
 		if (msg == "phase")
 		{
-
+			
 		}
 	}
 }

@@ -23,6 +23,7 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
+	const float Monster::OFFSETY = 5.f;
 
 
 	//**************************************************************************************//
@@ -49,15 +50,17 @@ namespace game
 		//m_angle = Vec3f(0.f, 0.f, 0.f);
 		Vec3f scale(10.f, 10.f, 10.f);
 
+		auto pos = m_pos.offset(0.f, OFFSETY, 0.f);
+
 		switch (monster_num){
 		case 0:
-			meshManage->drawMesh(m_pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		case 1:
-			meshManage->drawMesh(m_pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		case 2:
-			meshManage->drawMesh(m_pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		}
 	}

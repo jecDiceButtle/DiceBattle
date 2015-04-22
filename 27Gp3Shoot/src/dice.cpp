@@ -53,7 +53,7 @@ namespace game
 
 		//Ç∆ÇËÇ†Ç¶Ç∏45ÉtÉåÅ[ÉÄÇ≈à⁄ìÆÇµÇ´ÇÈ
 		count_ = 45;
-		add_.set((((pos.x() - 3) * 10) - pos_.x()) / 45.f, 0.f, (((pos.y() - 3) * 10) -pos_.z()) / 45.f);
+		add_.set((((pos.x() - 2) * 10) - pos_.x()) / 45.f, 0.f, (((pos.y() - 2) * 10) -pos_.z()) / 45.f);
 		
 
 
@@ -68,12 +68,12 @@ namespace game
 
 	float Dice::getDicePosX()
 	{
-		pos_.x(((masuX - 3) * 10));
+		pos_.x(((masuX - 2) * 10));
 		return pos_.x();
 	}
 	float Dice::getDicePosY()
 	{
-		pos_.z(((masuY - 3) * 10));
+		pos_.z(((masuY - 2) * 10));
 		return pos_.z();
 	}
 	void Dice::swap(DIRECT dir){

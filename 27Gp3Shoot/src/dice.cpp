@@ -154,10 +154,9 @@ namespace game
 		pos_.y(5.f);
 
 	}
-	void Dice::init()
-	{
-		insertAsChild(new Monster("monster", pos_, 0));
 
+	void Dice::init(){
+		p_mons=insertAsChild(new Monster("monster", pos_, 0,Vec3f(0.f,0.f,0.f)));
 	}
 
 	void Dice::render()
@@ -166,7 +165,9 @@ namespace game
 		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
 		meshManage->drawMesh(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale);
 
-		//insertAsChild(new Monster("monster", pos, 0));
+		//’Ç‰Á
+		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
+		monsobj->monster_move(pos_, angle);
 	}
 
 	void Dice::update()

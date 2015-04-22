@@ -17,6 +17,12 @@ namespace game
 	/*P*/	{ 1,-1, 0}
 	};
 
+	const ci_ext::Vec3i DiceManager::STARTMASU[2][2] =
+	{
+		{ ci_ext::Vec3i(1, 0, 0), ci_ext::Vec3i(3, 0, 0) },
+		{ ci_ext::Vec3i(1, 4, 0), ci_ext::Vec3i(3, 4, 0) }
+	};
+
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
@@ -54,7 +60,7 @@ namespace game
 		if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 		{
 			//ダイスオブジェクトに生死を聞くこと。
-			(selectDice_ += 1) %= 3;
+			(selectDice_ += 1) %= 2;
 		}
 
 	}
@@ -136,10 +142,10 @@ namespace game
 		//ダイスの生成
 		for (int i = 0; i < 2; i++)	//プレイヤー
 		{
-			for (int j = 0; j < 3; j++)	//ダイスの数
+			for (int j = 0; j < 2; j++)	//ダイスの数
 			{
 				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
-				auto ptr = insertAsChild(new game::Dice(str, ci_ext::Vec3i(i, j, 0)));
+				auto ptr = insertAsChild(new game::Dice(str,STARTMASU[i][j]));
 			}
 		}
 
@@ -147,9 +153,9 @@ namespace game
 		for (int i = 0; i < 2; i++)
 		{
 			std::vector<ci_ext::Vec3i> temp;
-			for (int j = 0; j < 3; j++)
+			for (int j = 0; j < 2; j++)
 			{
-				temp.push_back(ci_ext::Vec3i(i, j, 0));
+				temp.push_back(STARTMASU[i][j]);
 			}
 			dicemasu.push_back(temp);
 		}

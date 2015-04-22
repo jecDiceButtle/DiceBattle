@@ -15,6 +15,8 @@ class DiceManager : public ci_ext::Object
 private:
 
 	static const int JUDGE[3][3];						//判定
+	static const ci_ext::Vec3i STARTMASU[2][2];			//ダイス初期位置
+
 
 	//*************************************************//
 	//　変数

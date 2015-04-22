@@ -32,6 +32,7 @@ namespace game
 		switch (type_)
 		{
 		case UITYPE::CUTIN:
+			flagset();
 			gplib::graph::Draw_LoadObject("Cutin", "res/gra/cutin.png");
 			easing::Create("cutin1", easing::EASINGTYPE::CUBICIN, gplib::system::WINW + 400, 640, 60);
 			easing::Create("cutin2", easing::EASINGTYPE::CUBICIN, 640, -300, 60);
@@ -124,10 +125,6 @@ namespace game
 		switch (type_)
 		{
 		case UITYPE::CUTIN:
-			if (gplib::input::CheckPush(gplib::input::KEY_F2))
-			{
-				flagset();
-			}
 			if (flag){
 				switch (state_)
 				{

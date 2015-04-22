@@ -150,13 +150,6 @@ namespace game
 	void CSceneStage::update()
 	{
 
-
-		if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
-		{
-			p_ui = insertAsChild(new UI("UI", game::UI::UITYPE::PHASE, gplib::system::WINW / 2, gplib::system::WINH / 2));
-		}
-
-
 		switch (state_)
 		{
 			//=============================================================================
@@ -170,6 +163,7 @@ namespace game
 				state_ = CSceneStage::STAGESTATE::PLAYING;
 				phase_ = PHASE::SUMMON;
 				turn_ = TURN::PLAYER1;
+				insertAsChild(new UI("UI", game::UI::UITYPE::CUTIN, gplib::system::WINW / 2, gplib::system::WINH / 2));
 			}
 			break;
 
@@ -182,6 +176,7 @@ namespace game
 			if (phaseinit_)
 			{
 				postMsgAllChildren("phase", (int)phase_);
+				insertAsChild(new UI("UI", game::UI::UITYPE::CUTIN, -500, gplib::system::WINH / 2));
 				phaseinit_ = false;
 			}
 

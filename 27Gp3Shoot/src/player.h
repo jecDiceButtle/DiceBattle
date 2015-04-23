@@ -18,8 +18,8 @@ private:
 	ci_ext::Vec3f pos_1P;
 	ci_ext::Vec3f pos_2P;
 
-	const int COST_W = 64;
-	const int COST_H = 128;
+	const int COST_W = 30;
+	const int COST_H = 30;
 	//80前後がベスト
 	const int COST_Space = 80;
 

@@ -69,14 +69,14 @@ namespace game
 			gplib::graph::Draw_Graphics(
 				pos_1P.ix() + COST_Space * i, pos_1P.iy(), pos_1P.z(),
 				"cost_back",
-				0, 0, COST_W, COST_H);
+				0, 0, COST_W, COST_H, 0.f, 2.0f, 2.0f);
 		}
 		for (int i = 0; i < cost[0]; i++)
 		{
 			gplib::graph::Draw_Graphics(
 				pos_1P.ix() + COST_Space * i, pos_1P.iy(), pos_1P.z(),
 				"cost",
-				0, 0, COST_W, COST_H);
+				0, 0, COST_W, COST_H, 0.f, 2.0f, 2.0f);
 		}
 		/////////////////////////////////
 		//player2
@@ -85,14 +85,14 @@ namespace game
 			gplib::graph::Draw_Graphics(
 				pos_2P.ix() + COST_Space * -i, pos_2P.iy(), pos_2P.z(),
 				"cost_back",
-				0, 0, COST_W, COST_H);
+				0, 0, COST_W, COST_H, 0.f, 2.0f, 2.0f);
 		}
 		for (int i = 0; i < cost[1]; i++)
 		{
 			gplib::graph::Draw_Graphics(
 				pos_2P.ix() + COST_Space * -i, pos_2P.iy(), pos_2P.z(),
 				"cost",
-				0, 0, COST_W, COST_H);
+				0, 0, COST_W, COST_H, 0.f, 2.0f, 2.0f);
 		}
 		///////////////////////////////////////////////
 

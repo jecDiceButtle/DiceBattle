@@ -38,6 +38,11 @@ namespace game
 	{
 		return state_ == IDOL;
 	}
+
+	bool Dice::isDead()
+	{
+		return state_ == DEAD;
+	}
 	
 	void Dice::Move(const Vec3i& dir,const Vec3i& pos)
 	{

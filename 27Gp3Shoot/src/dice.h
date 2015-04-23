@@ -108,8 +108,16 @@ public:
 	void swap(DIRECT dir);
 	int getTopType();
 
+
 	/*
-		@brief							アクセサ、待機中かどうか
+		@brief							アクセサ、状態の確認
+		@return							死亡中かどうか
+		@true							死亡中
+	*/
+	bool isDead();
+
+	/*
+		@brief							アクセサ、状態の確認
 		@return							待機中かどうか
 		@true							待機中
 	*/

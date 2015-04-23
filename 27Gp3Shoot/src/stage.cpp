@@ -31,6 +31,11 @@ namespace game
 
 	void CSceneStage::NextPhase()
 	{
+		//カットイン実行中はフェーズ変更をできなくする。
+		auto objects = getObjectsFromRoot({ "cutin" });
+		if (!objects.empty())
+			return;
+
 		phaseinit_ = true;
 
 		switch (phase_)
@@ -163,7 +168,8 @@ namespace game
 				state_ = CSceneStage::STAGESTATE::PLAYING;
 				phase_ = PHASE::SUMMON;
 				turn_ = TURN::PLAYER1;
-				insertAsChild(new UI("UI", game::UI::UITYPE::CUTIN, gplib::system::WINW / 2, gplib::system::WINH / 2));
+				phaseinit_ = true;
+				insertAsChild(new UI("cutin", game::UI::UITYPE::CUTIN, -500, gplib::system::WINH / 2));
 			}
 			break;
 
@@ -175,25 +181,19 @@ namespace game
 			//フェーズ送信処理
 			if (phaseinit_)
 			{
-				postMsgAllChildren("phase", (int)phase_);
-				insertAsChild(new UI("UI", game::UI::UITYPE::CUTIN, -500, gplib::system::WINH / 2));
+				std::string s_phase = "phase=" + std::to_string((int)phase_);
+				std::string s_turn = "player=" + std::to_string((int)turn_);
+
+				postMsgAllChildren(s_phase + "," + s_turn);
+				insertAsChild(new UI("cutin", game::UI::UITYPE::CUTIN, -500, gplib::system::WINH / 2));
 				phaseinit_ = false;
 			}
 
 			//プレイヤーターン交換処理
 			if (phase_ == PHASE::END)
 			{
-				if (turn_ == TURN::PLAYER1)
-				{
-					turn_ = TURN::PLAYER2;
-					NextPhase();
-				}
-				else if (turn_ == TURN::PLAYER2)
-				{
-					turn_ = TURN::PLAYER1;
-					NextPhase();
-				}
-				postMsgAllChildren("turn", (int)turn_);
+				turn_ = ((turn_ == TURN::PLAYER1) ? TURN::PLAYER2 : TURN::PLAYER1);
+				NextPhase();
 			}
 
 

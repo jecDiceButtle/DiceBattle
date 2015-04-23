@@ -34,7 +34,6 @@ namespace game
 	std::weak_ptr<ci_ext::Object> DiceManager::getDicePtr(const int player, const int id)
 	{
 		std::string str = "dice_p" + std::to_string(player) + "_no" + std::to_string(id);
-
 		return getObjectFromChildren(str);
 	}
 
@@ -60,7 +59,7 @@ namespace game
 		if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 		{
 			//ダイスオブジェクトに生死を聞くこと。
-			(selectDice_ += 1) %= 2;
+			(selectDice_ += 1) %= (int)dicemasu[turnPlayer_].size();
 		}
 
 	}
@@ -111,15 +110,13 @@ namespace game
 
 
 	}
-	/*
-		@brief							ターンの変更
-		@param[in]	playerID			プレイヤー識別番号
-		@return							なし
-	*/
 	void DiceManager::ChangeTurn(const int playerID)
 	{
-		turnPlayer_ = playerID;
-		selectDice_ = 0;
+		if (turnPlayer_ != playerID)
+		{
+			turnPlayer_ = playerID;
+			selectDice_ = 0;
+		}
 	}
 
 	//**************************************************************************************//
@@ -206,16 +203,42 @@ namespace game
 
 	}
 
-	void DiceManager::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)
+	//メッセージ受信
+	void DiceManager::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg)
 	{
+		//メッセージ分割
+		auto msgVec = gplib::text::split(msg, ",");
 
-		if (msg == "turn")
-		{
-			ChangeTurn(num);
-		}
-		if (msg == "phase")
-		{
+		for (auto ms : msgVec){
+			//さらに分割
+			auto mVec = gplib::text::split(ms, "=");
 			
-		}
+				if (mVec[0] == "player")
+				{
+					ChangeTurn(stoi(mVec[1]));
+				}
+				if (mVec[0] == "phase")
+				{
+					switch (stoi(mVec[1]))
+					{
+						//召還フェーズ
+					case 0: 
+
+						break;
+						//メインフェーズ
+					case 1:
+						break;
+						//バトルフェーズ
+					case 2:
+						break;
+						//エンドフェーズ
+					case 3:
+						break;
+					}
+				}
+			}
+		
+
+		
 	}
 }

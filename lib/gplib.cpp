@@ -3894,6 +3894,34 @@ void math::reverseRect(RECT& baseRect, int width)
 		width - (baseRect.left), baseRect.bottom);
 	CopyRect(&baseRect, &temp);
 }
+
+
+//---------------------------------------------------------------------------------------
+//文字列strからdelim区切りで文字を解析。分割文字列をvector<string>型で返す。
+//---------------------------------------------------------------------------------------
+
+std::vector<std::string> text::split(std::string str,const std::string& delim)
+{
+	std::vector<std::string> result;
+	int cutAt;
+	//delimまでのインデックスを検索
+	while ((cutAt = str.find_first_of(delim)) != str.npos)
+	{
+		if (cutAt > 0)
+		{
+			//文字列を取り出し
+			result.push_back(str.substr(0, cutAt));
+		}
+		//取り出した部分を削除
+		str = str.substr(cutAt + 1);
+	}
+	if (str.length() > 0)
+	{
+		result.push_back(str);
+	}
+	return result;
+}
+
 //********************************************************************//
 //
 //				End Of File

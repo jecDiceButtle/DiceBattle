@@ -114,7 +114,7 @@ public:
 		@param[in] num					メッセージ（数値）
 		@return							なし
 	*/
-	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg,const int num) override;
+	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg) override;
 
 
 };

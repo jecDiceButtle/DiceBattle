@@ -1,7 +1,7 @@
 #pragma once
 #include "../../lib/ci_ext/object.hpp"
-#include "../../lib/gplib.h"
 #include "../../lib/ci_ext/vec3.hpp"
+#include "../../lib/gplib.h"
 
 namespace game
 {
@@ -53,8 +53,10 @@ namespace game
 		std::weak_ptr<ci_ext::Object> p_board;		// ボードのポインタ
 		std::weak_ptr<ci_ext::Object> p_dm;			// ボードのポインタ
 
+
 		//tuika
 		std::weak_ptr<ci_ext::Object> p_camera;		// カメラのポインタ
+		std::weak_ptr<ci_ext::Object> p_ui;
 
 		TURN		turn_;							// プレイヤーターン
 		STAGESTATE	state_;							// 状態遷移

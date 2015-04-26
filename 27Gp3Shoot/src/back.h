@@ -18,8 +18,8 @@ private:
 	//　変数
 	//*************************************************//
 private:
-
-	int back_num;
+	int BackW, BackH;
+	std::string s_back;
 
 	//*************************************************//
 	//　関数
@@ -34,8 +34,9 @@ public:
 		@param[in]	objectName			オブジェクト名
 		@return							なし
 	*/
-	//backnum=0(STAGEBACK)
-	Back(const std::string& objectName, const int backnum);
+
+	//back=画像の名前を入れて！ StageBack,TitleBack
+	Back(const std::string& objectName, const std::string back);
 
 
 	/*

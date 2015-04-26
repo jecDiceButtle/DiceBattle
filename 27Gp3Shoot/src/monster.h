@@ -26,8 +26,13 @@ private:
 	//　変数
 	//*************************************************//
 private:
-	int monster_num;
-	ci_ext::Vec3f m_pos;
+	int monster_num;			//モンスターのナンバー(変更でモデル変更)
+	ci_ext::Vec3f m_pos;		//モンスターのpos(座標)
+	ci_ext::Vec3f m_angle;		//モンスターの向き
+
+	ci_ext::Vec3f movepos;			//モンスターの座標(関数用)
+	ci_ext::Vec3f moveangle;		//モンスターの向き(関数用)
+
 
 	//*************************************************//
 	//　関数
@@ -37,36 +42,20 @@ private:
 
 public:
 
-	/*
-		@brief							コンストラクタ
-		@param[in]	objectName			オブジェクト名
-		@return							なし
-	*/
+
 
 	//monsternum=0(KUJIRA)monsternum=1(KINOKO)monsternum=2(TORI)
-	Monster(const std::string& objectName, const ci_ext::Vec3f pos, const int monsternum);
+	Monster(const std::string& objectName, const ci_ext::Vec3f pos, const int monsternum, const ci_ext::Vec3f angle);
 
 
-	/*
-		@brief							描画
-		@return							なし
-	*/
+
 	void render() override;
 
-	/*
-		@brief							フレーム更新
-		@return							なし
-	*/
+
 	void update() override;
 
 
-	/*
-		@brief							座標の移動確認
-		@param[in]	pos					移動先の座標
-		@return							移動可能かどうか
-		@true							可
-		@false							不可
-	*/
+	void monster_move(ci_ext::Vec3f p,ci_ext::Vec3f a);//ポインタ使って座標移動&アングル
 
 
 

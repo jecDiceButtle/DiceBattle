@@ -8,6 +8,7 @@ namespace game
 
 
 
+
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
@@ -19,11 +20,12 @@ namespace game
 
 
 	
-	Back::Back(const std::string& objectName, const int backnum)
+	Back::Back(const std::string& objectName, const std::string back)
 		:
 		Object(objectName),
-		back_num(backnum)
+		s_back(back)
 	{
+		gplib::graph::Draw_LoadObject("TitleBack", "res/gra/TitleBack.png");
 		gplib::graph::Draw_LoadObject("StageBack", "res/gra/StageBack.png");
 	}
 
@@ -31,11 +33,13 @@ namespace game
 	{
 		gplib::graph::Draw_2DClear();
 
-		switch (back_num){
-			case 0:
-				gplib::graph::Draw_GraphicsLeftTop(0.f, 0.f, 1.f, "StageBack", 0, 0, gplib::system::WINW, gplib::system::WINH);
-				break;
-	}
+		if (s_back == "StageBack"){
+			gplib::graph::Draw_GraphicsLeftTop(0.f, 0.f, 1.f, s_back, 0, 0, 1980, 1080, 0.f, nullptr, (float)gplib::system::WINW / 1980.f, (float)gplib::system::WINH / 1080.f);
+		}
+		else if (s_back == "TitleBack"){
+			gplib::graph::Draw_GraphicsLeftTop(0.f, 0.f, 1.f, s_back, 0, 0, 1920, 1200, 0.f, nullptr, (float)gplib::system::WINW / 1920.f, (float)gplib::system::WINH / 1200.f);
+
+		}
 		
 		gplib::graph::Draw_2DRefresh();
 	}

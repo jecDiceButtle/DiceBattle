@@ -12,6 +12,15 @@ class Player : public ci_ext::Object
 	//*************************************************//
 private:
 	static const int DEFAULTCOST;
+	//追加要素　コストの描画関連
+	//std::string resname_;
+	ci_ext::Vec3f pos_1P;
+	ci_ext::Vec3f pos_2P;
+
+	const int COST_W = 30;
+	const int COST_H = 30;
+	//80前後がベスト
+	const int COST_Space = 80;
 
 	//追加要素　コストの描画関連
 	//std::string resname_;
@@ -86,14 +95,8 @@ public:
 	*/
 	void CostReset(const int id);
 
-	/*
-		@brief							メッセージ読み取り
-		@param[in] sender				送り主ポインタ
-		@param[in] msg					メッセージ（文字列）
-		@param[in] num					メッセージ（数値）
-		@return							なし
-	*/
-	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg,const int num) override;
+	void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)override;
+
 
 };
 

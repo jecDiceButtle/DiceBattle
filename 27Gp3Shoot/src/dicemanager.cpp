@@ -2,6 +2,8 @@
 #include "../../lib/gplib.h"
 #include "dice.h"
 #include "stage.h"
+#include "ui.h"
+
 #include "../../lib/ci_ext/object.hpp"
 
 namespace game
@@ -177,7 +179,7 @@ namespace game
 		{
 			bool inflag= false;				//挿入フラグ
 			pBattleDice temp;
-			temp.selectF = false;
+			temp.selectOffF = false;
 
 			//検索するダイスが攻撃可能かどうか（死んでないかどうか）
 			auto offdice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, i));
@@ -194,15 +196,13 @@ namespace game
 				for (int k = 0; k < 4; k++)							//方向の確認の回数
 				{
 					//隣り合っているか判定
-					if ((dicemasu[turnPlayer_][i] + dir[k]).x() == dicemasu[enemyPlayer][i].x()
-						&& (dicemasu[turnPlayer_][i] + dir[k]).y() == dicemasu[enemyPlayer][i].y())
+					if ((dicemasu[turnPlayer_][i] + dir[k]).x() == dicemasu[enemyPlayer][j].x()
+						&& (dicemasu[turnPlayer_][i] + dir[k]).y() == dicemasu[enemyPlayer][j].y())
 					{
 						inflag = true;
 						temp.p_defense.push_back(defdice);
 						break;
 					}
-
-
 				}
 
 			}
@@ -262,10 +262,12 @@ namespace game
 			{
 				batphase_ = end;
 			}
-
 			//1以上ならAtkSelect
 			else
 			{
+				battledice[0].selectOffF = true;
+				battledice[0].selectDef = 0;
+
 				batphase_ = atkSelect;
 			}
 			break;
@@ -283,9 +285,39 @@ namespace game
 			//攻撃待機2なら選択させる
 			else
 			{
+				gplib::font::Draw_FontText(500, 500, 0.f, "攻撃セレクト", ARGB(255, 255, 0, 0), 0);
+
+				//ダイスの選択を変更する
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+				{
+					for (int i = 0; i < (int)battledice.size(); i++)
+					{
+						//選択されているダイス確認
+						if (battledice[i].selectOffF == true)
+						{
+							battledice[i].selectOffF = false;
+
+							//選択されている次のダイスへ選択を移す。
+							int no = (i + 1) % (int)battledice.size();
+
+							battledice[no].selectOffF = true;
+
+							//ダイスに選択描画
+							// dice->select();
+						}
+					}
+				}
+
+				//ダイスの決定
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+				{
+					//選択状態を解除すること
+
+					batphase_ = emySelect;
+				}
+
 
 			}
-
 
 			break;
 
@@ -295,39 +327,76 @@ namespace game
 		case game::DiceManager::emySelect:
 
 
-			
 			for (auto bdice : battledice)
 			{
-				if (bdice.selectF)
+				if (bdice.selectOffF)
 				{
 					//攻撃待機1ならbattle
 					if (bdice.p_defense.size() == 1)
 					{
+						bdice.selectDef = 0;
 						batphase_ = battle;
+						batinit_ = true;
 					}
 					//攻撃待機2なら選択させる
 					else
 					{
+						gplib::font::Draw_FontText(500, 500, 0.f, "攻撃セレクト", ARGB(255, 255, 0, 0), 0);
+						//ダイスの選択を変更する
+						if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+						{
+								//選択されている次のダイスへ選択を移す。
+								bdice.selectDef = (bdice.selectDef + 1) % (int)bdice.p_defense.size();
 
+								//ダイスに選択描画
+								// dice->select();
+						}
+
+						//ダイスの決定
+						if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+						{
+							//選択描画の解除
+
+							batphase_ = battle;
+							batinit_ = true;
+						}
 					}
 					
+					break;
 				}
 			}
-			
-			
-
-			
-
-
 			break;
 
 			//======================
 			//勝敗の判定と攻撃アニメーション
 			//======================
 		case game::DiceManager::battle:
+			
+			//勝敗判定
+			if (batinit_)
+			{
+				for (auto &bdice : battledice){
+					if (bdice.selectOffF){
 
+						int offense = bdice.p_offense->getAtkSpecies();
+						int defense = bdice.p_defense[bdice.selectDef]->getDefSpecies();
 
+						bdice.result = getAttackJudge(offense, defense);
+					}
+				}
+				//カットインさせる
+				insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTIN, -500.f, gplib::system::WINH / 2.f));
 
+				batinit_ = false;
+			}
+			else
+			{
+				auto object = getObjectFromChildren( "cutin_attack" );
+				if (ci_ext::weak_to_shared<UI>(object)->isDestroy())
+				{
+					batphase_ = destroy;
+				}
+			}
 			break;
 
 			//======================
@@ -335,6 +404,32 @@ namespace game
 			//======================
 		case game::DiceManager::destroy:
 
+			for (auto &bdice : battledice){
+				if (bdice.selectOffF){
+
+					switch (bdice.result)
+					{
+						//攻撃側の負け
+					case -1:
+						bdice.p_offense->destroy();
+						break;
+
+						//あいこ
+					case 0:
+						bdice.p_offense->destroy();
+						bdice.p_defense[bdice.selectDef]->destroy();
+						break;
+
+						//攻撃側の勝ち
+					case 1:
+						bdice.p_defense[bdice.selectDef]->destroy();
+						break;
+					}
+
+				}
+			}
+
+			batphase_ = check;
 			break;
 
 			//======================
@@ -382,7 +477,7 @@ namespace game
 			for (int j = 0; j < 2; j++)	//ダイスの数
 			{
 				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
-				auto ptr = insertAsChild(new game::Dice(str,dicemasu[i][j]));
+				auto ptr = insertAsChild(new game::Dice(str,gplib::math::GetRandom<int>(0,2),dicemasu[i][j]));
 			}
 		}
 

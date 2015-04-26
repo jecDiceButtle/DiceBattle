@@ -3,6 +3,7 @@
 #include "../../lib/ci_ext/vec3.hpp"
 #include <vector>
 #include <memory>
+#include "dice.h"
 
 namespace game
 {
@@ -29,9 +30,11 @@ private:
 	//バトル確認用に。
 	struct pBattleDice
 	{
-		bool								selectF;		// 選択フラグ
-		std::shared_ptr<Dice>				p_offense;		// 攻撃側ダイスのポインタ
-		std::vector <std::shared_ptr<Dice>> p_defense;		// 防御側ダイスのポインタ
+		bool									selectOffF;			// 攻撃の選択フラグ
+		std::shared_ptr<game::Dice>				p_offense;			// 攻撃側ダイスのポインタ
+		int										selectDef;			// 守備の選択
+		std::vector <std::shared_ptr<game::Dice>> p_defense;		// 防御側ダイスのポインタ
+		int										result;				// 勝敗結果（攻撃側::-1:敗北 0:あいこ 1:勝利)
 	};
 
 
@@ -45,16 +48,15 @@ private:
 
 	std::vector<std::vector<ci_ext::Vec3i>> dicemasu;	// ダイスオブジェクトの座標（前プレイヤー:後ダイス）
 
-	BattlePhase		batphase_;							// バトル中のフェーズ
+	BattlePhase					batphase_;				// バトル中のフェーズ
 
 	std::vector<pBattleDice>	battledice;				// バトル待機中のダイスの座標
-
-
 
 
 	int phase_;											// フェーズ
 	int	turnPlayer_;									// 現在のターンプレイヤー
 	int selectDice_;									// 指定しているダイス
+	bool batinit_;										// バトルフェイズ中の初期フラグ
 
 	//*************************************************//
 	//　関数

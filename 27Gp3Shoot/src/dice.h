@@ -40,6 +40,7 @@ private:
 		CHARA,			// キャラのみ
 	};
 
+	static const TYPE ATKTYPE[6];						// 攻撃属性の初期化	（仮）			
 
 	//*************************************************//
 	//　変数
@@ -47,7 +48,8 @@ private:
 private:
 	int diceID_;
 	int playerID_;
-	TYPE num[6];
+	TYPE atkType[6];									// 攻撃側の属性
+	TYPE defType_;										// 防御側の属性
 	DIRECT dir_;
 
 	int count_;											// 移動カウンタ
@@ -95,7 +97,15 @@ private:
 
 
 public:
-	Dice(const std::string& objectName, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
+
+	/*
+		@brief							コンストラクタ
+		@param[in] objectName			オブジェクト名
+		@param[in] type					防御側の種族
+		@param[in] pos					初期座標
+		@return							なし
+	*/
+	Dice(const std::string& objectName,const int type, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
 
 	void init()	override;
 	void render() override;
@@ -106,8 +116,6 @@ public:
 	float getDicePosY(); 
 
 	void swap(DIRECT dir);
-	int getTopType();
-
 
 	/*
 		@brief							アクセサ、状態の確認
@@ -129,6 +137,27 @@ public:
 		@true							移動中
 	*/
 	bool isMoving();
+
+	/*
+		@brief							アクセサ、ダイスを死亡状態へ
+		@return							なし
+	*/
+	void destroy();
+
+	
+	/*
+		@brief							アクセサ、攻撃属性のチェック
+		@return							属性値
+	*/
+	int getAtkSpecies();
+
+	/*
+		@brief							アクセサ、防御属性のチェック
+		@return							属性値
+	*/
+	int getDefSpecies();
+
+
 
 	/*
 		@brief							移動命令

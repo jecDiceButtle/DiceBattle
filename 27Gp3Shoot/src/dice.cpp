@@ -25,6 +25,10 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
+	const Dice::TYPE Dice::ATKTYPE[6] =
+	{
+		TYPE::GU, TYPE::CH, TYPE::PA, TYPE::PA, TYPE::CH, TYPE::GU,
+	};
 
 
 	//**************************************************************************************//
@@ -49,6 +53,21 @@ namespace game
 		return state_ == MOVE;
 	}
 
+	void Dice::destroy()
+	{
+		state_ = DEAD;
+	}
+	int Dice::getAtkSpecies()
+	{
+		return atkType[0];
+	}
+	int Dice::getDefSpecies()
+	{
+		return defType_;
+	}
+
+	//===================================
+
 	void Dice::Move(const Vec3i& dir,const Vec3i& pos)
 	{
 		state_ = MOVE;
@@ -67,12 +86,6 @@ namespace game
 		
 	}
 	
-	//===================================
-
-	int Dice::getTopType(){
-		return num[0];
-	}
-
 
 	float Dice::getDicePosX()
 	{
@@ -86,31 +99,31 @@ namespace game
 	}
 	void Dice::swap(DIRECT dir){
 
-		TYPE Numkeep = num[0];
+		TYPE Numkeep = atkType[0];
 
 		if (dir == LEFT){
-			num[0] = num[2];
-			num[2] = num[5];
-			num[5] = num[3];
-			num[3] = Numkeep;
+			atkType[0] = atkType[2];
+			atkType[2] = atkType[5];
+			atkType[5] = atkType[3];
+			atkType[3] = Numkeep;
 		}
 		if (dir == RIGHT){
-			num[0] = num[3];
-			num[3] = num[5];
-			num[5] = num[2];
-			num[2] = Numkeep;
+			atkType[0] = atkType[3];
+			atkType[3] = atkType[5];
+			atkType[5] = atkType[2];
+			atkType[2] = Numkeep;
 		}
 		if (dir == FOWARD){
-			num[0] = num[1];
-			num[1] = num[5];
-			num[5] = num[4];
-			num[4] = Numkeep;
+			atkType[0] = atkType[1];
+			atkType[1] = atkType[5];
+			atkType[5] = atkType[4];
+			atkType[4] = Numkeep;
 		}
 		if (dir == BACK){
-			num[0] = num[4];
-			num[4] = num[5];
-			num[5] = num[1];
-			num[1] = Numkeep;
+			atkType[0] = atkType[4];
+			atkType[4] = atkType[5];
+			atkType[5] = atkType[1];
+			atkType[1] = Numkeep;
 		}
 	}
 
@@ -147,7 +160,7 @@ namespace game
 	//デフォルト関数
 	//**************************************************************************************//
 
-	Dice::Dice(const std::string& objectName,const ci_ext::Vec3i &pos)
+	Dice::Dice(const std::string& objectName,const int type,const ci_ext::Vec3i &pos)
 		:
 		MovableObject(
 		DrawObjf(objectName)
@@ -155,27 +168,39 @@ namespace game
 		masuX(pos.x()),
 		masuY(pos.y()),
 		state_(IDOL),
-		dispstate_(DICE)
+		dispstate_(DICE),
+		defType_((TYPE)type)
 	{
 		getDicePosX();
 		getDicePosY();
 		pos_.y(5.f);
+		
+		for (int i = 0; i < 6;i++)
+		{
+			atkType[i] = ATKTYPE[i];
+		}
 
 	}
 
 	void Dice::init(){
-		p_mons=insertAsChild(new Monster("monster", pos_, 0,Vec3f(0.f,0.f,0.f)));
+		p_mons=insertAsChild(new Monster("monster", pos_, (int)defType_,Vec3f(0.f,0.f,0.f)));
 	}
 
 	void Dice::render()
 	{
-		ci_ext::Vec3f angle(0, 0, 0);
-		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
-		meshManage->drawMesh(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale);
+		if (state_ != STATE::DEAD)
+		{
+			ci_ext::Vec3f angle(0, 0, 0);
+			ci_ext::Vec3f scale(10.f, 10.f, 10.f);
+			meshManage->drawMesh(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale);
 
-		//追加
-		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
-		monsobj->monster_move(pos_, angle);
+			//追加
+			auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
+			monsobj->monster_move(pos_, angle);
+
+		}
+
+		
 	}
 
 	void Dice::update()

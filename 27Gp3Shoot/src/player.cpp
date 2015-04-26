@@ -97,25 +97,29 @@ namespace game
 
 	void Player::update()
 	{
-		if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
-		{
-			auto stage = getObjectFromRoot("scene_stage");
-			auto object = ci_ext::weak_to_shared<CSceneStage>(stage);
-
-			object->NextPhase();
-		}
+		
 	}
 
-	void Player::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)
+	void Player::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg)
 	{
 
-		if (msg == "turn")
-		{
-			CostReset(num);
-		}
-		if (msg == "phase")
-		{
+		//メッセージ分割
+		auto msgVec = gplib::text::split(msg, ",");
 
+		for (auto ms : msgVec){
+			//さらに分割
+			auto mVec = gplib::text::split(ms, "=");
+
+			if (mVec[0] == "player")
+			{
+				if(turn_ != std::stoi(mVec[1]))
+				{
+					turn_ = std::stoi(mVec[1]);
+					CostReset(turn_);
+					
+				}
+				
+			}
 		}
 
 	}

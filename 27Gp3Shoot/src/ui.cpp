@@ -162,6 +162,7 @@ namespace game
 					break;
 				}
 			}
+			break;
 		case UITYPE::POPUP:
 			if (gplib::input::CheckPush(gplib::input::KEY_UP))
 			{

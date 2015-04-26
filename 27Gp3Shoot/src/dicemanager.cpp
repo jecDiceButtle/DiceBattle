@@ -23,10 +23,13 @@ namespace game
 		{ ci_ext::Vec3i(1, 4, 0), ci_ext::Vec3i(3, 4, 0) }
 	};
 
+
+
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
 	
+
 	int DiceManager::getAttackJudge(int player, int enemy){
 		return JUDGE[player][enemy];
 	}
@@ -40,7 +43,7 @@ namespace game
 	
 	void DiceManager::key()
 	{
-		if(gplib::input::CheckPush(gplib::input::KEY_LEFT))
+		if (gplib::input::CheckPush(gplib::input::KEY_LEFT))
 		{
 			MovingPos(selectDice_, ci_ext::Vec3i(-1, 0, 0));
 		}
@@ -58,12 +61,42 @@ namespace game
 		}
 		if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 		{
-			//ダイスオブジェクトに生死を聞くこと。
-			(selectDice_ += 1) %= (int)dicemasu[turnPlayer_].size();
+			//ダイスに選択描画
+			// dice->select();
+
+			bool selectF = true;			//選択フラグ
+
+			//ダイスのいずれかが移動中は選択変更を不可
+			std::string str = "p" + std::to_string(turnPlayer_);
+			auto objects = getObjectsFromChildren({ "dice", str });
+			for (auto obj : objects)
+			{
+				auto dice = ci_ext::weak_to_shared<game::Dice>(obj);
+
+				if (dice->isMoving())
+					selectF = false;
+			}
+
+
+			if (selectF)
+			{
+				//選択可能なダイスを探す。
+				for (int i = 1; i <= (int)dicemasu[turnPlayer_].size(); i++)
+				{
+					int no = (selectDice_ + i) % (int)dicemasu[turnPlayer_].size();
+
+					//選択されているダイスの次が選択できるか
+					auto dice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, no));
+
+					if (dice->isIdoling())
+					{
+						selectDice_ = no;
+						break;
+					}
+				}
+			}
 		}
-
 	}
-
 	void DiceManager::MovingPos(const int no, const ci_ext::Vec3i& dir)
 	{
 		//=============================
@@ -120,6 +153,204 @@ namespace game
 	}
 
 	//**************************************************************************************//
+	void DiceManager::Check()
+	{
+		//=============================
+		// 隣り合ったダイスを確認
+		//=============================
+
+		ci_ext::Vec3i dir[] =
+		{
+
+			ci_ext::Vec3i(-1, 0, 0),		// 左
+			ci_ext::Vec3i(1, 0, 0),			// 右
+			ci_ext::Vec3i(0, 1, 0),			// 上
+			ci_ext::Vec3i(0, -1, 0),		// 下
+
+		};
+
+		int enemyPlayer = (turnPlayer_ + 1) % 2;
+		battledice.clear();
+
+
+		for (int i = 0; i < dicemasu[turnPlayer_].size(); i++)	//自分のダイスの数
+		{
+			bool inflag= false;				//挿入フラグ
+			pBattleDice temp;
+			temp.selectF = false;
+
+			//検索するダイスが攻撃可能かどうか（死んでないかどうか）
+			auto offdice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, i));
+			if (!offdice->isIdoling()) continue;
+
+			temp.p_offense = offdice;
+
+			for (int j = 0; j < dicemasu[enemyPlayer].size(); j++)	//相手のダイスの数
+			{
+				//敵ダイスが生きているかどうか
+				auto defdice = ci_ext::weak_to_shared<Dice>(getDicePtr(enemyPlayer, j));
+				if (!defdice->isIdoling()) continue;
+
+				for (int k = 0; k < 4; k++)							//方向の確認の回数
+				{
+					//隣り合っているか判定
+					if ((dicemasu[turnPlayer_][i] + dir[k]).x() == dicemasu[enemyPlayer][i].x()
+						&& (dicemasu[turnPlayer_][i] + dir[k]).y() == dicemasu[enemyPlayer][i].y())
+					{
+						inflag = true;
+						temp.p_defense.push_back(defdice);
+						break;
+					}
+
+
+				}
+
+			}
+
+			if (inflag)
+				battledice.push_back(temp);
+
+		}
+	}
+	
+	
+
+	//**************************************************************************************//
+
+
+	void DiceManager::Summon()
+	{
+		//召喚フェイズはとりあえず保留
+		//デス状態がない場合は次のフェーズへ
+
+		bool nextF = true;		//フェイズ移動フラグ
+
+		std::string str = "p" + std::to_string(turnPlayer_);
+		auto objects = getObjectsFromChildren({ "dice", str });
+
+		for (auto obj : objects)
+		{
+			auto dice = ci_ext::weak_to_shared<game::Dice>(obj);
+			if (dice->isDying())
+				nextF = false;
+		}
+
+		if (nextF)
+		{
+			auto parent = ci_ext::weak_to_shared<CSceneStage>(p_parent);
+			parent->NextPhase();
+		}
+
+	}
+	void DiceManager::Main()
+	{
+		key();
+	}
+	void DiceManager::Battle()
+	{
+		switch (batphase_)
+		{
+			//======================
+			//攻撃するキャラの確認
+			//======================
+		case game::DiceManager::check:
+			
+			Check();
+			//攻撃待機０ならend
+
+			if (battledice.empty())
+			{
+				batphase_ = end;
+			}
+
+			//1以上ならAtkSelect
+			else
+			{
+				batphase_ = atkSelect;
+			}
+			break;
+
+			//======================
+			//攻撃側のキャラ選択
+			//======================
+		case game::DiceManager::atkSelect:
+			
+			//攻撃待機が1キャラならemySelect
+			if (battledice.size() == 1)
+			{
+				batphase_ = emySelect;
+			}
+			//攻撃待機2なら選択させる
+			else
+			{
+
+			}
+
+
+			break;
+
+			//======================
+			//防御側の選択
+			//======================
+		case game::DiceManager::emySelect:
+
+
+			
+			for (auto bdice : battledice)
+			{
+				if (bdice.selectF)
+				{
+					//攻撃待機1ならbattle
+					if (bdice.p_defense.size() == 1)
+					{
+						batphase_ = battle;
+					}
+					//攻撃待機2なら選択させる
+					else
+					{
+
+					}
+					
+				}
+			}
+			
+			
+
+			
+
+
+			break;
+
+			//======================
+			//勝敗の判定と攻撃アニメーション
+			//======================
+		case game::DiceManager::battle:
+
+
+
+			break;
+
+			//======================
+			//ダメージ処理とダイスの削除
+			//======================
+		case game::DiceManager::destroy:
+
+			break;
+
+			//======================
+			//攻撃ダイスがない場合、次のフェーズへ
+			//======================
+		case game::DiceManager::end:
+			
+			auto parent = ci_ext::weak_to_shared<CSceneStage>(p_parent);
+			parent->NextPhase();
+			break;
+		}
+	}
+
+
+
+	//**************************************************************************************//
 	//デフォルト関数
 	//**************************************************************************************//
 
@@ -131,21 +362,6 @@ namespace game
 		turnPlayer_(0),
 		selectDice_(0)
 	{
-
-	}
-
-	void DiceManager::init()
-	{
-		//ダイスの生成
-		for (int i = 0; i < 2; i++)	//プレイヤー
-		{
-			for (int j = 0; j < 2; j++)	//ダイスの数
-			{
-				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
-				auto ptr = insertAsChild(new game::Dice(str,STARTMASU[i][j]));
-			}
-		}
-
 		// ダイスのマス座標の初期化
 		for (int i = 0; i < 2; i++)
 		{
@@ -156,6 +372,21 @@ namespace game
 			}
 			dicemasu.push_back(temp);
 		}
+	}
+
+	void DiceManager::init()
+	{
+		//ダイスの生成
+		for (int i = 0; i < 2; i++)	//プレイヤー
+		{
+			for (int j = 0; j < 2; j++)	//ダイスの数
+			{
+				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
+				auto ptr = insertAsChild(new game::Dice(str,dicemasu[i][j]));
+			}
+		}
+
+		
 	}
 	
 
@@ -199,7 +430,21 @@ namespace game
 
 	void DiceManager::update()
 	{
-		key();
+		switch (phase_)
+		{
+			//召喚フェイズ
+		case 0:
+			Summon();
+			break;
+			//メインフェイズ
+		case 1:
+			Main();
+			break;
+			//バトルフェイズ
+		case 2:
+			Battle();
+			break;
+		}
 
 	}
 
@@ -219,26 +464,8 @@ namespace game
 				}
 				if (mVec[0] == "phase")
 				{
-					switch (stoi(mVec[1]))
-					{
-						//召還フェーズ
-					case 0: 
-
-						break;
-						//メインフェーズ
-					case 1:
-						break;
-						//バトルフェーズ
-					case 2:
-						break;
-						//エンドフェーズ
-					case 3:
-						break;
-					}
+					phase_ = stoi(mVec[1]);
 				}
 			}
-		
-
-		
 	}
 }

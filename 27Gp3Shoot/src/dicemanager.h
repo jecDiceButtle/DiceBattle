@@ -17,6 +17,24 @@ private:
 	static const int JUDGE[3][3];						//判定
 	static const ci_ext::Vec3i STARTMASU[2][2];			//ダイス初期位置
 
+	enum BattlePhase{
+		check,							// 攻撃するダイスのチェック
+		atkSelect,						// 攻撃権の選択
+		emySelect,						// 攻撃目標の選択
+		battle,							// バトル中
+		destroy,						// 消す
+		end,
+	};
+
+	//バトル確認用に。
+	struct pBattleDice
+	{
+		bool								selectF;		// 選択フラグ
+		std::shared_ptr<Dice>				p_offense;		// 攻撃側ダイスのポインタ
+		std::vector <std::shared_ptr<Dice>> p_defense;		// 防御側ダイスのポインタ
+	};
+
+
 
 	//*************************************************//
 	//　変数
@@ -27,6 +45,14 @@ private:
 
 	std::vector<std::vector<ci_ext::Vec3i>> dicemasu;	// ダイスオブジェクトの座標（前プレイヤー:後ダイス）
 
+	BattlePhase		batphase_;							// バトル中のフェーズ
+
+	std::vector<pBattleDice>	battledice;				// バトル待機中のダイスの座標
+
+
+
+
+	int phase_;											// フェーズ
 	int	turnPlayer_;									// 現在のターンプレイヤー
 	int selectDice_;									// 指定しているダイス
 
@@ -66,6 +92,38 @@ private:
 	*/
 	std::weak_ptr<Object> getDicePtr(const int player,const int id);
 
+
+	/*
+		@brief			召喚フェイズ
+		@return			なし
+	*/
+	void Summon();
+
+	
+	/*
+		@brief			メインフェイズ
+		@return			なし
+	*/
+	void Main();
+
+	
+	/*
+		@brief			バトルフェイズ
+		@return			なし
+	*/
+	void Battle();
+
+
+	/*
+		@brief			攻撃のチェック
+		@return			なし
+	*/
+	void Check();
+
+
+
+
+	
 
 public:
 

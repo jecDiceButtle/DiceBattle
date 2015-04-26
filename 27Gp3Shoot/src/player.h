@@ -30,6 +30,7 @@ private:
 	std::weak_ptr<ci_ext::Object> p_parent;				// 親のポインタ
 	std::vector<int>cost;								// コスト
 
+	int turn_;
 
 	//*************************************************//
 	//　関数
@@ -85,7 +86,7 @@ public:
 	*/
 	void CostReset(const int id);
 
-	void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)override;
+	void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg)override;
 
 
 };

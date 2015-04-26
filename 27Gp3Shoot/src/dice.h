@@ -114,7 +114,7 @@ public:
 		@return							死亡中かどうか
 		@true							死亡中
 	*/
-	bool isDead();
+	bool isDying();
 
 	/*
 		@brief							アクセサ、状態の確認
@@ -122,6 +122,13 @@ public:
 		@true							待機中
 	*/
 	bool isIdoling();
+
+	/*
+		@brief							アクセサ、状態の確認
+		@return							移動中かどうか
+		@true							移動中
+	*/
+	bool isMoving();
 
 	/*
 		@brief							移動命令

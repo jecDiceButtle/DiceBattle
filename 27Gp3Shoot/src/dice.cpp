@@ -39,11 +39,16 @@ namespace game
 		return state_ == IDOL;
 	}
 
-	bool Dice::isDead()
+	bool Dice::isDying()
 	{
 		return state_ == DEAD;
 	}
 	
+	bool Dice::isMoving()
+	{
+		return state_ == MOVE;
+	}
+
 	void Dice::Move(const Vec3i& dir,const Vec3i& pos)
 	{
 		state_ = MOVE;
@@ -60,8 +65,6 @@ namespace game
 		count_ = 45;
 		add_.set((((pos.x() - 2) * 10) - pos_.x()) / 45.f, 0.f, (((pos.y() - 2) * 10) -pos_.z()) / 45.f);
 		
-
-
 	}
 	
 	//===================================

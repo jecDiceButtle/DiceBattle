@@ -22,15 +22,6 @@ private:
 	//80前後がベスト
 	const int COST_Space = 80;
 
-	//追加要素　コストの描画関連
-	//std::string resname_;
-	ci_ext::Vec3f pos_1P;
-	ci_ext::Vec3f pos_2P;
-
-	const int COST_W = 30;
-	const int COST_H = 30;
-	//80前後がベスト
-	const int COST_Space = 80;
 
 	//*************************************************//
 	//　変数

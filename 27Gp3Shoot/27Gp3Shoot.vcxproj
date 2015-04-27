@@ -126,6 +126,7 @@
     <ClInclude Include="src\script.hpp" />
     <ClInclude Include="src\stage.h" />
     <ClInclude Include="src\timer.h" />
+    <ClInclude Include="src\Title.hpp" />
     <ClInclude Include="src\ui.h" />
   </ItemGroup>
   <ItemGroup>

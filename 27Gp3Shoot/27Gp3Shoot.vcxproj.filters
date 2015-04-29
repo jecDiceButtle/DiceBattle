@@ -53,6 +53,9 @@
     <Filter Include="プログラムファイル\game\UI">
       <UniqueIdentifier>{41857cdb-a2ef-47ba-a897-d5bce9f427aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\Title">
+      <UniqueIdentifier>{aeca117f-5718-4a49-ab76-3f141c4596f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -189,6 +192,9 @@
     </ClInclude>
     <ClInclude Include="src\player.h">
       <Filter>プログラムファイル\game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Title.hpp">
+      <Filter>プログラムファイル\Title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

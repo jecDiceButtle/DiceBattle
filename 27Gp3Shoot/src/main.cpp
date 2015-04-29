@@ -10,8 +10,8 @@
 #include "../../lib/ci_ext/xinput.hpp" 
 //ロゴスクリーン
 #include "stage.h"
-//#include "title.hpp"
-//#include "Logo.hpp"
+#include "Title.hpp"
+#include "Logo.hpp"
 
 #include "effect.h"
 
@@ -74,7 +74,7 @@ public:
 		setWeakPtr(this_object_pointer);
 
 		//最初に生成するオブジェクトを記述
-		//insertAsChild(new game::Stage("Stage1")); //!)ここではロゴに移動
+		//insertAsChild(new game::Logo("Loge")); //!)ここではロゴに移動
 		insertAsChild(new game::CSceneStage("scene_stage"));
 	}
 

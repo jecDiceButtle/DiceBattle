@@ -140,7 +140,9 @@ namespace game
 
 			auto dice = ci_ext::weak_to_shared<Dice>(getDicePtr(turnPlayer_, selectDice_));
 			
-			dice->Move(dir, dicemasu[turnPlayer_][no]);
+			//関数変更を行ったので注意！
+			//元　dice->Move(dir, dicemasu[turnPlayer_][no]);
+			dice->prepareMove(dicemasu[turnPlayer_][no]);
 		}
 
 

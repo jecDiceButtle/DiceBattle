@@ -94,41 +94,54 @@ void Dx_Graphics3D::SetRenderState(D3DRENDERSTATETYPE State,DWORD Value)
 	this->device->SetRenderState(State,Value);
 }
 //座標、倍率、角度からワールド変換行列を設定
-D3DXMATRIX Dx_Graphics3D::SetTransformToDevice(DxVec3 *pos,DxVec3 *scale,DxVec3 *angle)
+D3DXMATRIX Dx_Graphics3D::SetTransformToDevice(DxVec3 *pos, DxVec3 *scale, DxVec3 *angle, D3DXMATRIX *matrot)
 {
-	D3DXMATRIX		matScale,matRot,matPos,mat;
+	D3DXMATRIX		matScale, matRot, matPos, mat;
 
 	//メイン行列を単位行列とする
 	D3DXMatrixIdentity(&mat);
 
 	//倍率関連
-	if(scale!=NULL)
+	if (scale != NULL)
 	{
 		//スケーリング行列を設定
-		D3DXMatrixScaling(&matScale,scale->x,scale->y,scale->z);
+		D3DXMatrixScaling(&matScale, scale->x, scale->y, scale->z);
 		//メイン行列にスケーリング行列を合成
-		D3DXMatrixMultiply(&mat,&mat,&matScale);
+		D3DXMatrixMultiply(&mat, &mat, &matScale);
 	}
 	//角度関連
-	if(angle!=NULL)
+	//tuika
+	if (matrot != NULL)
+	{
+		////Yaw-Y軸回転、Pitch-X軸回転、Roll-Z軸回転として回転行列を設定
+		//D3DXMatrixRotationYawPitchRoll(&matRot,
+		//	D3DXToRadian(angle->y), D3DXToRadian(angle->x), D3DXToRadian(angle->z));
+
+		matRot = *matrot;
+
+		//メイン行列に回転行列を合成
+		D3DXMatrixMultiply(&mat, &mat, &matRot);
+	}
+	else if (angle != NULL)
 	{
 		//Yaw-Y軸回転、Pitch-X軸回転、Roll-Z軸回転として回転行列を設定
 		D3DXMatrixRotationYawPitchRoll(&matRot,
-			D3DXToRadian(angle->y),D3DXToRadian(angle->x),D3DXToRadian(angle->z));
+			D3DXToRadian(angle->y), D3DXToRadian(angle->x), D3DXToRadian(angle->z));
+
 		//メイン行列に回転行列を合成
-		D3DXMatrixMultiply(&mat,&mat,&matRot);
+		D3DXMatrixMultiply(&mat, &mat, &matRot);
 	}
 
 	//座標関連
 	{
 		//位置行列を設定
-		D3DXMatrixTranslation(&matPos,pos->x,pos->y,pos->z);
+		D3DXMatrixTranslation(&matPos, pos->x, pos->y, pos->z);
 		//メイン行列に位置行列を合成
-		D3DXMatrixMultiply(&mat,&mat,&matPos);
+		D3DXMatrixMultiply(&mat, &mat, &matPos);
 	}
 
 	//デバイスにワールド変換行列を設定
-	this->device->SetTransform(D3DTS_WORLD,&mat);
+	this->device->SetTransform(D3DTS_WORLD, &mat);
 
 	return mat;
 }
@@ -181,37 +194,47 @@ void Dx_Graphics3D::EndColorEnable()
 //３Ｄモデル描画関連
 //**************************************************************************
 //３Ｄモデル描画関数
-void Dx_Graphics3D::DrawModel(DxBaseMesh *mesh,DxVec3 *pos,DxVec3 *scale,DxVec3 *angle,D3DCOLOR *color)
+void Dx_Graphics3D::DrawModel(DxBaseMesh *mesh, DxVec3 *pos, DxVec3 *scale, DxVec3 *angle, D3DCOLOR *color, D3DXMATRIX *matrot)
 {
 	//指定されたメッシュデータがNULLでない場合のみ描画
-	if(mesh!=NULL)
+	if (mesh != NULL)
 	{
 		D3DXMATRIX mat;
 
 		//変換行列の設定
-		mat = this->SetTransformToDevice(pos,scale,angle);
+		//tuika
+		//ここでワールド変換行列を変える
+		if (matrot != NULL)
+		{
+			mat = this->SetTransformToDevice(pos, scale, angle, matrot);
+		}
+		else if (angle != NULL)
+		{
+			mat = this->SetTransformToDevice(pos, scale, angle, matrot);
+		}
+
 
 		//カラー情報が設定されている場合
-		if(color!=NULL)
+		if (color != NULL)
 		{
 			this->BeginColorEnable(*color);
 		}
 
 		//meshが派生クラスDxMeshの場合
-		if(dynamic_cast<DxMesh*>(mesh)!=0)
+		if (dynamic_cast<DxMesh*>(mesh) != 0)
 		{
 			//DxMeshの描画
 			this->DrawMesh((DxMesh*)mesh);
 		}
 		//meshが派生クラスDxAnimeMeshの場合
-		else if(dynamic_cast<DxAnimeMesh*>(mesh)!=0)
+		else if (dynamic_cast<DxAnimeMesh*>(mesh) != 0)
 		{
 			//DxAnimeMeshの描画
-			this->DrawAnimeMesh((DxAnimeMesh*)mesh,mat);
+			this->DrawAnimeMesh((DxAnimeMesh*)mesh, mat);
 		}
 
 		//カラー情報が設定されている場合
-		if(color!=NULL)
+		if (color != NULL)
 		{
 			this->EndColorEnable();
 		}

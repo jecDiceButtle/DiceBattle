@@ -1,6 +1,6 @@
 #pragma once
 
-//#define CHECK
+#define CHECK
 
 #ifdef CHECK
 

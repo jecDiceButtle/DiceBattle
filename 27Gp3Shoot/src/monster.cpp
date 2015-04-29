@@ -38,11 +38,12 @@ namespace game
 		MovableObject(
 		DrawObjf(objectName)
 		),
-		movepos(pos),
+		m_pos(pos),
 		monster_num(monsternum),
-		moveangle(angle)
+		m_angle(angle)
 	{
-
+		count = 0;
+		moveflag = true;
 	}
 
 	void Monster::render()
@@ -67,11 +68,36 @@ namespace game
 
 	void Monster::update()
 	{
-		monster_move(movepos,moveangle);
+		updownmove();
+
 	}
 
-	void Monster::monster_move(Vec3f p,Vec3f a){
-		m_pos = p;
-		m_angle = a;
+	void Monster::monster_move(Vec3f p, Vec3f a){
+
+			m_pos = p;
+			m_angle = a;
+	}
+	
+
+	void Monster::updownmove(){
+		count++;
+		if (count > 60){
+			if (moveflag == true){
+				count = 0;
+				moveflag = false;
+			}
+			else if (moveflag == false){
+				count = 0;
+				moveflag = true;
+			}
+		}
+
+		Vec3f f(0.f, 0.03f, 0.f);
+		if (moveflag == true){
+			m_pos += f;
+		}
+		else if (moveflag == false){
+			m_pos -= f;
+		}
 	}
 }

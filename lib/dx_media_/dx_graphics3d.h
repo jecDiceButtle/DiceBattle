@@ -33,7 +33,8 @@ class Dx_Graphics3D
 
 		/*ワールド変換行列設定関連*/
 		//座標、倍率、角度からワールド変換行列を設定
-		D3DXMATRIX SetTransformToDevice(DxVec3 *pos,DxVec3 *scale,DxVec3 *angle);
+		//tuika
+		D3DXMATRIX SetTransformToDevice(DxVec3 *pos, DxVec3 *scale, DxVec3 *angle, D3DXMATRIX *matrot);
 
 		//メッシュサブセットを描画
 		void DrawSubset(LPD3DXMESH lpMesh,DWORD AttribId,D3DMATERIAL9 *pMat,LPDIRECT3DTEXTURE9 pTex);
@@ -67,7 +68,8 @@ class Dx_Graphics3D
 		void Setup3DEnv(D3DXMATRIX view,D3DXMATRIX projection);
 
 		//３Ｄモデルの描画
-		void DrawModel(DxBaseMesh *mesh,DxVec3 *pos,DxVec3 *scale=NULL,DxVec3 *angle=NULL,D3DCOLOR *color=NULL);
+		//tuika
+		void DrawModel(DxBaseMesh *mesh, DxVec3 *pos, DxVec3 *scale = NULL, DxVec3 *angle = NULL, D3DCOLOR *color = NULL, D3DXMATRIX *matrot = NULL);
 };
 
 

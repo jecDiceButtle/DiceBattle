@@ -41,7 +41,7 @@ namespace game
 	//===================================
 	//	デフォルト関数
 	//===================================
-	Dice::Dice(const std::string& objectName, const ci_ext::Vec3i &masu)
+	Dice::Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& masu)
 		:
 		MovableObject(
 		DrawObjf(objectName)
@@ -55,6 +55,7 @@ namespace game
 		state_(IDOL),
 		dispstate_(DICE),
 		selected_(true),
+		defType_((TYPE)type),
 
 		ANIMFRAMES(30),
 		hougaku_(CENTER),
@@ -94,6 +95,7 @@ namespace game
 		matRot._43 = 0;
 		matRot._44 = 1;
 
+
 	}
 
 	bool Dice::isDying()
@@ -112,11 +114,11 @@ namespace game
 	}
 	int Dice::getAtkSpecies()
 	{
-		return atkType[0];
+		return (int)face[0];
 	}
 	int Dice::getDefSpecies()
 	{
-		return defType_;
+		return (int)defType_;
 	}
 
 
@@ -426,33 +428,6 @@ namespace game
 		else if (p_pos.z() < pos_.z()) return SOUTH;
 	}
 	//-------------------------------//
-
-
-
-	Dice::Dice(const std::string& objectName, const int type, const ci_ext::Vec3i &pos)
-		:
-		MovableObject(
-		DrawObjf(objectName)
-		),
-		masuX(pos.x()),
-		masuY(pos.y()),
-		state_(IDOL),
-		dispstate_(DICE),
-		defType_((TYPE)type)
-	{
-		getDicePosX();
-		getDicePosY();
-		pos_.y(5.f);
-
-		for (int i = 0; i < 6; i++)
-		{
-			atkType[i] = ATKTYPE[i];
-		}
-	}
-
-
-
-
 
 
 	/*

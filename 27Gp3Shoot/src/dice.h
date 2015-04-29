@@ -58,6 +58,7 @@ namespace game
 
 
 		TYPE face[6];
+		TYPE defType_;
 		STATE state_;										// 行動状態
 		DISPSTATE dispstate_;								// 描画状態
 		bool selected_;										// 選択状態
@@ -166,9 +167,6 @@ namespace game
 		void setDicePosY(const ci_ext::Vec3i &masu);
 
 
-		<< << << < HEAD
-			void swap(DIRECT dir);
-
 		/*
 		@brief							アクセサ、状態の確認
 		@return							死亡中かどうか
@@ -176,11 +174,9 @@ namespace game
 		*/
 		bool isDying();
 
-		/*
-		@brief							アクセサ、状態の確認
-		=======
+		
 
-		//***************/ /
+		//***************/
 		//　 関数化変数 　//
 		//***************//
 		//----------DIRECTION関数----------//

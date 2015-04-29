@@ -30,10 +30,8 @@ private:
 	ci_ext::Vec3f m_pos;		//モンスターのpos(座標)
 	ci_ext::Vec3f m_angle;		//モンスターの向き
 
-	ci_ext::Vec3f movepos;			//モンスターの座標(関数用)
-	ci_ext::Vec3f moveangle;		//モンスターの向き(関数用)
-
-
+	float count;				//モンスター上下アニメ？のカウント
+	bool moveflag;				//モンスター上下アニメ？のフラグ
 	//*************************************************//
 	//　関数
 	//*************************************************//
@@ -58,7 +56,7 @@ public:
 	void monster_move(ci_ext::Vec3f p,ci_ext::Vec3f a);//ポインタ使って座標移動&アングル
 
 
-
+	void updownmove();
 
 };
 

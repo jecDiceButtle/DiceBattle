@@ -19,6 +19,7 @@ namespace game
 	//*************************************************//
 private:
 
+	static const float OFFSETY;
 
 
 

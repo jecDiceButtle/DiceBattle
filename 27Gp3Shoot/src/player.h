@@ -35,6 +35,7 @@ namespace game
 
 
 
+	int turn_;
 		//*************************************************//
 		//@•Ï”
 		//*************************************************//
@@ -105,7 +106,8 @@ namespace game
 		*/
 		void VictryorDefeat(const int id);
 
-		void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)override;
+	void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg)override;
+
 
 
 	};

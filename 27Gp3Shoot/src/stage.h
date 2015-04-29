@@ -57,8 +57,8 @@ namespace game
 
 		//tuika
 		std::weak_ptr<ci_ext::Object> p_camera;		// カメラのポインタ
-		std::weak_ptr<ci_ext::Object> p_ui;
-
+		std::weak_ptr<ci_ext::Object> p_ui;			// UIのポインタ
+		
 		TURN		turn_;							// プレイヤーターン
 		STAGESTATE	state_;							// 状態遷移
 		PHASE		phase_;							// ターンフェイズ

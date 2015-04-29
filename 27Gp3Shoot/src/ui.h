@@ -13,85 +13,95 @@
 namespace game
 {
 
-class UI : public MovableObject
-{
-	//*************************************************//
-	//　定数
-	//*************************************************//
-private:
+	class UI : public MovableObject
+	{
+		//*************************************************//
+		//　定数
+		//*************************************************//
+	private:
 
 
-	//*************************************************//
-	//　変数
-	//*************************************************//
-public:
-
-enum UITYPE{ CUTIN, POPUP, CHARA, PHASE};
-
-
-private:
-	UITYPE type_;
-	float x;	
-	float y;
+		//*************************************************//
+		//　変数
+		//*************************************************//
+	public:
+		enum UITYPE{ POPUP, CHARA, PHASE, CUTINMONSTER, CUTINPHASE };
+	private:
+		UITYPE type_;
+		float x, y;
+		int turnPlayer_;
+		int phase_;
 
 
-	//cutin
-	bool	initF;
-	std::weak_ptr<ci_ext::Object> timer_;
-	enum MOVESTATE{ RIGHTCENTER, CENTER, CENTERLEFT };
-	MOVESTATE state_;
+		//cutin_monster
+		bool	M_initF;
+		bool	P_initF;
+		std::weak_ptr<ci_ext::Object> timer_;
+		enum MOVESTATE{ M_RIGHTCENTER, M_CENTER, M_CENTERLEFT, P_RIGHTCENTER, P_CENTER, P_CENTERLEFT };
+		MOVESTATE M_state_, P_state_;
+		float phaseC_x, phaseC_y;
+		float charaC_x, charaC_y;
 
-	//popup
-	
-	float sizeX;
-	float sizeY;
-	bool flag;
-	bool Yes;
-	bool No;
-
-
-	//chara
-	float player1scale;
-	float player2scale;
-
-	//phase
-	float scaleX;
-	float scaleY;
-	int i;
-
-	//*************************************************//
-	//　関数
-	//*************************************************//
-private:
+		//cutin_phase
+		//std::weak_ptr<ci_ext::Object> timer_;
+		/*enum P_MOVESTATE{ P_RIGHTCENTER, P_CENTER, P_CENTERLEFT };*/
+		/*	P_MOVESTATE P_state_;*/
 
 
-public:
+		//popup
 
-	/*
+		float sizeX;
+		float sizeY;
+		bool flag;
+		bool Yes;
+		bool No;
+
+
+		//chara
+		int turn;
+		float player1scale;
+		float player2scale;
+
+		//phase
+		float scaleX;
+		float scaleY;
+
+		//*************************************************//
+		//　関数
+		//*************************************************//
+	private:
+
+
+	public:
+
+		/*
 		@brief							コンストラクタ
 		@param[in]	objectName			オブジェクト名
 		@return							なし
-	*/
-	UI(const std::string& objectName,UITYPE type,float x,float y);
-	void flagset();
-	void Cutin();
-	/*
+		*/
+		UI(const std::string& objectName, UITYPE type, float posx = 0, float posy = 0);
+		void flagset();
+		void ChangeTurn(const int playerID);
+		void Changephase(const int phase);
+		/*
 		@brief							描画
 		@return							なし
-	*/
-	
-	void init() override;
+		*/
+
+		void init() override;
 
 
-	void render() override;
+		void render() override;
 
-	void update() override;
+		void update() override;
 
-	/*
+
+		void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num) override;
+		/*
 		@brief							フレーム更新
 		@return							なし
-	*/
-	
-};
+		*/
 
+
+	};
 }

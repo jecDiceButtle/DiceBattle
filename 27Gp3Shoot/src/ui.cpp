@@ -129,7 +129,7 @@ namespace game
 				gplib::graph::Draw_Graphics(x, y, 0.f, "question", 0, 0, gplib::graph::Draw_GetImageWidth("question"), gplib::graph::Draw_GetImageHeight("question"), 0.f, 1.5f, 1.5f);
 				gplib::graph::Draw_Graphics(x - 200, y + 200, 0.f, "Yes", 0, 0, gplib::graph::Draw_GetImageWidth("Yes"), gplib::graph::Draw_GetImageHeight("Yes"), 0.f, sizeY, sizeY);
 				gplib::graph::Draw_Graphics(x + 200, y + 200, 0.f, "No", 0, 0, gplib::graph::Draw_GetImageWidth("No"), gplib::graph::Draw_GetImageHeight("No"), 0.f, sizeX, sizeX);
-				gplib::font::Draw_FontText(x, y, 0.f, t, ARGB(255, 255, 255, 255), 0.f);
+				gplib::font::Draw_FontText(static_cast<int>(x), static_cast<int>(y), 0.f, t, ARGB(255, 255, 255, 255), 0.f);
 			}
 			break;
 		case UITYPE::CHARA:
@@ -287,16 +287,24 @@ namespace game
 
 	}
 
-	void UI::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num)
+	void UI::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg)
 	{
 
-		if (msg == "turn")
-		{
-			ChangeTurn(num);
-		}
-		if (msg == "phase")
-		{
-			Changephase(num);
+		//メッセージ分割
+		auto msgVec = gplib::text::split(msg, ",");
+
+		for (auto ms : msgVec){
+			//さらに分割
+			auto mVec = gplib::text::split(ms, "=");
+
+			if (mVec[0] == "player")
+			{
+				ChangeTurn(stoi(mVec[1]));
+			}
+			if (mVec[0] == "phase")
+			{
+				phase_ = stoi(mVec[1]);
+			}
 		}
 	}
 

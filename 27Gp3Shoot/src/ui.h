@@ -96,7 +96,7 @@ namespace game
 		void update() override;
 
 
-		void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg, const int num) override;
+		void receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg) override;
 		/*
 		@brief							フレーム更新
 		@return							なし

@@ -23,6 +23,7 @@ private:
 
 	DxVec3 v;	//カメラの位置
 	DxVec3 v2;	//カメラの速度
+	DxVec3 lookpos;// 視点座標
 	Cameraflag Cflag;
 
 	float kakudo;

@@ -23,24 +23,26 @@ namespace game
 		kakudo(0)
 	{
 
-		v = DxVec3(75.f, 75.f, -75.f);	//カメラの初期位置
+		v = DxVec3(85.f, 70.f, -95.f);	//カメラの初期位置
 		v2 = DxVec3(0.f, 0.f, 0.f);		//カメラの速度初期化
+		lookpos = DxVec3(0.f,15.f,0.f);
+
 		Cflag = FREE;
 	}
 
 	void Camera::input(){
-		//if (gplib::input::CheckPush(gplib::input::KEY_UP)) Cflag = UP;
-		//if (gplib::input::CheckPush(gplib::input::KEY_DOWN)) Cflag = DOWN;
-		//if (gplib::input::CheckPush(gplib::input::KEY_RIGHT)) Cflag = RIGHT;
-		//if (gplib::input::CheckPush(gplib::input::KEY_LEFT)) Cflag = LEFT;
+		/*if (gplib::input::CheckPush(gplib::input::KEY_UP)) Cflag = UP;
+		if (gplib::input::CheckPush(gplib::input::KEY_DOWN)) Cflag = DOWN;
+		if (gplib::input::CheckPush(gplib::input::KEY_RIGHT)) Cflag = RIGHT;
+		if (gplib::input::CheckPush(gplib::input::KEY_LEFT)) Cflag = LEFT;
 
-		//if (gplib::input::CheckPull(gplib::input::KEY_UP)) Cflag = FREE;
-		//if (gplib::input::CheckPull(gplib::input::KEY_DOWN)) Cflag = FREE;
-		//if (gplib::input::CheckPull(gplib::input::KEY_RIGHT)) Cflag = FREE;
-		//if (gplib::input::CheckPull(gplib::input::KEY_LEFT)) Cflag = FREE;
+		if (gplib::input::CheckPull(gplib::input::KEY_UP)) Cflag = FREE;
+		if (gplib::input::CheckPull(gplib::input::KEY_DOWN)) Cflag = FREE;
+		if (gplib::input::CheckPull(gplib::input::KEY_RIGHT)) Cflag = FREE;
+		if (gplib::input::CheckPull(gplib::input::KEY_LEFT)) Cflag = FREE;
 
 
-		/*if (Cflag == UP){
+		if (Cflag == UP){
 			v2 = DxVec3{ 0.f, 2.f, 0.f };
 		}
 		if (Cflag == DOWN){
@@ -68,10 +70,10 @@ namespace game
 		}
 	}
 
-		void Camera::camera(DxVec3 velocity){
+	void Camera::camera(DxVec3 velocity){
 		/*v += velocity;*/
 
-//
+
 //#ifdef _DEBUG
 //
 //		std::string str = std::to_string(v.x) + "," + std::to_string(v.y) + "," + std::to_string(v.z);
@@ -81,15 +83,15 @@ namespace game
 //		gplib::graph::Draw_2DRefresh();
 //
 //#endif
-
+//
 		//カメラ位置あわせ
 		//プレイヤーに合わせる必要があるためここで
 		dxCamera->SetEyePos(v);
 		//視点はプレイヤーの後ろ-５０
-		dxCamera->SetLookPos(0.f, 0.f, 0.f);
+		dxCamera->SetLookPos(lookpos);
 		//カメラからビュー行列と射影行列を設定
 		meshManage->getG()->Setup3DEnv(dxCamera);
-		}
+	}
 
 	void Camera::render()
 	{

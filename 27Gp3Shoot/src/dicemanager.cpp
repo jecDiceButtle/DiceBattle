@@ -113,9 +113,9 @@ namespace game
 		// 隣り合ったダイスを確認
 		//=============================
 
-		for (int i = 0; i < dicemasu.size(); i++)	//プレイヤー
+		for (int i = 0; i < static_cast<int>(dicemasu.size()); i++)	//プレイヤー
 		{
-			for (int j = 0; j < dicemasu[i].size(); j++)	//ダイス
+			for (int j = 0; j < static_cast<int>(dicemasu[i].size()); j++)	//ダイス
 			{
 				if (i == turnPlayer_ && j == no)
 					continue;
@@ -177,7 +177,7 @@ namespace game
 		battledice.clear();
 
 
-		for (int i = 0; i < dicemasu[turnPlayer_].size(); i++)	//自分のダイスの数
+		for (int i = 0; i < static_cast<int>(dicemasu[turnPlayer_].size()); i++)	//自分のダイスの数
 		{
 			bool inflag= false;				//挿入フラグ
 			pBattleDice temp;
@@ -189,7 +189,7 @@ namespace game
 
 			temp.p_offense = offdice;
 
-			for (int j = 0; j < dicemasu[enemyPlayer].size(); j++)	//相手のダイスの数
+			for (int j = 0; j < static_cast<int>(dicemasu[enemyPlayer].size()); j++)	//相手のダイスの数
 			{
 				//敵ダイスが生きているかどうか
 				auto defdice = ci_ext::weak_to_shared<Dice>(getDicePtr(enemyPlayer, j));
@@ -387,7 +387,7 @@ namespace game
 					}
 				}
 				//カットインさせる
-				insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTIN, -500.f, gplib::system::WINH / 2.f));
+				insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTINMONSTER, -500.f, gplib::system::WINH / 2.f));
 
 				batinit_ = false;
 			}

@@ -124,7 +124,7 @@ namespace game
 		if (phaseinit_)
 		{
 			postTurnAndPhaseMsg();
-			insertAsChild(new UI("cutin", game::UI::UITYPE::CUTIN, -500, gplib::system::WINH / 2));
+			insertAsChild(new UI("cutin", game::UI::UITYPE::CUTINMONSTER, -600.f, gplib::system::WINH / 2.f));
 			cutinF_ = true;
 			phaseinit_ = false;
 		}

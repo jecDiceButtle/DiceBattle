@@ -183,8 +183,8 @@ namespace game
 
 		if (animcnt_ > ANIMFRAMES)
 		{
-			pos_.x((int)nextpos().x());
-			pos_.z((int)nextpos().z());
+			pos_.x(nextpos().x());
+			pos_.z(nextpos().z());
 
 			middleQ = endQ;
 			startQ = endQ;
@@ -418,14 +418,14 @@ namespace game
 	{
 		if (pos_.x() == p_pos.x() && pos_.z() == p_pos.z())	return CENTER;
 
-
-		if (pos_.x() < p_pos.x()) return EAST;
+		else if (pos_.x() < p_pos.x()) return EAST;
 
 		else if (p_pos.x() < pos_.x()) return WEST;
 
 		else if (pos_.z() < p_pos.z()) return NORTH;
 
 		else if (p_pos.z() < pos_.z()) return SOUTH;
+
 	}
 	//-------------------------------//
 
@@ -452,11 +452,11 @@ namespace game
 
 	void Dice::setDicePosX(const ci_ext::Vec3i &masu)
 	{
-		pos_.x((masu.x() - 2) * 10);
+		pos_.x((masu.x() - 2) * 10.f);
 	}
 	void Dice::setDicePosY(const ci_ext::Vec3i &masu)
 	{
-		pos_.z((masu.y() - 2) * 10);
+		pos_.z((masu.y() - 2) * 10.f);
 	}
 	int Dice::getTopType(){
 		return face[0];

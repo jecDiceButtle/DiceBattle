@@ -77,7 +77,7 @@ namespace effect3D
   {
     //Ç®Ç®ÇÊÇª0.5secÇ≈è¡ñ≈
     alpha_ -= system::ONEFRAME_TIME * 255.f * 2.f;
-    color_.a(alpha_);
+	color_.a(static_cast<unsigned int>(alpha_));
     if (alpha_ < 0){
       return false;
     }

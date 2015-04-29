@@ -48,6 +48,7 @@ namespace game
 		
 
 		bool		phaseinit_;						// フェイズの更新フラグ
+		bool		cutinF_;						// カットイン実行中フラグ,true:実行中
 
 		std::weak_ptr<ci_ext::Object> p_player;		// プレイヤーのポインタ
 		std::weak_ptr<ci_ext::Object> p_board;		// ボードのポインタ
@@ -56,8 +57,8 @@ namespace game
 
 		//tuika
 		std::weak_ptr<ci_ext::Object> p_camera;		// カメラのポインタ
-		std::weak_ptr<ci_ext::Object> p_ui;
-
+		std::weak_ptr<ci_ext::Object> p_ui;			// UIのポインタ
+		
 		TURN		turn_;							// プレイヤーターン
 		STAGESTATE	state_;							// 状態遷移
 		PHASE		phase_;							// ターンフェイズ
@@ -66,6 +67,32 @@ namespace game
 		//*************************************************//
 		//　関数
 		//*************************************************//
+
+		/*
+			@brief			スタンバイ状態
+			@return			なし
+		*/
+		void Standby();
+
+		/*
+			@brief			メイン状態
+			@return			なし
+		*/
+		void Playing();
+
+		/*
+			@brief			終了状態
+			@return			なし
+		*/
+		void Result();
+
+
+		/*
+			@brief			メッセージ送信
+			@return			なし
+		*/
+		void postTurnAndPhaseMsg();
+
 
 	public:
 

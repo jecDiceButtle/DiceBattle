@@ -3,6 +3,7 @@
 #include "../../lib/ci_ext/vec3.hpp"
 #include <vector>
 #include <memory>
+#include "dice.h"
 
 namespace game
 {
@@ -15,6 +16,28 @@ class DiceManager : public ci_ext::Object
 private:
 
 	static const int JUDGE[3][3];						//判定
+	static const ci_ext::Vec3i STARTMASU[2][2];			//ダイス初期位置
+
+	enum BattlePhase{
+		check,							// 攻撃するダイスのチェック
+		atkSelect,						// 攻撃権の選択
+		emySelect,						// 攻撃目標の選択
+		battle,							// バトル中
+		destroy,						// 消す
+		end,
+	};
+
+	//バトル確認用に。
+	struct pBattleDice
+	{
+		bool									selectOffF;			// 攻撃の選択フラグ
+		std::shared_ptr<game::Dice>				p_offense;			// 攻撃側ダイスのポインタ
+		int										selectDef;			// 守備の選択
+		std::vector <std::shared_ptr<game::Dice>> p_defense;		// 防御側ダイスのポインタ
+		int										result;				// 勝敗結果（攻撃側::-1:敗北 0:あいこ 1:勝利)
+	};
+
+
 
 	//*************************************************//
 	//　変数
@@ -25,8 +48,15 @@ private:
 
 	std::vector<std::vector<ci_ext::Vec3i>> dicemasu;	// ダイスオブジェクトの座標（前プレイヤー:後ダイス）
 
+	BattlePhase					batphase_;				// バトル中のフェーズ
+
+	std::vector<pBattleDice>	battledice;				// バトル待機中のダイスの座標
+
+
+	int phase_;											// フェーズ
 	int	turnPlayer_;									// 現在のターンプレイヤー
 	int selectDice_;									// 指定しているダイス
+	bool batinit_;										// バトルフェイズ中の初期フラグ
 
 	//*************************************************//
 	//　関数
@@ -64,6 +94,38 @@ private:
 	*/
 	std::weak_ptr<Object> getDicePtr(const int player,const int id);
 
+
+	/*
+		@brief			召喚フェイズ
+		@return			なし
+	*/
+	void Summon();
+
+	
+	/*
+		@brief			メインフェイズ
+		@return			なし
+	*/
+	void Main();
+
+	
+	/*
+		@brief			バトルフェイズ
+		@return			なし
+	*/
+	void Battle();
+
+
+	/*
+		@brief			攻撃のチェック
+		@return			なし
+	*/
+	void Check();
+
+
+
+
+	
 
 public:
 
@@ -112,7 +174,7 @@ public:
 		@param[in] num					メッセージ（数値）
 		@return							なし
 	*/
-	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg,const int num) override;
+	void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg) override;
 
 
 };

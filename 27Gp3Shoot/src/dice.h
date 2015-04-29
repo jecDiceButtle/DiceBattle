@@ -58,6 +58,7 @@ namespace game
 
 
 		TYPE face[6];
+		TYPE defType_;
 		STATE state_;										// 行動状態
 		DISPSTATE dispstate_;								// 描画状態
 		bool selected_;										// 選択状態
@@ -89,8 +90,7 @@ namespace game
 		//追加
 		std::weak_ptr<ci_ext::Object> p_mons;			//モンスターのポインタ
 
-
-
+		static const TYPE ATKTYPE[6];						// 攻撃属性の初期化	（仮）			
 
 		//*************************************************//
 		//　関数
@@ -114,6 +114,9 @@ namespace game
 		@return							なし
 		*/
 		void Attack();
+
+
+	public:
 
 
 
@@ -164,8 +167,16 @@ namespace game
 		void setDicePosY(const ci_ext::Vec3i &masu);
 
 
+		/*
+		@brief							アクセサ、状態の確認
+		@return							死亡中かどうか
+		@true							死亡中
+		*/
+		bool isDying();
 
-		//***************//
+		
+
+		//***************/
 		//　 関数化変数 　//
 		//***************//
 		//----------DIRECTION関数----------//
@@ -185,7 +196,14 @@ namespace game
 
 
 	public:
-		Dice(const std::string& objectName, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
+		/*
+		@brief							コンストラクタ
+		@param[in] objectName			オブジェクト名
+		@param[in] type					防御側の種族
+		@param[in] pos					初期座標
+		@return							なし
+		*/
+		Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
 
 		void init()	override;
 		void render() override;
@@ -199,6 +217,33 @@ namespace game
 		@true							待機中
 		*/
 		bool isIdoling();
+
+
+		/*
+		@brief							アクセサ、状態の確認
+		@return							移動中かどうか
+		@true							移動中
+		*/
+		bool isMoving();
+
+		/*
+		@brief							アクセサ、ダイスを死亡状態へ
+		@return							なし
+		*/
+		void destroy();
+
+
+		/*
+		@brief							アクセサ、攻撃属性のチェック
+		@return							属性値
+		*/
+		int getAtkSpecies();
+
+		/*
+		@brief							アクセサ、防御属性のチェック
+		@return							属性値
+		*/
+		int getDefSpecies();
 
 		/*
 		@brief							移動を準備（移動に必要な値等をセット）

@@ -26,11 +26,23 @@ namespace game
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
-	
+	void CSceneStage::postTurnAndPhaseMsg()
+	{
+		//フェーズ送信処理
+		std::string s_phase = "phase=" + std::to_string((int)phase_);
+		std::string s_turn = "player=" + std::to_string((int)turn_);
+
+		postMsgAllChildren(s_phase + "," + s_turn);
+	}
 	
 
 	void CSceneStage::NextPhase()
 	{
+		//カットイン実行中はフェーズ変更をできなくする。
+		
+		if (cutinF_ || phaseinit_)
+			return;
+
 		phaseinit_ = true;
 
 		switch (phase_)
@@ -48,11 +60,15 @@ namespace game
 			break;
 
 		case game::CSceneStage::PHASE::END:
+			//プレイヤーターン交換処理
+			turn_ = ((turn_ == TURN::PLAYER1) ? TURN::PLAYER2 : TURN::PLAYER1);
 			phase_ = PHASE::SUMMON;
 			break;
 		}
-	}
 
+		
+
+	}
 	bool CSceneStage::checkMovableDice(const ci_ext::Vec3i &pos)
 	{
 
@@ -71,6 +87,65 @@ namespace game
 		}
 		return false;
 	}
+	void CSceneStage::Standby()
+	{
+		//ステート切り替え//
+		if (true)
+		{
+			state_ = CSceneStage::STAGESTATE::PLAYING;
+			phase_ = PHASE::SUMMON;
+			turn_ = TURN::PLAYER1;
+			phaseinit_ = true;
+		}
+	}
+	void CSceneStage::Playing()
+	{
+		//カットインが消えたかどうかの確認
+		auto objects = getObjectsFromChildren({ "cutin" });
+		if (!objects.empty())
+		{
+			for (auto obj : objects)
+			{
+				auto ui = ci_ext::weak_to_shared<game::UI>(obj);
+				if(ui->isDestroy())
+					cutinF_ = false;
+			}
+		}
+
+		//メインフェイズ処理
+		if (phase_ == PHASE::MAIN || phase_ == PHASE::END)
+		{
+			if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+			{
+				NextPhase();
+			}
+		}
+		
+		if (phaseinit_)
+		{
+			postTurnAndPhaseMsg();
+			insertAsChild(new UI("cutin", game::UI::UITYPE::CUTINMONSTER, -600.f, gplib::system::WINH / 2.f));
+			cutinF_ = true;
+			phaseinit_ = false;
+		}
+
+
+		//ステート切り替え//
+		if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
+		{
+			//state_ = CSceneStage::STAGESTATE::RESULT; //今はなし
+		}
+	}
+	void CSceneStage::Result()
+	{
+		if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
+		{
+			/*kill();*/
+			//シーン遷移
+			//insertToParent(new Logo("scene_logo")); //今はなし
+		}
+	}
+
 
 	//**************************************************************************************//
 	//デフォルト関数
@@ -81,7 +156,8 @@ namespace game
 		Object(objectName),
 		state_(STAGESTATE::STANDBY),
 		turn_(TURN::null),
-		phase_(PHASE::null)
+		phase_(PHASE::null),
+		cutinF_(false)
 	{
 
 	}
@@ -92,7 +168,9 @@ namespace game
 		p_player = insertAsChild(new Player("player", this->selfPtr()));
 		p_dm = insertAsChild(new DiceManager("dicemanager",this->selfPtr()));
 		p_camera = insertAsChild(new Camera("camera"));
-
+		
+		insertAsChild(new UI("phase", game::UI::UITYPE::PHASE, gplib::system::WINW / 2.f, 100.f));
+		insertAsChild(new UI("chara", game::UI::UITYPE::CHARA, 100, 120));
 		insertAsChild(new Back("stageback","TitleBack"));
 
 	}
@@ -150,79 +228,30 @@ namespace game
 	void CSceneStage::update()
 	{
 
-
-		if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
-		{
-			p_ui = insertAsChild(new UI("UI", game::UI::UITYPE::PHASE, gplib::system::WINW / 2, gplib::system::WINH / 2));
-		}
-
-
 		switch (state_)
 		{
-			//=============================================================================
+			//=================================================
 			//  先攻後攻決めるフェイズ（未実装）
-			//=============================================================================
+			//=================================================
 		case game::CSceneStage::STAGESTATE::STANDBY:
 
-			//ステート切り替え//
-			if (true)
-			{
-				state_ = CSceneStage::STAGESTATE::PLAYING;
-				phase_ = PHASE::SUMMON;
-				turn_ = TURN::PLAYER1;
-			}
+			Standby();
 			break;
 
-			//=============================================================================
+			//=================================================
 			//  ゲーム中のフェイズ
-			//=============================================================================
+			//=================================================
 		case game::CSceneStage::STAGESTATE::PLAYING:
-
-			//フェーズ送信処理
-			if (phaseinit_)
-			{
-				postMsgAllChildren("phase", (int)phase_);
-				phaseinit_ = false;
-			}
-
-			//プレイヤーターン交換処理
-			if (phase_ == PHASE::END)
-			{
-				if (turn_ == TURN::PLAYER1)
-				{
-					turn_ = TURN::PLAYER2;
-					NextPhase();
-				}
-				else if (turn_ == TURN::PLAYER2)
-				{
-					turn_ = TURN::PLAYER1;
-					NextPhase();
-				}
-				postMsgAllChildren("turn", (int)turn_);
-			}
-
-
-
-			//ステート切り替え//
-			if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
-			{
-				//state_ = CSceneStage::STAGESTATE::RESULT; //今はなし
-			}
+			Playing();
+			
 			break;
-
-
-			//=============================================================================
+			//=================================================
 			//  リザルト
-			//=============================================================================
+			//=================================================
 			
 		case game::CSceneStage::STAGESTATE::RESULT:
-
-			if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
-			{
-				/*kill();*/
-				//シーン遷移
-				//insertToParent(new Logo("scene_logo")); //今はなし
-			}
+			Result();
+			
 			break;
 		}
 

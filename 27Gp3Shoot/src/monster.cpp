@@ -23,6 +23,7 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
+	const float Monster::OFFSETY = 5.f;
 
 
 	//**************************************************************************************//
@@ -37,11 +38,12 @@ namespace game
 		MovableObject(
 		DrawObjf(objectName)
 		),
-		movepos(pos),
+		m_pos(pos),
 		monster_num(monsternum),
-		moveangle(angle)
+		m_angle(angle)
 	{
-
+		count = 0;
+		moveflag = true;
 	}
 
 	void Monster::render()
@@ -49,26 +51,53 @@ namespace game
 		//m_angle = Vec3f(0.f, 0.f, 0.f);
 		Vec3f scale(10.f, 10.f, 10.f);
 
+		auto pos = m_pos.offset(0.f, OFFSETY, 0.f);
+
 		switch (monster_num){
 		case 0:
-			meshManage->drawMesh(m_pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		case 1:
-			meshManage->drawMesh(m_pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		case 2:
-			meshManage->drawMesh(m_pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		}
 	}
 
 	void Monster::update()
 	{
-		monster_move(movepos,moveangle);
+		updownmove();
+
 	}
 
-	void Monster::monster_move(Vec3f p,Vec3f a){
-		m_pos = p;
-		m_angle = a;
+	void Monster::monster_move(Vec3f p, Vec3f a){
+
+			m_pos = p;
+			m_angle = a;
+	}
+	
+
+	void Monster::updownmove(){
+		count++;
+		if (count > 60){
+			if (moveflag == true){
+				count = 0;
+				moveflag = false;
+			}
+			else if (moveflag == false){
+				count = 0;
+				moveflag = true;
+			}
+		}
+
+		Vec3f f(0.f, 0.03f, 0.f);
+		if (moveflag == true){
+			m_pos += f;
+		}
+		else if (moveflag == false){
+			m_pos -= f;
+		}
 	}
 }

@@ -27,6 +27,10 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
+	const Dice::TYPE Dice::ATKTYPE[6] =
+	{
+		TYPE::GU, TYPE::CH, TYPE::PA, TYPE::PA, TYPE::CH, TYPE::GU,
+	};
 
 
 	//**************************************************************************************//
@@ -37,7 +41,7 @@ namespace game
 	//===================================
 	//	デフォルト関数
 	//===================================
-	Dice::Dice(const std::string& objectName, const ci_ext::Vec3i &masu)
+	Dice::Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& masu)
 		:
 		MovableObject(
 		DrawObjf(objectName)
@@ -51,6 +55,7 @@ namespace game
 		state_(IDOL),
 		dispstate_(DICE),
 		selected_(true),
+		defType_((TYPE)type),
 
 		ANIMFRAMES(30),
 		hougaku_(CENTER),
@@ -90,16 +95,38 @@ namespace game
 		matRot._43 = 0;
 		matRot._44 = 1;
 
+
 	}
 
-	//init()
-	void Dice::init(){
-		p_mons = insertAsChild(new Monster("monster", pos_, 0, Vec3f(0.f, 0.f, 0.f)));
+	bool Dice::isDying()
+	{
+		return state_ == DEAD;
 	}
+	
+	bool Dice::isMoving()
+	{
+		return state_ == MOVE;
+	}
+
+	void Dice::destroy()
+	{
+		state_ = DEAD;
+	}
+	int Dice::getAtkSpecies()
+	{
+		return (int)face[0];
+	}
+	int Dice::getDefSpecies()
+	{
+		return (int)defType_;
+	}
+
 
 	//render()
 	void Dice::render()
 	{
+		ci_ext::Vec3f angle(0, 0, 0);
+		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
 		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale, matRot);
 
 		//追加
@@ -156,8 +183,8 @@ namespace game
 
 		if (animcnt_ > ANIMFRAMES)
 		{
-			pos_.x((int)nextpos().x());
-			pos_.z((int)nextpos().z());
+			pos_.x(nextpos().x());
+			pos_.z(nextpos().z());
 
 			middleQ = endQ;
 			startQ = endQ;
@@ -190,6 +217,7 @@ namespace game
 	*/
 	void Dice::ClacMove(ci_ext::Vec3f &pOut_nowpos, const Dice::DIRECTION &hougaku)
 	{
+
 		float temp_pos_x = pOut_nowpos.x();
 		float temp_pos_z = pOut_nowpos.z();
 
@@ -390,22 +418,16 @@ namespace game
 	{
 		if (pos_.x() == p_pos.x() && pos_.z() == p_pos.z())	return CENTER;
 
-
-		if (pos_.x() < p_pos.x()) return EAST;
+		else if (pos_.x() < p_pos.x()) return EAST;
 
 		else if (p_pos.x() < pos_.x()) return WEST;
 
 		else if (pos_.z() < p_pos.z()) return NORTH;
 
 		else if (p_pos.z() < pos_.z()) return SOUTH;
+
 	}
 	//-------------------------------//
-
-
-
-
-
-
 
 
 	/*
@@ -421,14 +443,20 @@ namespace game
 
 		return pos;
 	}
-	void Dice::setDicePosX(const ci_ext::Vec3i &masu)
-	{
-		pos_.x((masu.x() - 2) * 10);
+
+	void Dice::init(){
+
+		p_mons = insertAsChild(new Monster("monster", pos_, (int)defType_, Vec3f(0.f, 0.f, 0.f)));
+
 	}
 
+	void Dice::setDicePosX(const ci_ext::Vec3i &masu)
+	{
+		pos_.x((masu.x() - 2) * 10.f);
+	}
 	void Dice::setDicePosY(const ci_ext::Vec3i &masu)
 	{
-		pos_.z((masu.y() - 2) * 10);
+		pos_.z((masu.y() - 2) * 10.f);
 	}
 	int Dice::getTopType(){
 		return face[0];
@@ -438,6 +466,7 @@ namespace game
 
 	void Dice::setFace(TYPE ONE_SIX, TYPE TWO_FIVE, TYPE THREE_FOUR)
 	{
+
 		face[1 - 1] = ONE_SIX;
 		face[6 - 1] = ONE_SIX;
 

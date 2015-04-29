@@ -17,25 +17,48 @@ namespace game
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
+	void UI::flagset(){
+		if (flag == false){
+			flag = true;
+		}
+		else if (flag == true){
+			flag = false;
+		}
+	}
 
-	UI::UI(const std::string& objectName, UITYPE type, float x, float y)
+	void UI::ChangeTurn(const int playerID)
+	{
+		turnPlayer_ = playerID;
+
+	}
+
+	void UI::Changephase(const int phase)
+	{
+		phase_ = phase;
+	}
+
+
+	//**************************************************************************************//
+	//デフォルト関数
+	//**************************************************************************************//
+	UI::UI(const std::string& objectName, UITYPE type, float posx, float posy)
 		:
 		MovableObject(objectName),
 		type_(type),
-		state_(MOVESTATE::RIGHTCENTER),
-		initF(true),
+		M_state_(MOVESTATE::M_RIGHTCENTER),
+		P_state_(MOVESTATE::P_RIGHTCENTER),
+		M_initF(true),
+		P_initF(true),
 		flag(false),
-		x(x),
-		y(y)
+		x(posx),
+		y(posy),
+		phase_(0),
+		turnPlayer_(0)
 	{
+
 
 		switch (type_)
 		{
-		case UITYPE::CUTIN:
-			gplib::graph::Draw_LoadObject("Cutin", "res/gra/cutin.png");
-			easing::Create("cutin1", easing::EASINGTYPE::CUBICIN, gplib::system::WINW + 400, 640, 60);
-			easing::Create("cutin2", easing::EASINGTYPE::CUBICIN, 640, -300, 60);
-			break;
 
 		case UITYPE::POPUP:
 
@@ -55,30 +78,42 @@ namespace game
 			player2scale = 1.f;
 
 
-			gplib::graph::Draw_LoadObject("player1", "res/gra/player1.png");
-			gplib::graph::Draw_LoadObject("player2", "res/gra/player2.png");
+			gplib::graph::Draw_LoadObject("player1", "res/gra/player1.png", 0xFFFFaaFF);
+			gplib::graph::Draw_LoadObject("player2", "res/gra/player2.png", 0xFFFFaaFF);
 			break;
 
 		case UITYPE::PHASE:
 			scaleX = 1.f;
 			scaleY = 1.f;
 			gplib::graph::Draw_LoadObject("phase", "res/gra/phase.png");
+			break;
+
+		case UITYPE::CUTINMONSTER:
+			gplib::graph::Draw_LoadObject("cutin_chara", "res/gra/cutin_kuzira.png", 0xFFFFaaFF);
+			easing::Create("cutin_chara1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 700.f, 640, 60);
+			easing::Create("cutin_chara2", easing::EASINGTYPE::CIRCIN, 640, -700, 30);
+			charaC_x = gplib::system::WINW + 700.f;
+			charaC_y = gplib::system::WINH / 2.f;
+			break;
+
+		case UITYPE::CUTINPHASE:
+			gplib::graph::Draw_LoadObject("cutin_phase", "res/gra/cutin_phase.png", 0xFFFFaaFF);
+			easing::Create("cutin_chara1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 600.f, 640, 180);
+			easing::Create("cutin_chara2", easing::EASINGTYPE::CIRCIN, 640, -600, 180);
+			phaseC_x = gplib::system::WINW + 600.f;
+			phaseC_y = gplib::system::WINH / 2.f;
+			break;
+
+
 
 		}
 	}
 
-	void UI::flagset(){
-		if (flag == false){
-			flag = true;
-		}
-		else if (flag == true){
-			flag = false;
-		}
-	}
 
 	void UI::init()
 	{
 		timer_ = insertAsChildSleep(new game::Timer("LimitTimer"), 120);
+
 	}
 
 	void UI::render()
@@ -87,31 +122,35 @@ namespace game
 		//cutin
 		switch (type_)
 		{
-		case UITYPE::CUTIN:
-			if (flag){
-				gplib::graph::Draw_Graphics(x, y, 0.f, "Cutin", 0, 0, 600, 103, 0.f, 1.5f, 1.5f);
-			}
-			break;
+
 		case UITYPE::POPUP:
 			if (flag){
 				std::string t = "行動を決定しますか？";
-				gplib::graph::Draw_Graphics(x, y, 0.f, "question", 0, 0, 512, 128, 0.f, 1.5f, 1.5f);
-				gplib::graph::Draw_Graphics(x - 200, y + 200, 0.f, "Yes", 0, 0, 128, 64, 0.f, sizeY, sizeY);
-				gplib::graph::Draw_Graphics(x + 200, y + 200, 0.f, "No", 0, 0, 128, 64, 0.f, sizeX, sizeX);
-				gplib::font::Draw_FontText(x, y, 0.f, t, ARGB(255, 255, 255, 255), 0);
+				gplib::graph::Draw_Graphics(x, y, 0.f, "question", 0, 0, gplib::graph::Draw_GetImageWidth("question"), gplib::graph::Draw_GetImageHeight("question"), 0.f, 1.5f, 1.5f);
+				gplib::graph::Draw_Graphics(x - 200, y + 200, 0.f, "Yes", 0, 0, gplib::graph::Draw_GetImageWidth("Yes"), gplib::graph::Draw_GetImageHeight("Yes"), 0.f, sizeY, sizeY);
+				gplib::graph::Draw_Graphics(x + 200, y + 200, 0.f, "No", 0, 0, gplib::graph::Draw_GetImageWidth("No"), gplib::graph::Draw_GetImageHeight("No"), 0.f, sizeX, sizeX);
+				gplib::font::Draw_FontText(static_cast<int>(x), static_cast<int>(y), 0.f, t, ARGB(255, 255, 255, 255), 0.f);
 			}
 			break;
 		case UITYPE::CHARA:
 
-			gplib::graph::Draw_Graphics(100, 100, 0.f, "player1", 0, 0, 100, 100, 0, player1scale, player1scale);
-			gplib::graph::Draw_Graphics(gplib::system::WINW - 100, 100, 0.f, "player2", 0, 0, 100, 100, 0, player2scale, player2scale);
+			gplib::graph::Draw_Graphics(x, y, 0.f, "player1", 0, 0, gplib::graph::Draw_GetImageWidth("player1"), gplib::graph::Draw_GetImageHeight("player1"), 0, player1scale, player1scale);
+			gplib::graph::Draw_Graphics(gplib::system::WINW - x, y, 0.f, "player2", 0, 0, gplib::graph::Draw_GetImageWidth("player1"), gplib::graph::Draw_GetImageHeight("player1"), 0, player2scale, player2scale);
 			break;
 		case UITYPE::PHASE:
 
-			gplib::graph::Draw_Graphics(x, y, 0.f, "phase", srcX[i], 0, 150, 150, 0.f,scaleX,scaleY);
+			gplib::graph::Draw_Graphics(x, y, 0.f, "phase", srcX[phase_], 0, (gplib::graph::Draw_GetImageWidth("phase") / 4), gplib::graph::Draw_GetImageHeight("phase"), 0.f);
+			break;
+
+		case UITYPE::CUTINMONSTER:
+			gplib::graph::Draw_Graphics(charaC_x, charaC_y, 0.f, "cutin_chara", 0, 0, 700, 250, 0.f, 1.5f, 1.5f);
+
+			break;
+
+		case UITYPE::CUTINPHASE:
+			gplib::graph::Draw_Graphics(phaseC_x, phaseC_y, 0.f, "cutin_phase", 0, 0, 600, (296/4)*phase_, 0.f, 1.5f, 1.5f);
 			break;
 		}
-
 		gplib::graph::Draw_2DRefresh();
 
 	}
@@ -119,52 +158,12 @@ namespace game
 	void UI::update()
 	{
 
-		auto timer = ci_ext::weak_to_shared<game::Timer>(timer_);
+		auto P_timer = ci_ext::weak_to_shared<game::Timer>(timer_);
+		auto M_timer = ci_ext::weak_to_shared<game::Timer>(timer_);
 
 		switch (type_)
 		{
-		case UITYPE::CUTIN:
-			if (gplib::input::CheckPush(gplib::input::KEY_F2))
-			{
-				flagset();
-			}
-			if (flag){
-				switch (state_)
-				{
-				case MOVESTATE::RIGHTCENTER:
-					if (initF == true)
-					{
-						easing::Start("cutin1");
-						initF = false;
-					}
-					easing::GetPos("cutin1", x);
-					if (x <= 640)
-					{
-						state_ = MOVESTATE::CENTER;
-						initF = true;
-					}
-					break;
-				case MOVESTATE::CENTER:
-					/*auto timer = ci_ext::weak_to_shared<game::Timer>(timer_);*/
-					if (timer->get() > 3.0f)
-					{
-						state_ = MOVESTATE::CENTERLEFT;
-					}
-					break;
-				case MOVESTATE::CENTERLEFT:
-					if (initF == true)
-					{
-						easing::Start("cutin2");
-						initF = false;
-					}
-					easing::GetPos("cutin2", x);
-					if (x <= -300)
-					{
-						kill();
-					}
-					break;
-				}
-			}
+
 		case UITYPE::POPUP:
 			if (gplib::input::CheckPush(gplib::input::KEY_UP))
 			{
@@ -191,13 +190,13 @@ namespace game
 			break;
 
 		case UITYPE::CHARA:
-			if (gplib::input::CheckPush(gplib::input::KEY_LEFT))		//左プレイヤーターンの時
+			if (turnPlayer_ == 0)		//プレイヤー1ターンの時
 			{
 				player1scale = 1.2f;
 				player2scale = 1.0f;
 
 			}
-			if (gplib::input::CheckPush(gplib::input::KEY_RIGHT))	//右プレイヤーターンの時
+			if (turnPlayer_ == 1)		//プレイヤー2ターンの時
 			{
 				player2scale = 1.2f;
 				player1scale = 1.0f;
@@ -205,31 +204,109 @@ namespace game
 			}
 			break;
 		case UITYPE::PHASE:
-			if (gplib::input::CheckPush(gplib::input::KEY_BTN1)){
-			/*if (timer->get() > 2.0f)
-				{
-					scaleX = 1.5f;
-					scaleY = 1.5f;
-				}*/
-			
-				if (i < 4)
-				{
-					i++;
-				}
-				if (i == 3)
-				{
-					i = 0;
-				}
-
+			if (phase_ == 3)
+			{
+				phase_ = 0;
 			}
-				break;
-		}
+			break;
 
+		case UITYPE::CUTINMONSTER:
+			switch (M_state_)
+			{
+			case MOVESTATE::M_RIGHTCENTER:
+				if (M_initF == true)
+				{
+					easing::Start("cutin_chara1");
+					M_initF = false;
+				}
+				easing::GetPos("cutin_chara1", charaC_x);
+				if (charaC_x <= 640)
+				{
+					M_state_ = MOVESTATE::M_CENTER;
+					M_initF = true;
+				}
+				break;
+			case MOVESTATE::M_CENTER:
+				if (M_timer->get() > 3.0f)
+				{
+					M_state_ = MOVESTATE::M_CENTERLEFT;
+				}
+				break;
+			case MOVESTATE::M_CENTERLEFT:
+				if (M_initF == true)
+				{
+					easing::Start("cutin_chara2");
+					M_initF = false;
+				}
+				easing::GetPos("cutin_chara2", charaC_x);
+				if (charaC_x <= -700)
+				{
+					kill();
+				}
+				break;
+			}
+		case UITYPE::CUTINPHASE:
+
+			switch (P_state_)
+			{
+			case MOVESTATE::P_RIGHTCENTER:
+				if (P_initF == true)
+				{
+					easing::Start("cutin_phase1");
+					P_initF = false;
+				}
+				easing::GetPos("cutin_phase1", phaseC_x);
+				if (phaseC_x <= 640)
+				{
+					P_state_ = MOVESTATE::P_CENTER;
+					P_initF = true;
+				}
+				break;
+			case MOVESTATE::P_CENTER:
+				if (P_timer->get() > 3.0f)
+				{
+					P_state_ = MOVESTATE::P_CENTERLEFT;
+				}
+				break;
+			case MOVESTATE::P_CENTERLEFT:
+				if (P_initF == true)
+				{
+					easing::Start("cutin_phase2");
+					P_initF = false;
+				}
+				easing::GetPos("cutin_phase2", phaseC_x);
+				if (phaseC_x <= -700)
+				{
+					kill();
+				}
+				break;
+			}
+		}
 
 		easing::Step();
 
 	}
 
+	void UI::receiveMsg(std::weak_ptr<ci_ext::Object>& sender, const std::string& msg)
+	{
+
+		//メッセージ分割
+		auto msgVec = gplib::text::split(msg, ",");
+
+		for (auto ms : msgVec){
+			//さらに分割
+			auto mVec = gplib::text::split(ms, "=");
+
+			if (mVec[0] == "player")
+			{
+				ChangeTurn(stoi(mVec[1]));
+			}
+			if (mVec[0] == "phase")
+			{
+				phase_ = stoi(mVec[1]);
+			}
+		}
+	}
 
 
 }

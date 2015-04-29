@@ -68,6 +68,7 @@
 #include <map>
 
 
+
 //**************************************************************************************//
 //マクロ　変数　宣言
 //**************************************************************************************//
@@ -597,6 +598,13 @@
 		  void  Time_StartTimerCount();
 		  bool  Time_CheckTimer();
 	  }
+	  namespace text{
+		  //テキスト関連
+		  std::vector<std::string> split(std::string str, const std::string& delim);
+
+	  }
+
+
 	  ////拡張機能を使わない場合はコメントアウトすること
 	  //#include "ci_ext/ci_ext.hpp"
   }

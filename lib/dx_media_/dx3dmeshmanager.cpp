@@ -65,6 +65,12 @@ void DX3DMESHMANAGER::drawMesh(DxVec3 pos, const string& handleName, DxVec3 angl
 	if(DxMeshTable.find(handleName) != DxMeshTable.end())
 		g->DrawModel(DxMeshTable.at(handleName)->mesh, &pos, &scale, &angle, &color);
 }
+//tuika
+void DX3DMESHMANAGER::drawMeshQuaternion(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color, DxVec3 scale, D3DXMATRIX matrot)
+{
+	if (DxMeshTable.find(handleName) != DxMeshTable.end())
+		g->DrawModel(DxMeshTable.at(handleName)->mesh, &pos, &scale, NULL, &color, &matrot);
+}
 void DX3DMESHMANAGER::drawAnimMesh(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color, DxVec3 scale)
 {
 	if(DxAnimMeshTable.find(handleName) != DxAnimMeshTable.end())

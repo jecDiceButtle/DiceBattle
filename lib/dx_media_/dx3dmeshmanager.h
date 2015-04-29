@@ -75,6 +75,9 @@ public:
 
 	void loadMesh(const string& handleName,const string& fileName,const string& path,MESHTYPE type = MESHTYPE::MESH);
 	void drawMesh(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color = ARGB(255, 255, 255, 255), DxVec3 scale = DxVec3(1.f, 1.f, 1.f));
+	//tuika
+	//コメントアウトの場所が謎でbaguがあるかもしれない
+	void drawMeshQuaternion(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color/* = ARGB(255, 255, 255, 255)*/, DxVec3 scale/* = DxVec3(1.f, 1.f, 1.f)*/, D3DXMATRIX matrot);
 	void drawAnimMesh(DxVec3 pos, const string& handleName, DxVec3 angle, D3DCOLOR color = ARGB(255, 255, 255, 255), DxVec3 scale = DxVec3(1.f, 1.f, 1.f));
 	void ChangeAnim(const string& handleName, int nowMotion);
 	void step(const string& handleName,float spd);

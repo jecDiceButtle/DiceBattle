@@ -63,7 +63,7 @@ namespace game
 		DISPSTATE dispstate_;								// 描画状態
 		bool selected_;										// 選択状態
 
-
+		int playerID_;
 		int animcnt_;										// アニメカウンタ
 
 		bool RGBFLAG;
@@ -174,6 +174,14 @@ namespace game
 		*/
 		bool isDying();
 
+
+		/*
+		@brief							アクセサ、蘇生
+		@return							なし
+		*/
+
+		void Spawn();
+
 		
 
 		//***************/
@@ -200,10 +208,11 @@ namespace game
 		@brief							コンストラクタ
 		@param[in] objectName			オブジェクト名
 		@param[in] type					防御側の種族
+		@param[in] playerID				プレイヤー
 		@param[in] pos					初期座標
 		@return							なし
 		*/
-		Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
+		Dice(const std::string& objectName, const int type, const int playerID, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
 
 		void init()	override;
 		void render() override;

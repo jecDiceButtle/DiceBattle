@@ -49,6 +49,7 @@ namespace game
 		{
 		case game::CSceneStage::PHASE::SUMMON:
 			phase_ = PHASE::MAIN;
+
 			break;
 
 		case game::CSceneStage::PHASE::MAIN:
@@ -56,13 +57,16 @@ namespace game
 			break;
 
 		case game::CSceneStage::PHASE::BUTTLE:
+
 			phase_ = PHASE::END;
 			break;
 
 		case game::CSceneStage::PHASE::END:
+			insertAsChild(new UI("turn", game::UI::UITYPE::CUTINTURN));		//??
 			//プレイヤーターン交換処理
 			turn_ = ((turn_ == TURN::PLAYER1) ? TURN::PLAYER2 : TURN::PLAYER1);
 			phase_ = PHASE::SUMMON;
+			
 			break;
 		}
 
@@ -124,7 +128,7 @@ namespace game
 		if (phaseinit_)
 		{
 			postTurnAndPhaseMsg();
-			insertAsChild(new UI("cutin", game::UI::UITYPE::CUTINMONSTER, -600.f, gplib::system::WINH / 2.f));
+			insertAsChild(new UI("cutin", game::UI::UITYPE::CUTINPHASE));
 			cutinF_ = true;
 			phaseinit_ = false;
 		}
@@ -171,6 +175,7 @@ namespace game
 		
 		insertAsChild(new UI("phase", game::UI::UITYPE::PHASE, gplib::system::WINW / 2.f, 100.f));
 		insertAsChild(new UI("chara", game::UI::UITYPE::CHARA, 100, 120));
+	
 		insertAsChild(new Back("stageback","TitleBack"));
 
 	}
@@ -227,6 +232,10 @@ namespace game
 	}
 	void CSceneStage::update()
 	{
+		if (gplib::input::CheckPush(gplib::input::KEY_SPACE))
+		{
+			insertAsChild(new UI("cutin", game::UI::UITYPE::CUTINTURN));
+		}
 
 		switch (state_)
 		{

@@ -55,7 +55,7 @@ public:
 
 
 	void monster_move(ci_ext::Vec3f p,ci_ext::Vec3f a);//ポインタ使って座標移動&アングル
-
+	void monster_move(ci_ext::Vec3f p);
 
 	void updownmove();
 

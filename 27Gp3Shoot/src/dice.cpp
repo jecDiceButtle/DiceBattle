@@ -41,7 +41,7 @@ namespace game
 	//===================================
 	//	デフォルト関数
 	//===================================
-	Dice::Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& masu)
+	Dice::Dice(const std::string& objectName, const int type, const int playerID, const ci_ext::Vec3i& masu)
 		:
 		MovableObject(
 		DrawObjf(objectName)
@@ -56,6 +56,7 @@ namespace game
 		dispstate_(DICE),
 		selected_(true),
 		defType_((TYPE)type),
+		playerID_(playerID),
 
 		ANIMFRAMES(30),
 		hougaku_(CENTER),
@@ -112,6 +113,12 @@ namespace game
 	{
 		state_ = DEAD;
 	}
+
+	void Dice::Spawn()
+	{
+		state_ = IDOL;
+	}
+
 	int Dice::getAtkSpecies()
 	{
 		return (int)face[0];
@@ -129,9 +136,7 @@ namespace game
 		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
 		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale, matRot);
 
-		//追加
-		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
-		monsobj->monster_move(pos_, angle);
+		
 	}
 
 	//update
@@ -157,6 +162,10 @@ namespace game
 			Attack();
 			break;
 		}
+
+		//追加
+		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
+		monsobj->monster_move(pos_);
 
 	}
 	//===================================
@@ -446,7 +455,9 @@ namespace game
 
 	void Dice::init(){
 
-		p_mons = insertAsChild(new Monster("monster", pos_, (int)defType_, Vec3f(0.f, 0.f, 0.f)));
+		Vec3f rot = ((playerID_ == 0) ? Vec3f(0.f, 180.f, 0.f): Vec3f(0.f, 0.f, 0.f));
+
+		p_mons = insertAsChild(new Monster("monster", pos_, (int)defType_, rot));
 
 	}
 

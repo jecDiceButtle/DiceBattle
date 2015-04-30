@@ -30,9 +30,6 @@ namespace game
 	//ä÷êîãLèq
 	//**************************************************************************************//
 
-
-
-
 	Monster::Monster(const std::string& objectName, const Vec3f pos, const int monsternum, const Vec3f angle)
 		:
 		MovableObject(
@@ -76,6 +73,12 @@ namespace game
 
 			m_pos = p;
 			m_angle = a;
+	}
+
+	void Monster::monster_move(Vec3f p){
+
+		m_pos = p;
+
 	}
 	
 

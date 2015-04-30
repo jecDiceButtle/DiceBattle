@@ -116,8 +116,11 @@ namespace game
 		void Attack();
 
 
-	public:
-
+		/*
+		@brief							移動中の処理
+		@return							なし
+		*/
+		void DoDead();
 
 
 		/*
@@ -167,20 +170,7 @@ namespace game
 		void setDicePosY(const ci_ext::Vec3i &masu);
 
 
-		/*
-		@brief							アクセサ、状態の確認
-		@return							死亡中かどうか
-		@true							死亡中
-		*/
-		bool isDying();
 
-
-		/*
-		@brief							アクセサ、蘇生
-		@return							なし
-		*/
-
-		void Spawn();
 
 		
 
@@ -236,6 +226,22 @@ namespace game
 		bool isMoving();
 
 		/*
+		@brief							アクセサ、状態の確認
+		@return							死亡中かどうか
+		@true							死亡中
+		*/
+		bool isDying();
+
+
+		/*
+		@brief							アクセサ、蘇生
+		@return							なし
+		*/
+
+		void Spawn();
+
+
+		/*
 		@brief							アクセサ、ダイスを死亡状態へ
 		@return							なし
 		*/
@@ -259,6 +265,13 @@ namespace game
 		@return							なし
 		*/
 		void prepareMove(ci_ext::Vec3i &masu);
+
+		/*
+		@brief							selectflagの切り替え
+		@return							なし
+		*/
+		void OnSelectFlag();
+		void OffSelectFlag();
 
 	};
 

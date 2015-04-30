@@ -148,7 +148,7 @@ namespace game
 		switch (state_)
 		{
 		case game::Dice::DEAD:
-
+			DoDead();
 			break;
 		case game::Dice::IDOL:
 			DoIdol();
@@ -373,6 +373,19 @@ namespace game
 	//-------------------------------//
 	//===================================
 
+	//===================================
+	//	DoMove
+	//===================================
+	void Dice::DoDead()
+	{
+		pos_.y(255); //死んでる間は吹っ飛ばす
+		//monster_move
+		//auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
+		//monsobj->monster_move(pos_);
+		//
+
+	}
+	//===================================
 
 
 	//===================================
@@ -388,6 +401,15 @@ namespace game
 		return state_ == IDOL;
 	}
 
+	void Dice::OnSelectFlag()
+	{
+		selected_ = true;
+	}
+	void Dice::OffSelectFlag()
+	{
+		selected_ = false;
+		rgb = 255;
+	}
 
 	/*
 	@brief							移動を準備（移動に必要な値等をセット）

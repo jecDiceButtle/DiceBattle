@@ -242,6 +242,16 @@ namespace game
 			auto parent = ci_ext::weak_to_shared<CSceneStage>(p_parent);
 			parent->NextPhase();
 		}
+		else
+		{
+			//死んでいるダイスはその場に召喚させる。
+			for (auto obj : objects)
+			{
+				auto dice = ci_ext::weak_to_shared<game::Dice>(obj);
+				if (dice->isDying())
+					dice->Spawn();
+			}
+		}
 
 	}
 	void DiceManager::Main()
@@ -479,7 +489,7 @@ namespace game
 			for (int j = 0; j < 2; j++)	//ダイスの数
 			{
 				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
-				auto ptr = insertAsChild(new game::Dice(str,gplib::math::GetRandom<int>(0,2),dicemasu[i][j]));
+				auto ptr = insertAsChild(new game::Dice(str,gplib::math::GetRandom<int>(0,2),i, dicemasu[i][j]));
 			}
 		}
 

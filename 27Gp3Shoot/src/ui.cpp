@@ -12,8 +12,12 @@ namespace game
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
-	static const int srcX[] = { 0, 150, 300, 450 };
-	static const int cutin_srcY[] = { 0, 74, 143, 222 };
+	const int UI::srcX[] = { 0, 150, 300, 450 };
+	const int UI::cutin_srcY[] = { 0, 74, 143, 222 };
+	
+	int UI::turnPlayer_ = 0;
+	int UI::phase_ = 0;
+
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
@@ -37,18 +41,12 @@ namespace game
 		phase_ = phase;
 	}
 
-	void UI::Monsternum(const int num)
-	{
-		if (num == 0){ monsnum_ = "cutin_kuzira"; }
-		if (num == 1){ monsnum_ = "cutin_kinoko"; }
-		if (num == 2){ monsnum_ = "cutin_tori"; }
 
-	}
 
 	//**************************************************************************************//
 	//デフォルト関数
 	//**************************************************************************************//
-	UI::UI(const std::string& objectName, UITYPE type, float posx, float posy)
+	UI::UI(const std::string& objectName, UITYPE type, float posx, float posy,int monsnum)
 		:
 		MovableObject(objectName),
 		type_(type),
@@ -60,11 +58,16 @@ namespace game
 		T_initF(true),
 		flag(false),
 		x(posx),
-		y(posy),
-		phase_(0),
-		turnPlayer_(0)
+		y(posy)
 	{
+		//モンスター用resname
+		std::string str = "";
 
+		if (monsnum == 0) str = "cutin_kuzira";
+		if (monsnum == 1) str = "cutin_kinoko";
+		if (monsnum == 2) str = "cutin_tori";
+
+		monsnum_ = str;
 
 		switch (type_)
 		{
@@ -99,6 +102,7 @@ namespace game
 
 		case UITYPE::CUTINMONSTER:
 			gplib::graph::Draw_LoadObject("cutin_kuzira", "res/gra/cutin_kuzira.png", 0xFFFFaaFF);
+			//キノコ絵がないので仮にクジラをおいてます。。
 			gplib::graph::Draw_LoadObject("cutin_kinoko", "res/gra/cutin_kinoko.png", 0xFFFFaaFF);
 			gplib::graph::Draw_LoadObject("cutin_tori", "res/gra/cutin_tori.png", 0xFFFFaaFF);
 			easing::Create("cutin_chara1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 600.f, 640, 60);
@@ -130,11 +134,12 @@ namespace game
 	void UI::init()
 	{
 		timer_ = insertAsChildSleep(new game::Timer("LimitTimer"), 120);
-
+		
 	}
 
 	void UI::render()
 	{
+
 		gplib::graph::Draw_2DClear();
 		switch (type_)
 		{
@@ -159,12 +164,13 @@ namespace game
 			break;
 
 		case UITYPE::CUTINMONSTER:
-			gplib::graph::Draw_Graphics(charaC_x, charaC_y, 0.f,/* monsnum_,*/"cutin_kuzira", 0, 0, 600, 74, 0.f, 1.5f, 1.5f);
+
+			gplib::graph::Draw_Graphics(charaC_x, charaC_y, 0.f, monsnum_, 0, 0, 700, 250, 0.f, 1.5f, 1.5f);
 
 			break;
 
 		case UITYPE::CUTINPHASE:
-			gplib::graph::Draw_Graphics(phaseC_x, phaseC_y, 0.f, "cutin_phase", 0, cutin_srcY[phase_], 600, 75, 0.f, 1.5f, 1.5f);
+			gplib::graph::Draw_Graphics(phaseC_x, phaseC_y, 0.f, "cutin_phase", 0, cutin_srcY[phase_], 600, 74, 0.f, 1.5f, 1.5f);
 			break;
 
 		case UITYPE::CUTINTURN:

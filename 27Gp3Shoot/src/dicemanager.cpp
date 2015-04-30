@@ -387,6 +387,8 @@ namespace game
 			//勝敗判定
 			if (batinit_)
 			{
+				int offenseNum;
+
 				for (auto &bdice : battledice){
 					if (bdice.selectOffF){
 
@@ -394,20 +396,44 @@ namespace game
 						int defense = bdice.p_defense[bdice.selectDef]->getDefSpecies();
 
 						bdice.result = getAttackJudge(offense, defense);
+						
+						offenseNum = bdice.p_offense->getDefSpecies();
+
+						break;
 					}
 				}
-				//カットインさせる
-				insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTINMONSTER, -500.f, gplib::system::WINH / 2.f));
-
+				
+				batcutin_ = true;
 				batinit_ = false;
 			}
 			else
 			{
-				auto object = getObjectFromChildren( "cutin_attack" );
-				if (ci_ext::weak_to_shared<UI>(object)->isDestroy())
+				auto object = getObjectsFromRoot({ "cutin" });
+
+				if (object.empty() && batcutin_)
 				{
-					batphase_ = destroy;
+					int offenseNum;
+
+					for (auto &bdice : battledice){
+						if (bdice.selectOffF){
+							
+							offenseNum = bdice.p_offense->getDefSpecies();
+							break;
+						}
+					}
+					//カットインさせる
+					insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTINMONSTER, -500.f, gplib::system::WINH / 2.f, offenseNum));
+					batcutin_ = false;
 				}
+				else if (!batcutin_)
+				{
+					auto object = getObjectFromChildren("cutin_attack");
+					if (ci_ext::weak_to_shared<UI>(object)->isDestroy())
+					{
+						batphase_ = destroy;
+					}
+				}
+				
 			}
 			break;
 

@@ -25,28 +25,29 @@ namespace game
 		//　変数
 		//*************************************************//
 	public:
-		enum UITYPE{ POPUP, CHARA, PHASE, CUTINMONSTER, CUTINPHASE };
+		enum UITYPE{ POPUP, CHARA, PHASE, CUTINMONSTER, CUTINPHASE ,CUTINTURN};
 	private:
 		UITYPE type_;
 		float x, y;
 		int turnPlayer_;
 		int phase_;
+		std::string monsnum_;
 
 
-		//cutin_monster
+		//cutin
 		bool	M_initF;
 		bool	P_initF;
+		bool	T_initF;
 		std::weak_ptr<ci_ext::Object> timer_;
-		enum MOVESTATE{ M_RIGHTCENTER, M_CENTER, M_CENTERLEFT, P_RIGHTCENTER, P_CENTER, P_CENTERLEFT };
-		MOVESTATE M_state_, P_state_;
+		enum MOVESTATE
+		{ M_RIGHTCENTER, M_CENTER, M_CENTERLEFT,	//モンスター
+		  P_RIGHTCENTER, P_CENTER, P_CENTERLEFT,	//フェイズ
+		  T_RIGHTCENTER, T_CENTER, T_CENTERLEFT		//プレイヤーターン
+		};
+		MOVESTATE M_state_, P_state_, T_state_;
 		float phaseC_x, phaseC_y;
 		float charaC_x, charaC_y;
-
-		//cutin_phase
-		//std::weak_ptr<ci_ext::Object> timer_;
-		/*enum P_MOVESTATE{ P_RIGHTCENTER, P_CENTER, P_CENTERLEFT };*/
-		/*	P_MOVESTATE P_state_;*/
-
+		float turnC_x, turnC_y;
 
 		//popup
 
@@ -83,6 +84,7 @@ namespace game
 		void flagset();
 		void ChangeTurn(const int playerID);
 		void Changephase(const int phase);
+		void Monsternum(const int num);
 		/*
 		@brief							描画
 		@return							なし

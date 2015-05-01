@@ -132,9 +132,8 @@ namespace game
 	//render()
 	void Dice::render()
 	{
-		ci_ext::Vec3f angle(0, 0, 0);
-		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
-		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale, matRot);
+		
+		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, rgb, rgb, rgb), scale, matRot);
 
 		
 	}
@@ -151,6 +150,7 @@ namespace game
 			DoDead();
 			break;
 		case game::Dice::IDOL:
+			pos_.y(5.0f);
 			DoIdol();
 			break;
 

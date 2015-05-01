@@ -19,6 +19,8 @@ namespace game
 		//　定数
 		//*************************************************//
 	private:
+		static const int srcX[];
+		static const int cutin_srcY[];
 
 
 		//*************************************************//
@@ -29,9 +31,11 @@ namespace game
 	private:
 		UITYPE type_;
 		float x, y;
-		int turnPlayer_;
-		int phase_;
-		std::string monsnum_;
+
+		static int turnPlayer_;						// フェイズ、ターンを固定化。一時しのぎ。
+		static int phase_;
+
+		std::string monsnum_;						// モンスターカットイン用、0:クジラ 1:キノコ 2:トリ
 
 
 		//cutin
@@ -80,11 +84,10 @@ namespace game
 		@param[in]	objectName			オブジェクト名
 		@return							なし
 		*/
-		UI(const std::string& objectName, UITYPE type, float posx = 0, float posy = 0);
+		UI(const std::string& objectName, UITYPE type, float posx = 0, float posy = 0,int monsnum = -1);
 		void flagset();
 		void ChangeTurn(const int playerID);
 		void Changephase(const int phase);
-		void Monsternum(const int num);
 		/*
 		@brief							描画
 		@return							なし

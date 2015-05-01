@@ -75,7 +75,8 @@ public:
 
 		//最初に生成するオブジェクトを記述
 		//insertAsChild(new game::Logo("Loge")); //!)ここではロゴに移動
-		insertAsChild(new game::CSceneStage("scene_stage"));
+		insertAsChild(new game::Title("Title")); //!)ここではロゴに移動
+		//insertAsChild(new game::CSceneStage("scene_stage"));
 	}
 
 	//アクセサ

@@ -35,7 +35,11 @@ namespace game
 
 		void resume() override
 		{
-			insertToParent(new game::CSceneStage("scene_stage"));
+			static bool flag = true;
+			if (flag){
+				insertToParent(new game::CSceneStage("scene_stage"));
+				flag = false;
+			}
 		}
 
 		void update() override

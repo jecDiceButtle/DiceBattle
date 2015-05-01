@@ -23,9 +23,9 @@ namespace game
 		kakudo(0)
 	{
 
-		v = DxVec3(85.f, 70.f, -95.f);	//カメラの初期位置
+		v = DxVec3(75.f, 60.f, -85.f);	//カメラの初期位置
 		v2 = DxVec3(0.f, 0.f, 0.f);		//カメラの速度初期化
-		lookpos = DxVec3(0.f,15.f,0.f);
+		lookpos = DxVec3(0.f,20.f,0.f);
 
 		Cflag = FREE;
 	}

@@ -63,9 +63,9 @@ namespace game
 		//モンスター用resname
 		std::string str = "";
 
-		if (monsnum == 0) str = "cutin_kuzira";
+		if (monsnum == 0) str = "cutin_tori";
 		if (monsnum == 1) str = "cutin_kinoko";
-		if (monsnum == 2) str = "cutin_tori";
+		if (monsnum == 2) str = "cutin_kuzira";
 
 		monsnum_ = str;
 

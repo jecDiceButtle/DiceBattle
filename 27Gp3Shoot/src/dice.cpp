@@ -54,7 +54,7 @@ namespace game
 
 		state_(IDOL),
 		dispstate_(DICE),
-		selected_(true),
+		selected_(false),
 		defType_((TYPE)type),
 		playerID_(playerID),
 
@@ -121,11 +121,11 @@ namespace game
 
 	int Dice::getAtkSpecies()
 	{
-		return (int)face[0];
+		return static_cast<int>(face[0]);
 	}
 	int Dice::getDefSpecies()
 	{
-		return (int)defType_;
+		return static_cast<int>(defType_);
 	}
 
 
@@ -134,7 +134,7 @@ namespace game
 	{
 		ci_ext::Vec3f angle(0, 0, 0);
 		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
-		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale, matRot);
+		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, rgb, rgb, rgb), scale, matRot);
 
 		
 	}

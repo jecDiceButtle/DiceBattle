@@ -82,6 +82,9 @@ namespace game
 
 			if (selectF)
 			{
+				auto ptr = getDicePtr(turnPlayer_, selectDice_);
+				ci_ext::weak_to_shared<Dice>(ptr)->OffSelectFlag();
+
 				//選択可能なダイスを探す。
 				for (int i = 1; i <= (int)dicemasu[turnPlayer_].size(); i++)
 				{
@@ -153,6 +156,15 @@ namespace game
 		{
 			turnPlayer_ = playerID;
 			selectDice_ = 0;
+
+			auto objects = getObjectsFromChildren({ "dice"});
+
+			for (auto obj : objects)
+			{
+				auto dice = ci_ext::weak_to_shared<game::Dice>(obj);
+				
+				dice->OffSelectFlag();
+			}
 		}
 	}
 
@@ -257,6 +269,10 @@ namespace game
 	void DiceManager::Main()
 	{
 		key();
+
+		batphase_ = check;
+		auto ptr = getDicePtr(turnPlayer_, selectDice_);
+		ci_ext::weak_to_shared<Dice>(ptr)->OnSelectFlag();
 	}
 	void DiceManager::Battle()
 	{
@@ -324,7 +340,6 @@ namespace game
 				if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 				{
 					//選択状態を解除すること
-
 					batphase_ = emySelect;
 				}
 

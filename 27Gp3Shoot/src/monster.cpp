@@ -51,14 +51,17 @@ namespace game
 		auto pos = m_pos.offset(0.f, OFFSETY, 0.f);
 
 		switch (monster_num){
+			//グー、火
 		case 0:
-			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
+			//チョキ、木
 		case 1:
 			meshManage->drawMesh(pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
+			//パー、水
 		case 2:
-			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		}
 	}

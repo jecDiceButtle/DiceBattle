@@ -25,7 +25,7 @@
 
 namespace gplib{
 	namespace system{
-		const char USERNAME[256] = "ゲームPG3 *";
+		const char USERNAME[256] = "Dice Battle";
 		const int	WINW = 1280;
 		const int	WINH = 720;
 		bool	WindowMode = true;								//フルスクリーン対応

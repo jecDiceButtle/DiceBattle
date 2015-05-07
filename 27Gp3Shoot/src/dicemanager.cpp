@@ -61,7 +61,7 @@ namespace game
 		{
 			MovingPos(selectDice_, ci_ext::Vec3i(0, -1, 0));
 		}
-		if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+		if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 		{
 			//ダイスに選択描画
 			// dice->select();
@@ -316,7 +316,7 @@ namespace game
 				gplib::font::Draw_FontText(500, 500, 0.f, "攻撃セレクト", ARGB(255, 255, 0, 0), 0);
 
 				//ダイスの選択を変更する
-				if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 				{
 					for (int i = 0; i < (int)battledice.size(); i++)
 					{
@@ -337,7 +337,7 @@ namespace game
 				}
 
 				//ダイスの決定
-				if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 				{
 					//選択状態を解除すること
 					batphase_ = emySelect;
@@ -370,7 +370,7 @@ namespace game
 					{
 						gplib::font::Draw_FontText(500, 500, 0.f, "攻撃セレクト", ARGB(255, 255, 0, 0), 0);
 						//ダイスの選択を変更する
-						if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+						if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 						{
 								//選択されている次のダイスへ選択を移す。
 								bdice.selectDef = (bdice.selectDef + 1) % (int)bdice.p_defense.size();
@@ -380,7 +380,7 @@ namespace game
 						}
 
 						//ダイスの決定
-						if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+						if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 						{
 							//選択描画の解除
 

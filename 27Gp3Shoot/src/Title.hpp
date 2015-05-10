@@ -13,8 +13,8 @@ namespace game
 		Title(const std::string& objectName) :
 			Object(objectName)
 		{
-			effect::Create(0, 0, effect::EFFECTTYPE::FADEINWHITE);
-			gplib::graph::Draw_LoadObject("titleback", "res/gra/title_back.png");
+			//effect::Create(0, 0, effect::EFFECTTYPE::FADEINWHITE);
+			gplib::graph::Draw_LoadObject("titleback", "res/gra/title_back.png",0xFFFFFFFF);
 			/*gplib::graph::Draw_LoadObject("titlelogo", "res/gra/title.png");*/
 		}
 
@@ -50,8 +50,8 @@ namespace game
 		{
 			if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 			{
-				effect::Create(0, 0, effect::EFFECTTYPE::FADEOUTWHITE);
-				sleep(30);
+				//effect::Create(0, 0, effect::EFFECTTYPE::FADEOUTWHITE);
+				sleep(5);
 			}
 		}
 	};

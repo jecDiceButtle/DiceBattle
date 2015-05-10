@@ -119,7 +119,7 @@ namespace game
 		//メインフェイズ処理
 		if (phase_ == PHASE::MAIN || phase_ == PHASE::END)
 		{
-			if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+			if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 			{
 				NextPhase();
 			}

@@ -31,6 +31,7 @@ private:
 	ci_ext::Vec3f m_pos;		//モンスターのpos(座標)
 	ci_ext::Vec3f m_angle;		//モンスターの向き
 
+	float angle;
 	float count;				//モンスター上下アニメ？のカウント
 	bool moveflag;				//モンスター上下アニメ？のフラグ
 	//*************************************************//

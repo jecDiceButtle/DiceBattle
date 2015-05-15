@@ -114,12 +114,14 @@
     <ClInclude Include="..\lib\gplib.h" />
     <ClInclude Include="src\back.h" />
     <ClInclude Include="src\board.h" />
+    <ClInclude Include="src\button.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\dice.h" />
     <ClInclude Include="src\dicemanager.h" />
     <ClInclude Include="src\easing.h" />
     <ClInclude Include="src\effect.h" />
     <ClInclude Include="src\effect3D.h" />
+    <ClInclude Include="src\Menu.hpp" />
     <ClInclude Include="src\monster.h" />
     <ClInclude Include="src\movableObject.h" />
     <ClInclude Include="src\player.h" />
@@ -147,6 +149,7 @@
     <ClCompile Include="..\lib\gplib.cpp" />
     <ClCompile Include="src\back.cpp" />
     <ClCompile Include="src\board.cpp" />
+    <ClCompile Include="src\button.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\dice.cpp" />
     <ClCompile Include="src\dicemanager.cpp" />

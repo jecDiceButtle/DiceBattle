@@ -13,10 +13,8 @@ extern std::shared_ptr<DX3DMESHMANAGER> meshManage;
 
 namespace game
 {
-	//tuika
 	using namespace ci_ext;
 	using namespace gplib;
-	//tuika
 
 
 	//**************************************************************************************//

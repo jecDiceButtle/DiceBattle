@@ -56,6 +56,12 @@
     <Filter Include="プログラムファイル\game\Stage1\その他">
       <UniqueIdentifier>{ec0018b0-c5d7-4c25-a111-3371896950aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\game\Button">
+      <UniqueIdentifier>{f711eaa0-2ce0-4a07-8999-c015ad2934cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\menu">
+      <UniqueIdentifier>{1e481037-0ed4-4601-b563-31ab7898ea03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -196,6 +202,12 @@
     <ClInclude Include="src\Title.hpp">
       <Filter>プログラムファイル\Title</Filter>
     </ClInclude>
+    <ClInclude Include="src\button.h">
+      <Filter>プログラムファイル\game\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Menu.hpp">
+      <Filter>プログラムファイル\menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\gplib.cpp">
@@ -287,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="src\player.cpp">
       <Filter>プログラムファイル\game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\button.cpp">
+      <Filter>プログラムファイル\game\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

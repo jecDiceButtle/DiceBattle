@@ -56,6 +56,9 @@
     <Filter Include="プログラムファイル\game\Stage1\その他">
       <UniqueIdentifier>{ec0018b0-c5d7-4c25-a111-3371896950aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\game\Sound">
+      <UniqueIdentifier>{70252512-cbf6-4e37-bae7-d4da05f231db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -196,6 +199,9 @@
     <ClInclude Include="src\Title.hpp">
       <Filter>プログラムファイル\Title</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sound.h">
+      <Filter>プログラムファイル\game\Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\gplib.cpp">
@@ -287,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="src\player.cpp">
       <Filter>プログラムファイル\game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sound.cpp">
+      <Filter>プログラムファイル\game\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

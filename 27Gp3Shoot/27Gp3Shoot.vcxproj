@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\lib\ci_ext\oggvorbis\include;$(DXSDK_DIR)include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;..\lib\ci_ext\oggvorbis\include;$(DXSDK_DIR)include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(DXSDK_DIR)Lib\x86;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -124,6 +124,7 @@
     <ClInclude Include="src\movableObject.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\script.hpp" />
+    <ClInclude Include="src\Sound.h" />
     <ClInclude Include="src\stage.h" />
     <ClInclude Include="src\timer.h" />
     <ClInclude Include="src\Title.hpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="src\monster.cpp" />
     <ClCompile Include="src\movableObject.cpp" />
     <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\stage.cpp" />
     <ClCompile Include="src\timer.cpp" />
     <ClCompile Include="src\ui.cpp" />

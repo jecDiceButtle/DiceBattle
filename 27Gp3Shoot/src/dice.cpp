@@ -208,7 +208,7 @@ namespace game
 		{
 			animcnt_++;
 			ClacMove(pos_, hougaku());
-			rollAnim += 1.0f / (float)ANIMFRAMES;
+			//rollAnim += 1.0f / (float)ANIMFRAMES;
 			D3DXQuaternionSlerp(&middleQ, &startQ, &endQ, rollAnim);
 			pOut = MOVE;
 
@@ -218,6 +218,7 @@ namespace game
 
 		return;
 	}
+	
 
 	//------------MoveDice------------//
 	/*
@@ -513,7 +514,7 @@ namespace game
 	void Dice::swap(DIRECTION dir)
 	{
 
-		TYPE temp = face[0];
+		/*TYPE temp = face[0];
 
 		if (dir == WEST){
 			face[0] = face[2];
@@ -538,7 +539,7 @@ namespace game
 			face[4] = face[5];
 			face[5] = face[1];
 			face[1] = temp;
-		}
+		}*/
 	}
 
 

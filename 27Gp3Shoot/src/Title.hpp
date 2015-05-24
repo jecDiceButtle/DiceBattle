@@ -3,19 +3,31 @@
 #include "../../lib/gplib.h"
 #include "effect.h"
 #include "stage.h"
+#include "Sound.h"
 
 namespace game
 {
 
 	class Title : public ci_ext::Object
 	{
+		
 	public:
+
+		//soundÇÃÉ|ÉCÉìÉ^
+		std::weak_ptr<ci_ext::Object> p_sound;
+
 		Title(const std::string& objectName) :
 			Object(objectName)
 		{
+			
 			//effect::Create(0, 0, effect::EFFECTTYPE::FADEINWHITE);
 			gplib::graph::Draw_LoadObject("titleback", "res/gra/title_back.png",0xFFFFFFFF);
 			/*gplib::graph::Draw_LoadObject("titlelogo", "res/gra/title.png");*/
+		}
+
+		void init() override
+		{
+			p_sound = insertAsChild(new Sound("sound"));
 		}
 
 		void render() override
@@ -39,6 +51,7 @@ namespace game
 
 		void resume() override
 		{
+			
 			static bool flag = true;
 			if (flag){
 				insertToParent(new game::CSceneStage("scene_stage"));
@@ -48,12 +61,16 @@ namespace game
 
 		void update() override
 		{
+			//BGMçƒê∂
+			Sound::BgmPayer("kb");
 			if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 			{
 				//effect::Create(0, 0, effect::EFFECTTYPE::FADEOUTWHITE);
 				sleep(5);
+				Sound::BgmStop("kb");
+				killFromChildren("sound");
 			}
 		}
+		
 	};
 }
-

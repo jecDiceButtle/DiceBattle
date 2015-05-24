@@ -14,17 +14,11 @@
     <Filter Include="プログラムファイル\lib\3d">
       <UniqueIdentifier>{ad15e082-7e24-45cd-852c-9844ec492792}</UniqueIdentifier>
     </Filter>
-    <Filter Include="プログラムファイル\Stage1">
-      <UniqueIdentifier>{ce603a90-c802-4ae6-a51c-c99181d1d196}</UniqueIdentifier>
-    </Filter>
     <Filter Include="プログラムファイル\main">
       <UniqueIdentifier>{b035ed26-78e0-473f-b0a6-82382e187532}</UniqueIdentifier>
     </Filter>
     <Filter Include="プログラムファイル\utitlty">
       <UniqueIdentifier>{b79a7587-8e00-45fe-b328-c4e5d52b2aed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="プログラムファイル\Stage1\その他">
-      <UniqueIdentifier>{ec0018b0-c5d7-4c25-a111-3371896950aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="プログラムファイル\game">
       <UniqueIdentifier>{6df50ba1-9d5c-4644-a949-fa70f7e5c8f2}</UniqueIdentifier>
@@ -55,6 +49,18 @@
     </Filter>
     <Filter Include="プログラムファイル\Title">
       <UniqueIdentifier>{aeca117f-5718-4a49-ab76-3f141c4596f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1">
+      <UniqueIdentifier>{ce603a90-c802-4ae6-a51c-c99181d1d196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\その他">
+      <UniqueIdentifier>{ec0018b0-c5d7-4c25-a111-3371896950aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Button">
+      <UniqueIdentifier>{f711eaa0-2ce0-4a07-8999-c015ad2934cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\menu">
+      <UniqueIdentifier>{1e481037-0ed4-4601-b563-31ab7898ea03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -158,13 +164,13 @@
       <Filter>プログラムファイル\utitlty</Filter>
     </ClInclude>
     <ClInclude Include="src\script.hpp">
-      <Filter>プログラムファイル\Stage1\その他</Filter>
+      <Filter>プログラムファイル\game\Stage1\その他</Filter>
     </ClInclude>
     <ClInclude Include="src\movableObject.h">
-      <Filter>プログラムファイル\Stage1\その他</Filter>
+      <Filter>プログラムファイル\game\Stage1\その他</Filter>
     </ClInclude>
     <ClInclude Include="src\stage.h">
-      <Filter>プログラムファイル\Stage1</Filter>
+      <Filter>プログラムファイル\game\Stage1</Filter>
     </ClInclude>
     <ClInclude Include="src\timer.h">
       <Filter>プログラムファイル\utitlty</Filter>
@@ -195,6 +201,12 @@
     </ClInclude>
     <ClInclude Include="src\Title.hpp">
       <Filter>プログラムファイル\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\button.h">
+      <Filter>プログラムファイル\game\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Menu.hpp">
+      <Filter>プログラムファイル\menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,10 +271,10 @@
       <Filter>プログラムファイル\utitlty</Filter>
     </ClCompile>
     <ClCompile Include="src\movableObject.cpp">
-      <Filter>プログラムファイル\Stage1\その他</Filter>
+      <Filter>プログラムファイル\game\Stage1\その他</Filter>
     </ClCompile>
     <ClCompile Include="src\stage.cpp">
-      <Filter>プログラムファイル\Stage1</Filter>
+      <Filter>プログラムファイル\game\Stage1</Filter>
     </ClCompile>
     <ClCompile Include="src\dicemanager.cpp">
       <Filter>プログラムファイル\game\DiceManager</Filter>
@@ -287,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="src\player.cpp">
       <Filter>プログラムファイル\game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\button.cpp">
+      <Filter>プログラムファイル\game\Button</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

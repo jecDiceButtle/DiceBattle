@@ -12,7 +12,11 @@ namespace game
 	//**************************************************************************************//
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
-	static const int srcX[] = { 0, 150, 300, 450 };
+	const int UI::srcX[] = { 0, 150, 300, 450 };
+	const int UI::cutin_srcY[] = { 0, 74, 143, 222 };
+	
+	int UI::turnPlayer_ = 0;
+	int UI::phase_ = 0;
 
 	//**************************************************************************************//
 	//関数記述
@@ -38,24 +42,32 @@ namespace game
 	}
 
 
+
 	//**************************************************************************************//
 	//デフォルト関数
 	//**************************************************************************************//
-	UI::UI(const std::string& objectName, UITYPE type, float posx, float posy)
+	UI::UI(const std::string& objectName, UITYPE type, float posx, float posy,int monsnum)
 		:
 		MovableObject(objectName),
 		type_(type),
 		M_state_(MOVESTATE::M_RIGHTCENTER),
 		P_state_(MOVESTATE::P_RIGHTCENTER),
+		T_state_(MOVESTATE::T_RIGHTCENTER),
 		M_initF(true),
 		P_initF(true),
+		T_initF(true),
 		flag(false),
 		x(posx),
-		y(posy),
-		phase_(0),
-		turnPlayer_(0)
+		y(posy)
 	{
+		//モンスター用resname
+		std::string str = "";
 
+		if (monsnum == 0) str = "cutin_tori";
+		if (monsnum == 1) str = "cutin_kinoko";
+		if (monsnum == 2) str = "cutin_kuzira";
+
+		monsnum_ = str;
 
 		switch (type_)
 		{
@@ -89,21 +101,30 @@ namespace game
 			break;
 
 		case UITYPE::CUTINMONSTER:
-			gplib::graph::Draw_LoadObject("cutin_chara", "res/gra/cutin_kuzira.png", 0xFFFFaaFF);
-			easing::Create("cutin_chara1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 700.f, 640, 60);
-			easing::Create("cutin_chara2", easing::EASINGTYPE::CIRCIN, 640, -700, 30);
-			charaC_x = gplib::system::WINW + 700.f;
+			gplib::graph::Draw_LoadObject("cutin_kuzira", "res/gra/cutin_kuzira.png", 0xFFFFaaFF);
+			//キノコ絵がないので仮にクジラをおいてます。。
+			gplib::graph::Draw_LoadObject("cutin_kinoko", "res/gra/cutin_kinoko.png", 0xFFFFaaFF);
+			gplib::graph::Draw_LoadObject("cutin_tori", "res/gra/cutin_tori.png", 0xFFFFaaFF);
+			easing::Create("cutin_chara1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 600.f, 640, 60);
+			easing::Create("cutin_chara2", easing::EASINGTYPE::CIRCIN, 640, -600, 30);
+			charaC_x = gplib::system::WINW + 600.f;
 			charaC_y = gplib::system::WINH / 2.f;
 			break;
 
 		case UITYPE::CUTINPHASE:
 			gplib::graph::Draw_LoadObject("cutin_phase", "res/gra/cutin_phase.png", 0xFFFFaaFF);
-			easing::Create("cutin_chara1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 600.f, 640, 180);
-			easing::Create("cutin_chara2", easing::EASINGTYPE::CIRCIN, 640, -600, 180);
+			easing::Create("cutin_phase1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 600.f, 640, 60);
+			easing::Create("cutin_phase2", easing::EASINGTYPE::CIRCIN, 640, -600, 60);
 			phaseC_x = gplib::system::WINW + 600.f;
 			phaseC_y = gplib::system::WINH / 2.f;
 			break;
-
+		case UITYPE::CUTINTURN:
+			gplib::graph::Draw_LoadObject("cutin_turn", "res/gra/cutin_turn.png", 0xFFFFaaFF);
+			easing::Create("cutin_turn1", easing::EASINGTYPE::CIRCIN, gplib::system::WINW + 500.f, 640, 60);
+			easing::Create("cutin_turn2", easing::EASINGTYPE::CIRCIN, 640, -500, 60);
+			turnC_x = gplib::system::WINW + 500.f;
+			turnC_y = 250;
+			break;
 
 
 		}
@@ -113,13 +134,13 @@ namespace game
 	void UI::init()
 	{
 		timer_ = insertAsChildSleep(new game::Timer("LimitTimer"), 120);
-
+		
 	}
 
 	void UI::render()
 	{
+
 		gplib::graph::Draw_2DClear();
-		//cutin
 		switch (type_)
 		{
 
@@ -143,12 +164,17 @@ namespace game
 			break;
 
 		case UITYPE::CUTINMONSTER:
-			gplib::graph::Draw_Graphics(charaC_x, charaC_y, 0.f, "cutin_chara", 0, 0, 700, 250, 0.f, 1.5f, 1.5f);
+
+			gplib::graph::Draw_Graphics(charaC_x, charaC_y, 0.f, monsnum_, 0, 0, 700, 250, 0.f, 1.5f, 1.5f);
 
 			break;
 
 		case UITYPE::CUTINPHASE:
-			gplib::graph::Draw_Graphics(phaseC_x, phaseC_y, 0.f, "cutin_phase", 0, 0, 600, (296/4)*phase_, 0.f, 1.5f, 1.5f);
+			gplib::graph::Draw_Graphics(phaseC_x, phaseC_y, 0.f, "cutin_phase", 0, cutin_srcY[phase_], 600, 74, 0.f, 1.5f, 1.5f);
+			break;
+
+		case UITYPE::CUTINTURN:
+			gplib::graph::Draw_Graphics(turnC_x, turnC_y, 0.f, "cutin_turn", 0, 150 / 2 * turnPlayer_, 500, 75, 0.f, 1.5f, 1.5f);
 			break;
 		}
 		gplib::graph::Draw_2DRefresh();
@@ -160,6 +186,7 @@ namespace game
 
 		auto P_timer = ci_ext::weak_to_shared<game::Timer>(timer_);
 		auto M_timer = ci_ext::weak_to_shared<game::Timer>(timer_);
+		auto T_timer = ci_ext::weak_to_shared<game::Timer>(timer_);
 
 		switch (type_)
 		{
@@ -204,10 +231,6 @@ namespace game
 			}
 			break;
 		case UITYPE::PHASE:
-			if (phase_ == 3)
-			{
-				phase_ = 0;
-			}
 			break;
 
 		case UITYPE::CUTINMONSTER:
@@ -275,12 +298,51 @@ namespace game
 					P_initF = false;
 				}
 				easing::GetPos("cutin_phase2", phaseC_x);
-				if (phaseC_x <= -700)
+				if (phaseC_x <= -600)
 				{
 					kill();
 				}
 				break;
 			}
+
+		case UITYPE::CUTINTURN:
+			switch (T_state_)
+			{
+			case MOVESTATE::T_RIGHTCENTER:
+				if (T_initF == true)
+				{
+					easing::Start("cutin_turn1");
+					T_initF = false;
+				}
+				easing::GetPos("cutin_turn1", turnC_x);
+				if (turnC_x <= 640)
+				{
+					T_state_ = MOVESTATE::T_CENTER;
+					T_initF = true;
+				}
+				break;
+			case MOVESTATE::T_CENTER:
+				if (T_timer->get() > 3.0f)
+				{
+					T_state_ = MOVESTATE::T_CENTERLEFT;
+				}
+				break;
+			case MOVESTATE::T_CENTERLEFT:
+				if (T_initF == true)
+				{
+					easing::Start("cutin_turn2");
+					T_initF = false;
+				}
+				easing::GetPos("cutin_turn2", turnC_x);
+				if (turnC_x <= -500)
+				{
+					kill();
+				}
+				break;
+
+
+			}
+
 		}
 
 		easing::Step();

@@ -41,7 +41,7 @@ namespace game
 	//===================================
 	//	デフォルト関数
 	//===================================
-	Dice::Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& masu)
+	Dice::Dice(const std::string& objectName, const int type, const int playerID, const ci_ext::Vec3i& masu)
 		:
 		MovableObject(
 		DrawObjf(objectName)
@@ -54,8 +54,9 @@ namespace game
 
 		state_(IDOL),
 		dispstate_(DICE),
-		selected_(true),
+		selected_(false),
 		defType_((TYPE)type),
+		playerID_(playerID),
 
 		ANIMFRAMES(30),
 		hougaku_(CENTER),
@@ -112,26 +113,29 @@ namespace game
 	{
 		state_ = DEAD;
 	}
+
+	void Dice::Spawn()
+	{
+		state_ = IDOL;
+	}
+
 	int Dice::getAtkSpecies()
 	{
-		return (int)face[0];
+		return static_cast<int>(face[0]);
 	}
 	int Dice::getDefSpecies()
 	{
-		return (int)defType_;
+		return static_cast<int>(defType_);
 	}
 
 
 	//render()
 	void Dice::render()
 	{
-		ci_ext::Vec3f angle(0, 0, 0);
-		ci_ext::Vec3f scale(10.f, 10.f, 10.f);
-		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale, matRot);
 
-		//追加
-		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
-		monsobj->monster_move(pos_, angle);
+		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, rgb, rgb, rgb), scale, matRot);
+
+		
 	}
 
 	//update
@@ -143,9 +147,10 @@ namespace game
 		switch (state_)
 		{
 		case game::Dice::DEAD:
-
+			DoDead();
 			break;
 		case game::Dice::IDOL:
+			pos_.y(5.0f);
 			DoIdol();
 			break;
 
@@ -157,6 +162,10 @@ namespace game
 			Attack();
 			break;
 		}
+
+		//追加
+		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
+		monsobj->monster_move(pos_);
 
 	}
 	//===================================
@@ -364,6 +373,19 @@ namespace game
 	//-------------------------------//
 	//===================================
 
+	//===================================
+	//	DoMove
+	//===================================
+	void Dice::DoDead()
+	{
+		pos_.y(255); //死んでる間は吹っ飛ばす
+		//monster_move
+		//auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
+		//monsobj->monster_move(pos_);
+		//
+
+	}
+	//===================================
 
 
 	//===================================
@@ -379,6 +401,15 @@ namespace game
 		return state_ == IDOL;
 	}
 
+	void Dice::OnSelectFlag()
+	{
+		selected_ = true;
+	}
+	void Dice::OffSelectFlag()
+	{
+		selected_ = false;
+		rgb = 255;
+	}
 
 	/*
 	@brief							移動を準備（移動に必要な値等をセット）
@@ -446,7 +477,9 @@ namespace game
 
 	void Dice::init(){
 
-		p_mons = insertAsChild(new Monster("monster", pos_, (int)defType_, Vec3f(0.f, 0.f, 0.f)));
+		Vec3f rot = ((playerID_ == 0) ? Vec3f(0.f, 180.f, 0.f): Vec3f(0.f, 0.f, 0.f));
+
+		p_mons = insertAsChild(new Monster("monster", pos_, (int)defType_, rot));
 
 	}
 

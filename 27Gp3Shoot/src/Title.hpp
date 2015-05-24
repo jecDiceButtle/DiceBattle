@@ -3,6 +3,7 @@
 #include "../../lib/gplib.h"
 #include "effect.h"
 #include "button.h"
+#include "Menu.hpp"
 #include "stage.h"
 
 namespace game
@@ -54,7 +55,7 @@ namespace game
 		{
 			static bool flag = true;
 			if (flag){
-				insertToParent(new game::CSceneStage("scene_stage"));
+				insertToParent(new game::Menu("scene_stage"));
 				flag = false;
 			}
 		}
@@ -66,7 +67,7 @@ namespace game
 			btnobj->ButtonClick("start", 640, 300, btnflag);
 			if (btnflag==true)
 			{
-				insertToParent(new game::CSceneStage("scene_stage"));		//ここにイベントを記述
+				insertToParent(new game::Menu("scene_stage"));		//ここにイベントを記述
 				kill();
 			}
 			//

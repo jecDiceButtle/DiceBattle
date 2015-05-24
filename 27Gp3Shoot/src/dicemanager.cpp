@@ -61,7 +61,7 @@ namespace game
 		{
 			MovingPos(selectDice_, ci_ext::Vec3i(0, -1, 0));
 		}
-		if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+		if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 		{
 			//ダイスに選択描画
 			// dice->select();
@@ -82,6 +82,9 @@ namespace game
 
 			if (selectF)
 			{
+				auto ptr = getDicePtr(turnPlayer_, selectDice_);
+				ci_ext::weak_to_shared<Dice>(ptr)->OffSelectFlag();
+
 				//選択可能なダイスを探す。
 				for (int i = 1; i <= (int)dicemasu[turnPlayer_].size(); i++)
 				{
@@ -153,6 +156,15 @@ namespace game
 		{
 			turnPlayer_ = playerID;
 			selectDice_ = 0;
+
+			auto objects = getObjectsFromChildren({ "dice"});
+
+			for (auto obj : objects)
+			{
+				auto dice = ci_ext::weak_to_shared<game::Dice>(obj);
+				
+				dice->OffSelectFlag();
+			}
 		}
 	}
 
@@ -242,11 +254,25 @@ namespace game
 			auto parent = ci_ext::weak_to_shared<CSceneStage>(p_parent);
 			parent->NextPhase();
 		}
+		else
+		{
+			//死んでいるダイスはその場に召喚させる。
+			for (auto obj : objects)
+			{
+				auto dice = ci_ext::weak_to_shared<game::Dice>(obj);
+				if (dice->isDying())
+					dice->Spawn();
+			}
+		}
 
 	}
 	void DiceManager::Main()
 	{
 		key();
+
+		batphase_ = check;
+		auto ptr = getDicePtr(turnPlayer_, selectDice_);
+		ci_ext::weak_to_shared<Dice>(ptr)->OnSelectFlag();
 	}
 	void DiceManager::Battle()
 	{
@@ -290,7 +316,7 @@ namespace game
 				gplib::font::Draw_FontText(500, 500, 0.f, "攻撃セレクト", ARGB(255, 255, 0, 0), 0);
 
 				//ダイスの選択を変更する
-				if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 				{
 					for (int i = 0; i < (int)battledice.size(); i++)
 					{
@@ -311,10 +337,9 @@ namespace game
 				}
 
 				//ダイスの決定
-				if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 				{
 					//選択状態を解除すること
-
 					batphase_ = emySelect;
 				}
 
@@ -345,7 +370,7 @@ namespace game
 					{
 						gplib::font::Draw_FontText(500, 500, 0.f, "攻撃セレクト", ARGB(255, 255, 0, 0), 0);
 						//ダイスの選択を変更する
-						if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+						if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
 						{
 								//選択されている次のダイスへ選択を移す。
 								bdice.selectDef = (bdice.selectDef + 1) % (int)bdice.p_defense.size();
@@ -355,7 +380,7 @@ namespace game
 						}
 
 						//ダイスの決定
-						if (gplib::input::CheckPush(gplib::input::KEY_BTN1))
+						if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 						{
 							//選択描画の解除
 
@@ -377,6 +402,8 @@ namespace game
 			//勝敗判定
 			if (batinit_)
 			{
+				int offenseNum;
+
 				for (auto &bdice : battledice){
 					if (bdice.selectOffF){
 
@@ -384,20 +411,44 @@ namespace game
 						int defense = bdice.p_defense[bdice.selectDef]->getDefSpecies();
 
 						bdice.result = getAttackJudge(offense, defense);
+						
+						offenseNum = bdice.p_offense->getDefSpecies();
+
+						break;
 					}
 				}
-				//カットインさせる
-				insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTINMONSTER, -500.f, gplib::system::WINH / 2.f));
-
+				
+				batcutin_ = true;
 				batinit_ = false;
 			}
 			else
 			{
-				auto object = getObjectFromChildren( "cutin_attack" );
-				if (ci_ext::weak_to_shared<UI>(object)->isDestroy())
+				auto object = getObjectsFromRoot({ "cutin" });
+
+				if (object.empty() && batcutin_)
 				{
-					batphase_ = destroy;
+					int offenseNum;
+
+					for (auto &bdice : battledice){
+						if (bdice.selectOffF){
+							
+							offenseNum = bdice.p_offense->getDefSpecies();
+							break;
+						}
+					}
+					//カットインさせる
+					insertAsChild(new game::UI("cutin_attack", UI::UITYPE::CUTINMONSTER, -500.f, gplib::system::WINH / 2.f, offenseNum));
+					batcutin_ = false;
 				}
+				else if (!batcutin_)
+				{
+					auto object = getObjectFromChildren("cutin_attack");
+					if (ci_ext::weak_to_shared<UI>(object)->isDestroy())
+					{
+						batphase_ = destroy;
+					}
+				}
+				
 			}
 			break;
 
@@ -479,7 +530,7 @@ namespace game
 			for (int j = 0; j < 2; j++)	//ダイスの数
 			{
 				std::string str = "dice_p" + std::to_string(i) + "_no" + std::to_string(j);
-				auto ptr = insertAsChild(new game::Dice(str,gplib::math::GetRandom<int>(0,2),dicemasu[i][j]));
+				auto ptr = insertAsChild(new game::Dice(str,gplib::math::GetRandom<int>(0,2),i, dicemasu[i][j]));
 			}
 		}
 

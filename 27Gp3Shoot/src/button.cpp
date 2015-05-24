@@ -46,17 +46,15 @@ namespace game
 			g = 200;
 			b = 200;
 
-			if (gplib::input::CheckPress(gplib::input::KEY_MOUSE_LBTN))
+			if (gplib::input::CheckPush(gplib::input::KEY_MOUSE_LBTN))
 			{
-				flag = true; 
-
 				scaleX = 1.2f;
 				scaleY = 1.2f;
 
 			}
-			else
+			else if (gplib::input::CheckPull(gplib::input::KEY_MOUSE_LBTN))
 			{
-
+				flag = true;
 				scaleX = 1.0f;
 				scaleY = 1.0f;
 			}

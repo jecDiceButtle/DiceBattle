@@ -13,10 +13,8 @@ extern std::shared_ptr<DX3DMESHMANAGER> meshManage;
 
 namespace game
 {
-	//tuika
 	using namespace ci_ext;
 	using namespace gplib;
-	//tuika
 
 
 	//**************************************************************************************//
@@ -29,9 +27,6 @@ namespace game
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
-
-
-
 
 	Monster::Monster(const std::string& objectName, const Vec3f pos, const int monsternum, const Vec3f angle)
 		:
@@ -54,14 +49,17 @@ namespace game
 		auto pos = m_pos.offset(0.f, OFFSETY, 0.f);
 
 		switch (monster_num){
+			//グー、火
 		case 0:
-			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
+			//チョキ、木
 		case 1:
 			meshManage->drawMesh(pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
+			//パー、水
 		case 2:
-			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		}
 	}
@@ -77,27 +75,17 @@ namespace game
 			m_pos = p;
 			m_angle = a;
 	}
+
+	void Monster::monster_move(Vec3f p){
+
+		m_pos = p;
+
+	}
 	
 
 	void Monster::updownmove(){
-		count++;
-		if (count > 60){
-			if (moveflag == true){
-				count = 0;
-				moveflag = false;
-			}
-			else if (moveflag == false){
-				count = 0;
-				moveflag = true;
-			}
-		}
-
-		Vec3f f(0.f, 0.03f, 0.f);
-		if (moveflag == true){
-			m_pos += f;
-		}
-		else if (moveflag == false){
-			m_pos -= f;
-		}
+		angle += D3DXToRadian(1.f);
+		Vec3f f = Vec3f(0.f, ((float)sin(angle) * 3.f)/4.f, 0.f);
+		m_pos += f;
 	}
 }

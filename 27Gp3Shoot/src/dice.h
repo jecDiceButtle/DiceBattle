@@ -63,7 +63,7 @@ namespace game
 		DISPSTATE dispstate_;								// 描画状態
 		bool selected_;										// 選択状態
 
-
+		int playerID_;
 		int animcnt_;										// アニメカウンタ
 
 		bool RGBFLAG;
@@ -116,8 +116,11 @@ namespace game
 		void Attack();
 
 
-	public:
-
+		/*
+		@brief							移動中の処理
+		@return							なし
+		*/
+		void DoDead();
 
 
 		/*
@@ -167,12 +170,7 @@ namespace game
 		void setDicePosY(const ci_ext::Vec3i &masu);
 
 
-		/*
-		@brief							アクセサ、状態の確認
-		@return							死亡中かどうか
-		@true							死亡中
-		*/
-		bool isDying();
+
 
 		
 
@@ -200,10 +198,11 @@ namespace game
 		@brief							コンストラクタ
 		@param[in] objectName			オブジェクト名
 		@param[in] type					防御側の種族
+		@param[in] playerID				プレイヤー
 		@param[in] pos					初期座標
 		@return							なし
 		*/
-		Dice(const std::string& objectName, const int type, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
+		Dice(const std::string& objectName, const int type, const int playerID, const ci_ext::Vec3i& pos = ci_ext::Vec3i::zero());
 
 		void init()	override;
 		void render() override;
@@ -225,6 +224,22 @@ namespace game
 		@true							移動中
 		*/
 		bool isMoving();
+
+		/*
+		@brief							アクセサ、状態の確認
+		@return							死亡中かどうか
+		@true							死亡中
+		*/
+		bool isDying();
+
+
+		/*
+		@brief							アクセサ、蘇生
+		@return							なし
+		*/
+
+		void Spawn();
+
 
 		/*
 		@brief							アクセサ、ダイスを死亡状態へ
@@ -250,6 +265,13 @@ namespace game
 		@return							なし
 		*/
 		void prepareMove(ci_ext::Vec3i &masu);
+
+		/*
+		@brief							selectflagの切り替え
+		@return							なし
+		*/
+		void OnSelectFlag();
+		void OffSelectFlag();
 
 	};
 

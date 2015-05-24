@@ -25,7 +25,7 @@
 
 namespace gplib{
 	namespace system{
-		const char USERNAME[256] = "ゲームPG3 *";
+		const char USERNAME[256] = "Dice Battle";
 		const int	WINW = 1280;
 		const int	WINH = 720;
 		bool	WindowMode = true;								//フルスクリーン対応
@@ -75,7 +75,8 @@ public:
 
 		//最初に生成するオブジェクトを記述
 		//insertAsChild(new game::Logo("Loge")); //!)ここではロゴに移動
-		insertAsChild(new game::CSceneStage("scene_stage"));
+		insertAsChild(new game::Title("Title")); //!)ここではロゴに移動
+		//insertAsChild(new game::CSceneStage("scene_stage"));
 	}
 
 	//アクセサ

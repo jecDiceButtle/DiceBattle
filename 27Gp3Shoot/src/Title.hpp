@@ -14,7 +14,7 @@ namespace game
 	public:
 
 		//soundÇÃÉ|ÉCÉìÉ^
-		std::weak_ptr<ci_ext::Object> p_sound;
+		//std::weak_ptr<ci_ext::Object> p_sound;
 
 		Title(const std::string& objectName) :
 			Object(objectName)
@@ -27,7 +27,9 @@ namespace game
 
 		void init() override
 		{
-			p_sound = insertAsChild(new Sound("sound"));
+			//p_sound = (insertAsChild(new Sound("sound")));
+			//ci_ext::weak_to_shared<Sound>(p_sound)->SoundPlayer("kb");
+			
 		}
 
 		void render() override
@@ -61,14 +63,11 @@ namespace game
 
 		void update() override
 		{
-			//BGMçƒê∂
-			Sound::BgmPayer("kb");
+			
 			if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
 			{
 				//effect::Create(0, 0, effect::EFFECTTYPE::FADEOUTWHITE);
 				sleep(5);
-				Sound::BgmStop("kb");
-				killFromChildren("sound");
 			}
 		}
 		

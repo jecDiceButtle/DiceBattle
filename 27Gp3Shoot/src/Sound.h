@@ -12,32 +12,6 @@ namespace game
 
 		
 	public:
-
-		/*
-		@brief							BGMÄ¶
-		@return							‚È‚µ
-		*/
-		static void BgmPayer(const std::string& resname);
-		/*
-		@brief							SEÄ¶
-		@return							‚È‚µ
-		*/
-		static void SePayer(const std::string& resname);
-
-		/*
-		@brief							BGM’â~
-										‚P‚Â‚P‚Â‚ÌÁ‚·ˆ—‚Í‚È‚¢
-		@return							‚È‚µ
-		*/
-		static void BgmStop(const std::string& resname);
-		/*
-		@brief							SE’â~
-		‚P‚Â‚P‚Â‚ÌÁ‚·ˆ—‚Í‚È‚¢
-		@return							‚È‚µ
-		*/
-		static void SeStop(const std::string& resname);
-
-		public:
 		/*
 		@brief							ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 		@param[in]	objectName			ƒIƒuƒWƒFƒNƒg–¼
@@ -45,6 +19,17 @@ namespace game
 		*/
 		Sound(const std::string& objectName);
 
-		void updata();
+		/*
+		@brief							BGMÄ¶
+		@return							‚È‚µ
+		*/
+		static void SoundPlayer(const std::string& resname);
+		
+				/*
+		@brief							SE’â~
+		‚P‚Â‚P‚Â‚ÌÁ‚·ˆ—‚Í‚È‚¢
+		@return							‚È‚µ
+		*/
+		static void SoundStop(const std::string& resname);
 	};
 }
